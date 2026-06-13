@@ -1,0 +1,35 @@
+# Credenciales y secretos
+.credentials.json
+
+# Config por máquina (rutas específicas de cada PC)
+settings.json
+
+# Caché y estado efímero
+cache/
+paste-cache/
+mcp-needs-auth-cache.json
+.last-cleanup
+.last-update-result.json
+
+# Historial de sesiones (potencialmente sensible y grande)
+history.jsonl
+sessions/
+session-env/
+shell-snapshots/
+file-history/
+
+# Telemetría y descargas
+telemetry/
+downloads/
+
+# IDE state
+ide/
+
+# Backups auto-generados
+backups/
+
+# Projects: ignorar todo excepto memory/ (historiales tienen tokens/secretos)
+projects/**/*.jsonl
+projects/**/*.json
+projects/**/*.txt
+projects/**/*.pdf
