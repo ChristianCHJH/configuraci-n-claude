@@ -17,14 +17,16 @@ id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY
 ### Columnas de auditoría (OBLIGATORIAS en toda tabla)
 
 ```sql
-usuario_creacion    BIGINT NOT NULL,
-usuario_actualizacion BIGINT NOT NULL,
-fecha_creacion      TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-fecha_actualizacion TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-estado              BOOLEAN NOT NULL DEFAULT true,
-eliminado           BOOLEAN NOT NULL DEFAULT false
+usuario_creacion      BIGINT NOT NULL,
+usuario_actualizacion BIGINT,                              -- NULL hasta la primera actualización
+fecha_creacion        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+fecha_actualizacion   TIMESTAMP WITH TIME ZONE,            -- NULL hasta la primera actualización
+estado                BOOLEAN NOT NULL DEFAULT true,
+eliminado             BOOLEAN NOT NULL DEFAULT false
 ```
 
+- `usuario_creacion` / `fecha_creacion`: **NOT NULL** — siempre se conocen al insertar.
+- `usuario_actualizacion` / `fecha_actualizacion`: **NULABLES** — al crear un registro todavía no hubo ninguna actualización, así que arrancan en NULL. Solo se llenan en el primer UPDATE. **Nunca** copiar `creacion` en `actualizacion` al insertar.
 - `usuario_creacion` y `usuario_actualizacion`: BIGINT (FK a tabla de usuarios cuando exista)
 - `fecha_creacion` y `fecha_actualizacion`: siempre con timezone
 - `estado`: lógica de negocio (activo/inactivo)
@@ -44,9 +46,9 @@ CREATE TABLE nombre_tabla (
     -- columnas propias de la tabla aquí
 
     usuario_creacion      BIGINT NOT NULL,
-    usuario_actualizacion BIGINT NOT NULL,
+    usuario_actualizacion BIGINT,                              -- NULL hasta la primera actualización
     fecha_creacion        TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    fecha_actualizacion   TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    fecha_actualizacion   TIMESTAMP WITH TIME ZONE,            -- NULL hasta la primera actualización
     estado                BOOLEAN NOT NULL DEFAULT true,
     eliminado             BOOLEAN NOT NULL DEFAULT false
 );
@@ -205,3 +207,38 @@ Todos los endpoints deben retornar esta estructura. Se implementa con un `Transf
 - `detail` es opcional, se usa para errores de validación con múltiples campos
 - Los mensajes (`message`) pueden ir en español
 - Nunca exponer stack traces ni errores internos en producción
+
+---
+
+## BMAD Method: Agentes y contexto
+
+El usuario trabaja con el framework **BMAD Method** para gestión de proyectos de software. Los agentes tienen nombres propios — cuando el usuario menciona un nombre, referirse al agente BMAD correspondiente, no a librerías o herramientas con el mismo nombre.
+
+### Roster de agentes (proyecto unimar_tms)
+
+| Nombre | Rol | Skill |
+|--------|-----|-------|
+| **Mary** | Business Analyst | `bmad-agent-analyst` |
+| **Paige** | Technical Writer | `bmad-agent-tech-writer` |
+| **John** | Product Manager | `bmad-agent-pm` |
+| **Sally** | UX Designer | `bmad-agent-ux-designer` |
+| **Winston** | System Architect | `bmad-agent-architect` |
+| **Amelia** | Senior Software Engineer | `bmad-agent-dev` |
+
+### Cómo activar un agente
+
+```
+/bmad-agent-architect   → Winston (arquitecto)
+/bmad-agent-dev         → Amelia (dev)
+/bmad-agent-pm          → John (PM)
+/bmad-agent-analyst     → Mary (analista)
+/bmad-agent-ux-designer → Sally (UX)
+/bmad-agent-tech-writer → Paige (tech writer)
+```
+
+### Flujo de trabajo BMAD (fases)
+
+1. **Análisis**: brainstorming, market research, domain research, PRFAQ, product brief
+2. **Planning**: PRD, UX, architecture, epics & stories
+3. **Solutioning**: check implementation readiness
+4. **Implementation**: sprint planning → create story → dev story → code review → retrospective

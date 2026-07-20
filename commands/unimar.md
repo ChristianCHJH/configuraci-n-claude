@@ -4,30 +4,49 @@ El usuario escribió: `/unimar $ARGUMENTS`
 
 ---
 
-## REGLA OBLIGATORIA — Atomicidad y límite de 100 líneas
+## REGLA OBLIGATORIA — Atomicidad y hojas de máx. 100 líneas
 
-**Antes de escribir cualquier archivo wiki**, aplica estas reglas sin excepción:
+**Antes de escribir cualquier archivo wiki**, aplica estas reglas sin excepción.
 
-### Límite de 100 líneas por archivo
+### Qué significa el límite de 100 líneas (LÉELO BIEN)
 
-1. **Antes de escribir:** cuenta las líneas actuales del archivo (si existe) + el contenido nuevo.
-2. **Si el resultado supera 100 líneas:** divide en hub + sub-páginas antes de escribir.
-3. **Naming de sub-páginas:** `{página-principal}-{subtema}.md` (ej: `web-design-deploy.md`)
-4. **Nunca crear un archivo que ya nazca con más de 100 líneas.**
+El **100 NO es un tope de contenido**. Es un **tope de tamaño POR HOJA**, solo para que cada archivo se lea
+rápido y sea fácil de navegar. **Prohibido usarlo como excusa para recortar, resumir, omitir o "no inflar".**
+
+- **NUNCA dejes información afuera por llegar a 100 líneas.** Todo lo que valga la pena documentar se documenta
+  **completo, al detalle**.
+- **Si el contenido no cabe en una hoja → NO se descarta: se PARTE en varias hojas** (hub + sub-páginas), y se
+  sigue partiendo en **cuantas hojas haga falta**, consecutivamente, según crezca. Dos, tres, diez sub-páginas
+  si el tema lo pide.
+- **Todas las hojas quedan enlazadas entre sí** (el hub apunta a cada sub-página y cada sub-página al hub;
+  `index.md` actualizado). Ese tejido de enlaces + hojas atómicas es justo lo que hace que **se encuentre todo
+  rápido y no cueste leer** — ese es el propósito real de la regla.
+- Regla mental correcta: *"¿esto supera 100 líneas? → entonces lo divido y enlazo"*, **no** *"entonces escribo menos"*.
+
+### Cómo partir (páginas wiki)
+
+1. Antes de escribir, estima el tamaño final (contenido existente + nuevo).
+2. Si supera 100 líneas: extrae secciones completas a sub-páginas `{página-principal}-{subtema}.md`
+   (ej: `web-design-deploy.md`), deja en el hub un resumen de 1-2 líneas + link a cada sub-página.
+3. Si una **sub-página** también crece más de 100, se vuelve a partir en sub-sub-páginas enlazadas. Sin tope de
+   cantidad de hojas.
+4. Actualiza siempre `index.md` cuando crees o elimines páginas, y los enlaces cruzados hub↔sub-página.
+5. **Ninguna hoja individual debe superar 100 líneas** — pero el TEMA completo puede ocupar tantas hojas como necesite.
 
 ### Atomicidad del log
 
-El `log.md` debe permanecer bajo 100 líneas.
+El archivo `log.md` mismo se mantiene bajo 100 líneas (es el índice cronológico de lectura rápida) — pero el
+histórico **completo se conserva**, nunca se borra:
 
-- Antes de añadir una entrada al log: lee `log.md` y cuenta líneas.
-- Si la entrada nueva haría superar 100 líneas: crea un archivo de archivo `log-YYYY-MM-DD.md` con las entradas actuales, deja `log.md` solo con la entrada nueva + referencia al archivo.
-- El encabezado de `log.md` siempre lista los archivos de archivo disponibles.
+- Antes de añadir una entrada, lee `log.md` y estima el tamaño.
+- Si la entrada nueva lo pasaría de 100: mueve las entradas antiguas a un archivo `log-YYYY-MM-DD.md`
+  (histórico completo), y deja `log.md` con las entradas recientes + la referencia a los archivos de histórico.
+- El encabezado de `log.md` siempre lista los archivos de histórico disponibles.
 
-### Atomicidad de páginas wiki
+### Atomicidad de otros archivos vivos (preguntas-abiertas, documentacion, etc.)
 
-- Cuando actualices una página wiki existente que esté cerca del límite (≥80 líneas), verifica el tamaño resultante antes de escribir.
-- Si la actualización llevaría la página a >100 líneas, extrae secciones a sub-páginas y actualiza la original con links.
-- Siempre actualiza `index.md` cuando crees o elimines páginas.
+Mismo principio: si un archivo de lista viva supera 100 líneas, **no se recorta** — se archiva la parte antigua
+en un `{archivo}-archivo-YYYY-MM-DD.md` y el archivo activo queda con lo vigente + link al histórico.
 
 ---
 
@@ -106,7 +125,31 @@ Christian pegó un documento, conversación, tarifa, contrato o fuente cruda.
 
 ---
 
-## Modo 4 — Si `$ARGUMENTS` tiene texto (no empieza con `ingestar` ni `doc`) → Consulta
+## Modo 4 — Si `$ARGUMENTS` empieza con `acuerdo` → Capturar acuerdos de reunión (Notion)
+
+Christian graba reuniones y sube lo conversado a Notion. Este modo extrae **solo lo decidido/acordado** y lo persiste en el wiki.
+
+**Sintaxis:** `/unimar acuerdo [url-de-notion | términos de búsqueda]`
+
+**Pasos:**
+1. Lee `C:\Christian\Unimar_obsidian\wiki\index.md` para conocer los proyectos existentes
+2. Trae la fuente desde Notion:
+   - Si hay URL → usa la herramienta `notion-fetch` con esa URL
+   - Si hay términos → usa `notion-search`, muestra resultados y confirma cuál es antes de continuar
+3. Lee la nota completa pero **extrae solo lo que es decisión o acuerdo** (no transcribas la reunión entera): qué se decidió, qué se descartó, compromisos, fechas, responsables
+4. Identifica a qué proyecto pertenece (`sil`, `web-design`, `ums`…). Si no hay proyecto claro: pregunta antes de escribir
+5. Escribe en la sección `## Decisiones y acuerdos` del hub del proyecto. Formato por entrada:
+   `[YYYY-MM-DD] acuerdo — qué se decidió · quién`
+6. **Aplica la regla de 100 líneas.** Si la sección crece, extrae a sub-página `{proyecto}-acuerdos.md` y deja link en el hub
+7. Si quedó algo sin resolver en la reunión → agrégalo en `wiki/preguntas-abiertas.md`
+8. Añade entrada en `log.md` (verificando límite): `## [YYYY-MM-DD] acuerdo:[proyecto] | Descripción`
+9. Actualiza `index.md` si hay páginas nuevas
+10. **Persiste en git** (ver sección Persistencia)
+11. Reporta: qué acuerdos capturaste, en qué proyecto, qué quedó en preguntas abiertas
+
+---
+
+## Modo 5 — Si `$ARGUMENTS` tiene texto (no empieza con `ingestar`, `doc` ni `acuerdo`) → Consulta
 
 1. Lee `C:\Christian\Unimar_obsidian\wiki\index.md`
 2. Revisa también `wiki/documentacion.md` — puede haber un HTML que cubra la respuesta
@@ -114,6 +157,22 @@ Christian pegó un documento, conversación, tarifa, contrato o fuente cruda.
 4. Responde directamente con citas del wiki
 5. Si el tema está cubierto por un HTML: indica sección exacta (`docs/[repo]/[archivo].html → sección "X"`)
 6. Si no hay suficiente info: ofrece buscar en el código del proyecto o preguntar a Christian
+
+---
+
+## Persistencia (git) — aplica a todos los modos de escritura
+
+Después de crear o actualizar páginas (Modos 1, 2, 3 y 4), **persiste el cambio en git** para que la memoria no viva solo en disco local:
+
+```bash
+cd C:\Christian\Unimar_obsidian
+git add -A
+git commit -m "<tipo>(wiki): <descripción corta>"
+```
+
+- `<tipo>`: `feat`, `chore`, `docs` o `acuerdo` según corresponda
+- No hagas `push` salvo que Christian lo pida
+- En modo Consulta (Modo 5) NO se commitea (no hay cambios)
 
 ---
 
