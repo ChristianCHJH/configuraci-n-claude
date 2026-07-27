@@ -14,6 +14,7 @@
 
 $ErrorActionPreference = 'SilentlyContinue'
 $ProgressPreference    = 'SilentlyContinue'
+$env:GIT_TERMINAL_PROMPT = '0'   # que git jamas se cuelgue pidiendo credenciales
 
 # ---------------------------------------------------------------- configuracion
 $Repos = @(
@@ -64,13 +65,13 @@ foreach ($repo in $Repos) {
         continue
     }
 
-    if (& git -C $repo status --porcelain) {
+    if (& git -C $repo status --porcelain 2>$null) {
         $fecha = Get-Date -Format 'yyyy-MM-dd HH:mm'
-        & git -C $repo add -A
-        & git -C $repo commit -m "chore(auto): sincronizacion automatica $fecha" --quiet
+        $null = & git -C $repo add -A 2>&1
+        $null = & git -C $repo commit -m "chore(auto): sincronizacion automatica $fecha" --quiet 2>&1
     }
 
-    & git -C $repo push --quiet
+    $null = & git -C $repo push --quiet 2>&1
     if ($LASTEXITCODE -ne 0) {
         $avisos.Add("AUTO-SYNC: el push a $repo fallo. Los cambios estan commiteados en local pero NO en el remoto.")
         continue
