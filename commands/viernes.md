@@ -19,8 +19,31 @@ rápido y sea fácil de navegar. **Prohibido usarlo como excusa para recortar, r
 - **Todas las hojas quedan enlazadas entre sí** (hub↔sub-páginas) y `index.md` actualizado. Ese tejido de
   enlaces + hojas atómicas es lo que hace que **se encuentre todo rápido y no cueste leer** — ese es el propósito.
 - Regla mental: *"¿supera 100 líneas? → lo divido y enlazo"*, **no** *"entonces escribo menos"*.
-- **`log.md` y otras listas vivas:** el archivo activo se mantiene bajo 100 líneas, pero el histórico **completo
-  se conserva** — la parte antigua se mueve a `{archivo}-YYYY-MM-DD.md` y el activo queda con lo reciente + link.
+
+### Cómo partir (páginas wiki)
+
+1. Antes de escribir, estima el tamaño final (contenido existente + nuevo).
+2. Si supera 100 líneas: extrae secciones completas a sub-páginas `{página-principal}-{subtema}.md`
+   (ej: `venta-inventario-auth.md`), deja en el hub un resumen de 1-2 líneas + link a cada sub-página.
+3. Si una **sub-página** también crece más de 100, se vuelve a partir en sub-sub-páginas enlazadas. Sin tope de
+   cantidad de hojas.
+4. Actualiza siempre `index.md` cuando crees o elimines páginas, y los enlaces cruzados hub↔sub-página.
+5. **Ninguna hoja individual debe superar 100 líneas** — pero el TEMA completo puede ocupar tantas hojas como necesite.
+
+### Atomicidad del log
+
+`log.md` se mantiene bajo 100 líneas (es el índice cronológico de lectura rápida), pero el histórico **completo
+se conserva**, nunca se borra:
+
+- Antes de añadir una entrada, lee `log.md` y estima el tamaño.
+- Si la entrada nueva lo pasaría de 100: mueve las entradas antiguas a `log-YYYY-MM-DD.md` (histórico completo),
+  y deja `log.md` con las recientes + la referencia a los archivos de histórico.
+- El encabezado de `log.md` siempre lista los archivos de histórico disponibles.
+
+### Atomicidad de otros archivos vivos (preguntas-abiertas, documentacion, etc.)
+
+Mismo principio: si un archivo de lista viva supera 100 líneas, **no se recorta** — se archiva la parte antigua
+en `{archivo}-archivo-YYYY-MM-DD.md` y el archivo activo queda con lo vigente + link al histórico.
 
 ---
 
