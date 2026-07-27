@@ -29,7 +29,8 @@ $EstadoDir = Join-Path $env:USERPROFILE '.claude\session-env'
 if (-not (Test-Path $EstadoDir)) { New-Item -ItemType Directory -Path $EstadoDir -Force | Out-Null }
 
 # ---------------------------------------------------------------- leer stdin
-$raw  = [Console]::In.ReadToEnd()
+$raw = [Console]::In.ReadToEnd()
+if (-not $raw) { $raw = ($input | Out-String) }   # fallback si llega por pipeline
 $hook = $null
 if ($raw) { $hook = $raw | ConvertFrom-Json }
 $transcript = $null
