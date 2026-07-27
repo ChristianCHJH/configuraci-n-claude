@@ -99,8 +99,13 @@ if ($transcript -and (Test-Path $transcript)) {
     }
 
     if ($usados -gt 0) {
+        # OJO: el campo "model" del transcript viene SIN el sufijo de ventana
+        # ("claude-opus-5", no "claude-opus-5[1m]"), asi que no sirve para esto.
+        # El marcador [1m] si aparece en el bloque de entorno del system prompt.
         $ventana = 200000
-        if ($modelo -match '\[1m\]') { $ventana = 1000000 }
+        if (Select-String -Path $transcript -Pattern '[1m]' -SimpleMatch -Quiet) { $ventana = 1000000 }
+        # red de seguridad: si ya pasamos los 190k, la ventana no era de 200k
+        if ($usados -gt 190000) { $ventana = 1000000 }
         $pct = [math]::Round(($usados / $ventana) * 100)
 
         if ($pct -ge $UmbralAviso) {
