@@ -50,14 +50,16 @@ foreach ($repo in $Repos) {
         if (((Get-Date) - $ultimo).TotalMinutes -lt $MinutosDebounce) { continue }
     }
 
-    $sucio      = & git -C $repo status --porcelain
-    $sinPushear = & git -C $repo log '@{u}..HEAD' --oneline
+    # OJO: todo git va silenciado. Cualquier texto suelto en stdout corrompe
+    # el JSON que el hook le devuelve a Claude Code.
+    $sucio      = & git -C $repo status --porcelain 2>$null
+    $sinPushear = & git -C $repo log '@{u}..HEAD' --oneline 2>$null
     if (-not $sucio -and -not $sinPushear) { continue }
 
     # traer lo remoto primero (autostash protege el working tree sucio)
-    & git -C $repo pull --rebase --autostash --quiet
+    $null = & git -C $repo pull --rebase --autostash --quiet 2>&1
     if ($LASTEXITCODE -ne 0) {
-        & git -C $repo rebase --abort
+        $null = & git -C $repo rebase --abort 2>&1
         $avisos.Add("AUTO-SYNC BLOQUEADO en ${repo}: el pull --rebase entro en conflicto y se aborto. Avisale a Christian que hay que resolverlo a mano; no se hizo commit ni push.")
         continue
     }
