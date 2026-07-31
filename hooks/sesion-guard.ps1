@@ -57,14 +57,8 @@ foreach ($repo in $Repos) {
     $sinPushear = & git -C $repo log '@{u}..HEAD' --oneline 2>$null
     if (-not $sucio -and -not $sinPushear) { continue }
 
-    # traer lo remoto primero (autostash protege el working tree sucio)
-    $null = & git -C $repo pull --rebase --autostash --quiet 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        $null = & git -C $repo rebase --abort 2>&1
-        $avisos.Add("AUTO-SYNC BLOQUEADO en ${repo}: el pull --rebase entro en conflicto y se aborto. Avisale a Christian que hay que resolverlo a mano; no se hizo commit ni push.")
-        continue
-    }
-
+    # NO se hace pull aqui a proposito: el pull vive en /despertar y /despertar-unimar
+    # (una vez por sesion). Este hook solo commitea y empuja lo local.
     if (& git -C $repo status --porcelain 2>$null) {
         $fecha = Get-Date -Format 'yyyy-MM-dd HH:mm'
         $null = & git -C $repo add -A 2>&1
