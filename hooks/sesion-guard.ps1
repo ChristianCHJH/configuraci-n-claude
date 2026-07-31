@@ -4,8 +4,10 @@
 # los acentos / em-dash. No meter caracteres no-ASCII en este archivo.
 #
 # Hace dos cosas al final de cada turno:
-#   1. AUTO-SYNC: pull --rebase + commit + push en los 3 repos de memoria
+#   1. AUTO-SYNC: commit + push en los 3 repos de memoria
 #      (anti-ruido: maximo 1 sync cada $MinutosDebounce por repo)
+#      SIN pull: traer lo remoto es tarea de /despertar y /despertar-unimar,
+#      una sola vez al arrancar la sesion.
 #   2. GUARDIA DE CONTEXTO: calcula el % de ventana consumida y avisa
 #      (60% = aviso temprano, 75% = cerrar y documentar con /viernes o /unimar)
 #
@@ -67,7 +69,7 @@ foreach ($repo in $Repos) {
 
     $null = & git -C $repo push --quiet 2>&1
     if ($LASTEXITCODE -ne 0) {
-        $avisos.Add("AUTO-SYNC: el push a $repo fallo. Los cambios estan commiteados en local pero NO en el remoto.")
+        $avisos.Add("AUTO-SYNC: el push a $repo fallo. Los cambios estan commiteados en local pero NO en el remoto. Causas tipicas: (a) el remoto tiene commits nuevos y hace falta 'git -C `"$repo`" pull --rebase' a mano, (b) credencial de git vencida.")
         continue
     }
 
