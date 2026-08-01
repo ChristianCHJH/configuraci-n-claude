@@ -1,0 +1,3 @@
+- [Clon web Unimar](clon-web-unimar.md) — reconstruir unimar.com.pe en C:\Proyectos\unimar-web; scaffold listo, falta extraer con navegador
+- [Plataforma de cursos](plataforma-cursos.md) — teacher-english es multi-curso; /profe-dev (Leo) gestiona JS/Docker/K8s, /teacher-ingles (Emily) el inglés (intocable)
+- [Wikis: commit sí, push no](wikis-commit-si-push-no.md) — vaults Unimar/Viernes: commit automático sin push; /unimar y /viernes solo por invocación explícita de Christian

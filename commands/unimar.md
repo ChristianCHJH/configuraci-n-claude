@@ -2,6 +2,22 @@ Eres el sistema de inteligencia de Unimar (depósito de contenedores) de Christi
 
 El usuario escribió: `/unimar $ARGUMENTS`
 
+> **REGLA DE ACTIVACIÓN:** esta skill se ejecuta **únicamente cuando Christian la invoca explícitamente** escribiendo `/unimar`. Ninguna otra skill (incluidos `/despertar` y `/despertar-unimar`) ni el modelo por iniciativa propia deben invocarla ni ejecutar sus pasos.
+
+---
+
+## PASO 0 OBLIGATORIO — Resolver la ruta del vault
+
+El vault **Unimar_obsidian** vive en **una de estas dos rutas**, según la máquina en la que estés:
+
+```text
+C:\Users\Christian\Unimar\Unimar_obsidian
+C:\Christian\Unimar_obsidian
+```
+
+Comprueba cuál existe y usa esa. En adelante, `{VAULT}` = la ruta que resolviste.
+**Nunca asumas una sola ruta ni reportes "no existe el vault" sin haber probado ambas.**
+
 ---
 
 ## REGLA OBLIGATORIA — Atomicidad y hojas de máx. 100 líneas
@@ -64,7 +80,7 @@ Analiza la conversación actual y extrae todo lo que vale la pena persistir en e
 **No documentes:** opiniones pasajeras, ejemplos hipotéticos, conversación de coordinación sin contenido sustancial.
 
 **Pasos:**
-1. Lee `C:\Christian\Unimar_obsidian\CLAUDE.md` y `C:\Christian\Unimar_obsidian\wiki\index.md`
+1. Lee `{VAULT}\CLAUDE.md` y `{VAULT}\wiki\index.md`
 2. Por cada dato que vale la pena: crea o actualiza la página correspondiente
    - Negocio → `wiki/negocio/`
    - Proyectos de software → `wiki/proyectos/`
@@ -86,7 +102,7 @@ Analiza la conversación actual y extrae todo lo que vale la pena persistir en e
 Christian pegó un documento, conversación, tarifa, contrato o fuente cruda.
 
 **Pasos:**
-1. Lee `C:\Christian\Unimar_obsidian\CLAUDE.md` y `C:\Christian\Unimar_obsidian\wiki\index.md`
+1. Lee `{VAULT}\CLAUDE.md` y `{VAULT}\wiki\index.md`
 2. Lee y comprende el documento completo
 3. **Antes de documentar**, si hay términos o cifras que no entiendes: pregunta a Christian
 4. Guarda el original en `raw/` si es extenso (inmutable)
@@ -108,7 +124,7 @@ Christian pegó un documento, conversación, tarifa, contrato o fuente cruda.
 **Pasos:**
 1. Explora el repo en `C:\Christian\Unimar\[nombre-repo]\`
 2. Genera el HTML completo
-3. **Guarda en:** `C:\Christian\Unimar_obsidian\docs\[nombre-repo]\YYYY-MM-DD-nombre-en-español.html`
+3. **Guarda en:** `{VAULT}\docs\[nombre-repo]\YYYY-MM-DD-nombre-en-español.html`
 4. Actualiza `wiki/documentacion.md`
 5. Si el repo no tiene página en `wiki/proyectos/`, créala (respetando límite 100 líneas)
 6. Añade entrada en `log.md` (verificando límite)
@@ -120,7 +136,7 @@ Christian pegó un documento, conversación, tarifa, contrato o fuente cruda.
 
 **Pasos:**
 1. Lee el HTML. Extrae: propósito, secciones, temas, stack, audiencia.
-2. Copia a `C:\Christian\Unimar_obsidian\docs\[nombre-repo]\[nombre-archivo].html`
+2. Copia a `{VAULT}\docs\[nombre-repo]\[nombre-archivo].html`
 3. Actualiza `wiki/documentacion.md`, `log.md`, `index.md`
 
 ---
@@ -132,7 +148,7 @@ Christian graba reuniones y sube lo conversado a Notion. Este modo extrae **solo
 **Sintaxis:** `/unimar acuerdo [url-de-notion | términos de búsqueda]`
 
 **Pasos:**
-1. Lee `C:\Christian\Unimar_obsidian\wiki\index.md` para conocer los proyectos existentes
+1. Lee `{VAULT}\wiki\index.md` para conocer los proyectos existentes
 2. Trae la fuente desde Notion:
    - Si hay URL → usa la herramienta `notion-fetch` con esa URL
    - Si hay términos → usa `notion-search`, muestra resultados y confirma cuál es antes de continuar
@@ -151,7 +167,7 @@ Christian graba reuniones y sube lo conversado a Notion. Este modo extrae **solo
 
 ## Modo 5 — Si `$ARGUMENTS` tiene texto (no empieza con `ingestar`, `doc` ni `acuerdo`) → Consulta
 
-1. Lee `C:\Christian\Unimar_obsidian\wiki\index.md`
+1. Lee `{VAULT}\wiki\index.md`
 2. Revisa también `wiki/documentacion.md` — puede haber un HTML que cubra la respuesta
 3. Identifica y lee las páginas relevantes (pueden ser sub-páginas como `web-design-decisiones.md`)
 4. Responde directamente con citas del wiki
@@ -162,16 +178,21 @@ Christian graba reuniones y sube lo conversado a Notion. Este modo extrae **solo
 
 ## Persistencia (git) — aplica a todos los modos de escritura
 
-Después de crear o actualizar páginas (Modos 1, 2, 3 y 4), **persiste el cambio en git** para que la memoria no viva solo en disco local:
+Después de crear o actualizar páginas (Modos 1, 2, 3 y 4), **persiste el cambio con `git commit` — SIN `push`**.
+Regla actualizada por Christian (2026-07-31): **commit sí, push no**. Esta regla **reemplaza** la autorización
+anterior del 2026-07-20 que obligaba a pushear.
 
 ```bash
-cd C:\Christian\Unimar_obsidian
+cd {VAULT}
 git add -A
 git commit -m "<tipo>(wiki): <descripción corta>"
 ```
 
 - `<tipo>`: `feat`, `chore`, `docs` o `acuerdo` según corresponda
-- No hagas `push` salvo que Christian lo pida
+- **PROHIBIDO `git push`.** Nunca lo ejecutes ni lo dejes como paso automático — el push lo hace Christian
+  manualmente cuando él decida
+- Esta regla aplica **solo al repo Unimar_obsidian**. Otros repos (p. ej. `unimar_tms`) mantienen sus
+  propias reglas — en `unimar_tms` los commits siguen **prohibidos**
 - En modo Consulta (Modo 5) NO se commitea (no hay cambios)
 
 ---
