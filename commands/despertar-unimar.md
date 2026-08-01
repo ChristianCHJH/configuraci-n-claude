@@ -14,6 +14,20 @@ Comprueba cuál existe y usa esa. En adelante, `{VAULT}` = la ruta que resolvist
 
 Ejecuta los siguientes pasos antes de responder cualquier cosa:
 
+## Paso 0 — Sincronizar con el remoto (OBLIGATORIO, antes de leer nada)
+
+El wiki se edita desde varias máquinas. **Nunca leas el wiki sin traer primero lo remoto** — si no, trabajas sobre una foto vieja y generas conflictos.
+
+Ejecuta:
+
+```
+git -C "C:\Christian\Unimar_obsidian" pull --rebase --autostash
+```
+
+- Si el pull **trae commits nuevos**: dilo explícitamente en tu presentación (qué llegó, de cuándo).
+- Si el pull entra en **conflicto**: detente, no sigas leyendo el wiki, y avísale a Christian para resolverlo juntos.
+- Si ya estaba al día: sigue sin comentar nada.
+
 ## Paso 1 — Cargar el esquema
 
 Lee `{VAULT}\CLAUDE.md` para recordar quién eres, cómo funciona este wiki y cuáles son tus responsabilidades con Unimar.
@@ -96,6 +110,24 @@ Mientras dure esta sesión, opera como el cerebro de Unimar:
 
 ## Reglas duras (NO negociables)
 
-1. **NUNCA invoques `/unimar` ni `/viernes` por iniciativa propia.** Esas skills solo las activa Christian escribiéndolas él mismo. `/despertar-unimar` solo LEE el vault para cargar contexto.
+1. **NUNCA invoques `/unimar` ni `/viernes` por iniciativa propia.** Esas skills solo las activa Christian escribiéndolas él mismo. `/despertar-unimar` solo LEE el vault para cargar contexto. (Única excepción: el Protocolo de cierre por saturación de contexto, más abajo.)
 2. **NUNCA escribas en el wiki después de responder.** Responder una pregunta ≠ documentar. Nada de "aprovecho y actualizo la página" — solo se documenta cuando Christian invoca `/unimar`. (Única excepción: el Modo Entrevista de Arranque con wiki vacío, donde documentar ES el objetivo explícito de la sesión.)
 3. **NUNCA hagas `git push`.** Y `/despertar-unimar` por sí mismo tampoco commitea: si no escribió nada (regla 2), no hay nada que persistir. El commit del vault ocurre solo dentro de `/unimar` (commit sí, push no); el push lo hace Christian a mano.
+
+---
+
+## Protocolo de cierre por saturación de contexto
+
+El hook `sesion-guard` mide en cada turno cuánto contexto llevas consumido y te lo inyecta como aviso. Actúa así:
+
+**Al 60% — aviso temprano.** Dile a Christian **una sola vez** (sin repetirlo cada turno) que la conversación va por la mitad y conviene ir cerrando el tema actual en vez de abrir uno nuevo grande.
+
+**Al 75% — punto de corte.** Ya no es productivo seguir: más allá de esto entra el auto-compact y se pierde detalle fino de la sesión. Entonces:
+
+1. Termina o deja en un estado limpio lo que estés haciendo — no arranques nada nuevo.
+2. Ejecuta `/unimar` para documentar **todo** lo trabajado en esta sesión (páginas del wiki, `log.md`, `index.md`, preguntas abiertas).
+3. Verifica que el auto-sync haya subido los cambios (o hazlo a mano si el hook reportó fallo).
+4. Dile a Christian, explícitamente: **"Ya documenté todo. Abre un chat nuevo y ejecuta `/despertar-unimar` para continuar."**
+
+No sigas trabajando después del punto de corte aunque Christian pida más — primero documenta, luego se lo dices.
+>>>>>>> 2f12e5b685957885d904d2894abfc0f29bd5884e

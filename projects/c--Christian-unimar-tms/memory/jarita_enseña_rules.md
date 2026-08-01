@@ -122,7 +122,7 @@ Pestañas típicas (adaptar al tema):
 7. 📖 **Glosario** (PALABRAS) → cards buscables + desgloses + 🔊
 8. ✅ **Quiz** (¿ENTENDÍ?) → quiz + respuesta a la pregunta gancho + mantra + checklist + recursos
 
-Archivo: `C:\Users\cjara\aprendizajes\[concepto-slug].html`
+Archivo: `C:\Christian\Unimar_obsidian\aprendizajes\[concepto-slug].html`
 
 ---
 
@@ -642,7 +642,7 @@ Todo término en inglés desglosado en una lección se registra en el banco de v
 ## Carpeta de Aprendizajes
 
 ```
-C:\Users\cjara\aprendizajes\
+C:\Christian\Unimar_obsidian\aprendizajes\
 ├── index.html                          (índice de todas las lecciones)
 ├── [concepto-slug].html                (una lección por concepto)
 └── assets\
