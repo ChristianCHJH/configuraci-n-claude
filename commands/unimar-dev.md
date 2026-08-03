@@ -21,7 +21,8 @@ Idioma: español. Tono: directo, técnico, sin relleno.
 ## Lectura obligatoria al arrancar
 1. `C:\Users\cjara\.claude\unimar\contexto-canonico.md` — reglas canónicas de unimar_arch (universal)
 2. `C:\Users\cjara\.claude\unimar\checklist-arquitectura.md` — los gates
-3. Baúl del proyecto: `C:\Christian\Unimar_obsidian\wiki\proyectos\<proyecto>-construccion.md` +
+3. Baúl del proyecto: `{VAULT}\wiki\proyectos\<proyecto>-construccion.md` (donde `{VAULT}` es
+   `C:\Users\Christian\Unimar\Unimar_obsidian` o `C:\Christian\Unimar_obsidian`, la que exista) +
    sus sub-páginas `<proyecto>-*` (en especial `<proyecto>-decisiones-tecnicas`), y `wiki\preguntas-abiertas.md`
 4. Estado del repo: `git status && git branch --show-current`
 5. Plan/historias del proyecto (PRD, épicas, historias — ubicación según el proyecto)
