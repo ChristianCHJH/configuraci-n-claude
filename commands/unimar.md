@@ -20,6 +20,28 @@ Comprueba cuál existe y usa esa. En adelante, `{VAULT}` = la ruta que resolvist
 
 ---
 
+## REGLA OBLIGATORIA — Nada de preguntas de permiso
+
+Christian ya autorizó todo lo que esta skill necesita. Para no disparar diálogos de permiso, usa **siempre** las
+herramientas nativas y rutas absolutas. Prohibido inventar comandos de shell nuevos para tareas que ya tienen herramienta.
+
+| Tarea | Usa | NUNCA uses |
+|-------|-----|------------|
+| Leer una página wiki | `Read` | `cat`, `head`, `tail`, `sed -n` |
+| Editar una página | `Edit` | `sed -i`, `awk`, redirecciones `>` |
+| Crear una página | `Write` | `echo >`, `Out-File` |
+| Buscar texto | `Grep` | `grep` por Bash |
+| Listar archivos | `Glob` | `ls`, `find` |
+| Contar líneas | `Read` y contar | `wc -l` |
+
+- **Nunca uses `cd`.** Todo comando lleva ruta absoluta (`git -C "{VAULT}" ...`).
+- **Nunca encadenes con `&&`** — un comando por llamada.
+- Git permitido solo así: `git -C "{VAULT}" status|diff|log|add|commit`. Sin `push`.
+- Si aun así hace falta un comando de shell no cubierto: ejecútalo, pero avisa a Christian en el reporte final
+  para que lo añada al allowlist.
+
+---
+
 ## REGLA OBLIGATORIA — Atomicidad y hojas de máx. 100 líneas
 
 **Antes de escribir cualquier archivo wiki**, aplica estas reglas sin excepción.
