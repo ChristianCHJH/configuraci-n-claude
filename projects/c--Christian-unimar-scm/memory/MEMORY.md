@@ -1,1 +1,2 @@
 - [Push 403 del repo .claude](claude-repo-push-403-identidad.md) — el auto-sync falla por identidad GitHub cruzada, no por divergencia; `pull --rebase` no sirve.
+- [Stamp de sesion-guard solo en éxito](sesion-guard-stamp-solo-en-exito.md) — por eso el aviso de auto-sync se repite cada turno en vez de cada 10 min.
