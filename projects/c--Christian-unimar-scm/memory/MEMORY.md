@@ -1,0 +1,1 @@
+- [Push 403 del repo .claude](claude-repo-push-403-identidad.md) — el auto-sync falla por identidad GitHub cruzada, no por divergencia; `pull --rebase` no sirve.
