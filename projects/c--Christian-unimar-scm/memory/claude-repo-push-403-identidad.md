@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 5452365a-0149-4f2c-b313-20ba2cd9a497
-  modified: 2026-08-05T14:49:51.216Z
+  modified: 2026-08-05T15:29:54.364Z
 ---
 
 El hook de auto-sync que empuja `C:\Users\cjara\.claude` a
@@ -24,17 +24,26 @@ Manager entrega la credencial de **unimar-christian-jara**, que no es dueña ni
 colaboradora del repo de **ChristianCHJH**. `git pull --rebase` nunca lo arregla
 — el repo queda `ahead N`, jamás `behind`.
 
-**How to apply:** No perder tiempo con `pull --rebase` cuando aparezca este
-aviso. Verificar con `git -C "C:\Users\cjara\.claude" push origin main` y leer el
-error real. El 2026-08-05 se resolvió solo tras reautenticar en el popup de Git
-Credential Manager (el push llegó en `f9ea6dc`), así que es **intermitente**: la
-credencial cacheada se cruza entre las dos cuentas. Si reaparece de forma
-persistente: (a) añadir `unimar-christian-jara` como colaborador en GitHub,
-(b) fijar identidad en el remoto con
-`git remote set-url origin https://ChristianCHJH@github.com/ChristianCHJH/configuraci-n-claude.git`
-y borrar `git:https://github.com` del Administrador de Credenciales de Windows,
-o (c) mover el repo a la cuenta unimar.
+Christian tiene **4 cuentas GitHub** en el Credential Manager de esta PC:
+`ChristianCHJH` (la dueña de los repos personales y de memoria),
+`christian-jara-unimar`, `unimar-christian-jara` y `290055476`. El diálogo
+"Select an account" salía en cada push porque GCM no sabía cuál usar.
 
-Christian usa dos identidades GitHub en esta PC — ojo con lo mismo en otros
-repos personales. Relacionado: [[identidades-github-chris]],
-[[sesion-guard-stamp-solo-en-exito]]
+**ARREGLADO el 2026-08-05** con dos cambios locales al repo `.claude`:
+
+```
+git remote set-url origin https://ChristianCHJH@github.com/ChristianCHJH/configuraci-n-claude.git
+git config credential.useHttpPath true
+```
+
+El `ChristianCHJH@` en la URL le dice a GCM qué cuenta elegir; `useHttpPath`
+guarda la credencial por ruta de repo en vez de una sola global para
+`github.com`, que era lo que hacía que las 4 cuentas se pisaran.
+
+**How to apply:** Si vuelve el diálogo de cuenta o un 403 en OTRO repo de
+Christian, aplicar el mismo par de comandos ahí — no perder tiempo con
+`pull --rebase`, que es lo que sugiere el mensaje del hook y nunca es la causa.
+Los otros dos repos del auto-sync (`Unimar_obsidian`, `viernes-obsidean`, ambos
+de ChristianCHJH) seguían sin el arreglo al 2026-08-05.
+
+Relacionado: [[sesion-guard-stamp-solo-en-exito]]
