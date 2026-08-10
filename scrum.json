@@ -1,0 +1,350 @@
+{
+  "slug": "scrum",
+  "term": "Scrum",
+  "title": "Scrum: entregar de a poco para no equivocarte a lo grande",
+  "hook": "Si nadie sabe con certeza cómo será el producto final, ¿por qué seguimos planificando meses enteros por adelantado como si lo supiéramos?",
+  "summary": "Marco de trabajo ágil para construir productos complejos en ciclos cortos y fijos (sprints), inspeccionando y adaptando el rumbo al final de cada uno. No es una metodología rígida ni un tablero de tareas: es un ritmo de aprendizaje.",
+  "mantra": "Inspeccionar y adaptar: entrega algo terminado cada sprint, mira qué aprendiste y corrige el rumbo antes de gastar más.",
+  "categories": ["metodologias-agiles", "gestion-de-proyectos", "scrum", "trabajo-en-equipo"],
+  "generated_at": "2026-08-10T12:00:00.000Z",
+  "version": 1,
+  "blocks": [
+    {
+      "type": "panorama",
+      "simple": "Scrum es una forma de trabajar en equipo cuando no sabes de antemano todos los detalles de lo que vas a construir. En lugar de planear todo el proyecto de un tirón, lo partes en ciclos cortos de una a cuatro semanas llamados sprints. En cada sprint el equipo entrega algo que de verdad funciona, lo muestra, escucha qué opinan y decide qué hacer después. Así, si te equivocaste, lo descubres en semanas y no en meses.",
+      "tecnico": "Scrum es un marco (framework) ligero para desarrollo de productos complejos, basado en control empírico de procesos: sus tres pilares son transparencia, inspección y adaptación. Define tres responsabilidades (Product Owner, Scrum Master, Developers), tres artefactos con sus compromisos (Product Backlog → Product Goal, Sprint Backlog → Sprint Goal, Increment → Definition of Done) y cinco eventos contenidos en un contenedor de duración fija, el Sprint. No prescribe prácticas de ingeniería: define el ritmo dentro del cual el equipo las elige.",
+      "analogia": "Es como cocinar un plato nuevo probando sobre la marcha: en vez de seguir a ciegas una receta larguísima hasta el final, pruebas cada tanto, ajustas la sal y corriges el fuego. Cada prueba es un sprint; el bocado que pruebas es el incremento."
+    },
+    {
+      "type": "partes",
+      "items": [
+        { "name": "Product Owner", "desc": "La persona responsable de maximizar el valor del producto. Ordena y prioriza el Product Backlog, decide qué se construye primero y por qué. Una sola persona, no un comité: si prioriza el comité, nadie prioriza.", "term_ref": "product owner" },
+        { "name": "Scrum Master", "desc": "Facilita el proceso y remueve impedimentos. No es el jefe del equipo ni reparte tareas: sirve al equipo y ayuda a que Scrum se entienda y se cumpla. Un buen Scrum Master se nota cuando el equipo fluye sin él.", "term_ref": "scrum master" },
+        { "name": "Developers", "desc": "Quienes construyen el incremento: programan, prueban, diseñan. Se autoorganizan para decidir cómo hacer el trabajo del sprint. Es un equipo, no un grupo de individuos que reportan por separado.", "term_ref": "developers" },
+        { "name": "Product Backlog", "desc": "La lista viva y ordenada de todo lo que podría necesitar el producto. Nunca está 'terminada': se refina y reordena continuamente. Lo de arriba está más detallado; lo de abajo, en trazo grueso.", "term_ref": "product backlog" },
+        { "name": "Sprint Backlog", "desc": "Lo que el equipo se compromete a hacer en el sprint actual: el Sprint Goal más los elementos elegidos y el plan para lograrlos. Es del equipo, y solo el equipo lo cambia.", "term_ref": "sprint backlog" },
+        { "name": "Increment", "desc": "El resultado utilizable del sprint: la suma de todo lo terminado que cumple la Definition of Done. Cada incremento se apila sobre los anteriores y debe poder entregarse aunque el sprint no haya cumplido todo lo planeado.", "term_ref": "increment" }
+      ]
+    },
+    {
+      "type": "flujo",
+      "intro": "El ciclo de un sprint, de principio a fin.",
+      "steps": [
+        { "n": 1, "title": "Sprint Planning", "desc": "El equipo elige del Product Backlog qué construir y acuerda un Sprint Goal: una frase que explica para qué sirve este sprint. Eso arma el Sprint Backlog." },
+        { "n": 2, "title": "El sprint corre", "desc": "Durante una a cuatro semanas los Developers construyen el incremento. El alcance del sprint no se toca; si aparece algo nuevo, va al Product Backlog para más adelante." },
+        { "n": 3, "title": "Daily Scrum", "desc": "Cada día, 15 minutos, el equipo sincroniza: revisa el avance hacia el Sprint Goal y replanea el día. No es un reporte al jefe, es una reunión del equipo para el equipo." },
+        { "n": 4, "title": "Sprint Review", "desc": "Al terminar, el equipo muestra el incremento a los interesados y recoge feedback real. El Product Backlog se ajusta con lo aprendido: aquí se inspecciona el producto." },
+        { "n": 5, "title": "Sprint Retrospective", "desc": "El equipo mira cómo trabajó —no qué construyó— y elige una o dos mejoras concretas para el próximo sprint. Aquí se inspecciona el proceso. Y vuelve a empezar." }
+      ]
+    },
+    {
+      "type": "maquina",
+      "intro": "Cómo se mueve un elemento de trabajo a través de los artefactos durante un sprint.",
+      "boxes": [
+        { "id": "product_backlog", "label": "Product Backlog" },
+        { "id": "sprint_backlog", "label": "Sprint Backlog" },
+        { "id": "en_progreso", "label": "En progreso" },
+        { "id": "hecho", "label": "Hecho (cumple la DoD)" }
+      ],
+      "steps": [
+        {
+          "desc": "Todo lo posible vive ordenado en el Product Backlog. Lo más valioso, arriba.",
+          "boxes": { "product_backlog": ["Login con Google", "Recuperar contraseña", "Exportar a PDF"], "sprint_backlog": [], "en_progreso": [], "hecho": [] }
+        },
+        {
+          "desc": "En el Sprint Planning el equipo baja al Sprint Backlog lo que cabe en el sprint, guiado por el Sprint Goal.",
+          "boxes": { "product_backlog": ["Exportar a PDF"], "sprint_backlog": ["Login con Google", "Recuperar contraseña"], "en_progreso": [], "hecho": [] }
+        },
+        {
+          "desc": "Los Developers toman un elemento y empiezan a construirlo. El alcance del sprint ya no cambia.",
+          "boxes": { "product_backlog": ["Exportar a PDF"], "sprint_backlog": ["Recuperar contraseña"], "en_progreso": ["Login con Google"], "hecho": [] }
+        },
+        {
+          "desc": "El elemento cumple la Definition of Done y pasa a Hecho: ya es parte del incremento entregable.",
+          "boxes": { "product_backlog": ["Exportar a PDF"], "sprint_backlog": [], "en_progreso": ["Recuperar contraseña"], "hecho": ["Login con Google"] }
+        }
+      ]
+    },
+    {
+      "type": "bien_mal",
+      "cases": [
+        {
+          "mal": "Sprint Goal: 'Terminar los tickets SCRUM-101, 102, 103 y 104.'",
+          "bien": "Sprint Goal: 'Que un usuario nuevo pueda registrarse e iniciar sesión sin ayuda.'",
+          "porque": "El objetivo del sprint no es una lista de tareas, es un resultado con sentido. Un buen Sprint Goal le da coherencia al sprint y permite negociar el alcance: si un ticket se complica, el equipo puede soltarlo y aún cumplir la meta."
+        },
+        {
+          "mal": "Meter al sprint todo lo que 'quizás alcancemos', para no dejar a nadie ocioso.",
+          "bien": "Comprometer solo lo que el equipo cree que puede terminar y dejar el resto en el Product Backlog.",
+          "porque": "Sobrecargar el sprint no lo hace más productivo: genera trabajo a medias que no cumple la Definition of Done y por tanto no cuenta como incremento. Es mejor terminar poco que empezar mucho."
+        },
+        {
+          "mal": "Planificar mirando solo las horas disponibles del calendario.",
+          "bien": "Planificar mirando la velocidad histórica del equipo y la complejidad real de los elementos.",
+          "porque": "Las horas de calendario no descuentan reuniones, imprevistos ni cambios de contexto. La velocidad medida en sprints anteriores es un dato empírico; las horas teóricas son una ilusión optimista."
+        }
+      ]
+    },
+    {
+      "type": "bien_mal",
+      "cases": [
+        {
+          "mal": "En el Daily Scrum cada quien le reporta al Scrum Master qué hizo ayer.",
+          "bien": "En el Daily Scrum el equipo conversa entre sí cómo va el Sprint Goal y qué se replanea hoy.",
+          "porque": "El Daily es del equipo, no un parte de guerra hacia arriba. Cuando se vuelve un reporte al jefe, la gente habla para quedar bien y se pierde lo único que importa: coordinarse para cumplir la meta."
+        },
+        {
+          "mal": "El Daily se extiende a 45 minutos porque ahí mismo se resuelven los problemas técnicos.",
+          "bien": "El Daily dura 15 minutos; los temas que necesitan profundidad se anotan y se tratan después, solo con quienes hace falta.",
+          "porque": "El Daily es un punto de sincronización, no una mesa de trabajo. Meter la resolución dentro obliga a todo el equipo a escuchar una discusión de dos personas y erosiona el hábito de la reunión corta."
+        },
+        {
+          "mal": "Si un día no hay 'nada importante', se salta el Daily.",
+          "bien": "El Daily ocurre todos los días laborables del sprint, a la misma hora y lugar.",
+          "porque": "El valor del Daily está en la cadencia: es un latido, no una reunión bajo demanda. Saltarlo 'cuando no pasa nada' hace que se pierda justo los días en que sí pasaba algo y nadie lo dijo a tiempo."
+        }
+      ]
+    },
+    {
+      "type": "bien_mal",
+      "cases": [
+        {
+          "mal": "El Product Backlog es una bandeja de entrada infinita donde todo entra y nada se ordena.",
+          "bien": "El Product Backlog está ordenado por valor: lo de arriba, listo y detallado; lo de abajo, en trazo grueso.",
+          "porque": "Un backlog sin orden obliga a decidir prioridades cada vez que hay que elegir, en caliente y bajo presión. Refinarlo y ordenarlo de forma continua convierte el planning en 'tomar de arriba' en vez de 'discutir todo de nuevo'."
+        },
+        {
+          "mal": "Cada elemento del backlog dice solo 'Arreglar el login'.",
+          "bien": "'Como usuario registrado quiero recuperar mi contraseña por correo para volver a entrar si la olvido', con criterios de aceptación.",
+          "porque": "Un título suelto significa cosas distintas para cada persona y garantiza retrabajo. Una historia de usuario con criterios de aceptación deja claro qué problema resuelve y cómo se sabrá que está terminado."
+        },
+        {
+          "mal": "El refinamiento del backlog se hace una sola vez, al arrancar el proyecto.",
+          "bien": "El refinamiento es una actividad continua: el equipo dedica un rato de cada sprint a aclarar y estimar lo que viene.",
+          "porque": "El producto y el entorno cambian; un backlog refinado 'de una vez' envejece en semanas. Refinar poco y seguido mantiene siempre listo el siguiente tramo de trabajo sin grandes reuniones maratónicas."
+        }
+      ]
+    },
+    {
+      "type": "bien_mal",
+      "cases": [
+        {
+          "mal": "El Scrum Master asigna las tareas a cada Developer y controla que las cumplan.",
+          "bien": "El Scrum Master facilita y quita impedimentos; los Developers se autoorganizan para tomar el trabajo.",
+          "porque": "Scrum apuesta por equipos autoorganizados porque quien hace el trabajo decide mejor cómo hacerlo. Un Scrum Master que reparte tareas se convierte en cuello de botella y mata la responsabilidad compartida."
+        },
+        {
+          "mal": "El Product Owner es un buzón: recibe pedidos de todos y los mete todos al backlog sin decidir.",
+          "bien": "El Product Owner decide y ordena: dice qué sí, qué no y qué primero, y sabe explicar por qué.",
+          "porque": "Si el PO no prioriza, la prioridad la termina poniendo quien grita más fuerte. La autoridad de una sola persona sobre el orden del backlog es lo que evita el producto-Frankenstein hecho de pedidos sueltos."
+        },
+        {
+          "mal": "El equipo cambia de tamaño y de miembros en cada sprint según quién esté libre.",
+          "bien": "El equipo se mantiene estable sprint a sprint para que su velocidad signifique algo.",
+          "porque": "La velocidad y la confianza son propiedades del equipo, no de los individuos. Rotar gente cada sprint reinicia el aprendizaje conjunto y hace que las estimaciones dejen de ser comparables."
+        }
+      ]
+    },
+    {
+      "type": "bien_mal",
+      "cases": [
+        {
+          "mal": "'Está listo, solo falta probarlo y documentarlo.'",
+          "bien": "'Está Hecho': cumple la Definition of Done, probado y documentado, y es entregable.",
+          "porque": "El 'casi listo' es trabajo invisible que se acumula sprint tras sprint hasta explotar al final. La Definition of Done es un contrato de calidad: si no la cumple, no cuenta, y así el incremento siempre es de verdad utilizable."
+        },
+        {
+          "mal": "La Sprint Review es una presentación de diapositivas sobre lo que se hizo.",
+          "bien": "La Sprint Review muestra el incremento funcionando y abre conversación con los interesados sobre qué sigue.",
+          "porque": "El objetivo de la review es inspeccionar el producto real y adaptar el backlog con feedback, no rendir cuentas. Diapositivas sin producto funcionando esconden justamente lo que hay que inspeccionar."
+        },
+        {
+          "mal": "La Retrospective termina con una lista de 12 quejas y ninguna acción.",
+          "bien": "La Retrospective termina con una o dos mejoras concretas, con responsable, para el próximo sprint.",
+          "porque": "Una retro que solo desahoga no cambia nada y desgasta al equipo. Elegir pocas mejoras accionables y darles seguimiento es lo que convierte la reflexión en un proceso que de verdad mejora."
+        }
+      ]
+    },
+    {
+      "type": "errores",
+      "items": [
+        { "error": "Tratar Scrum como un tablero de tareas (usar los nombres pero saltarse los eventos y los compromisos).", "consecuencia": "Se vive el 'Scrum de nombre': se pierden la inspección y la adaptación, y el equipo termina igual de rígido que antes pero con más reuniones." },
+        { "error": "Cambiar el alcance del sprint a mitad de camino por un pedido urgente.", "consecuencia": "El Sprint Goal pierde sentido, nada se termina bien y el equipo aprende que comprometerse no vale la pena." },
+        { "error": "Estimar en horas exactas en vez de en tamaño relativo.", "consecuencia": "Las estimaciones se toman como promesas contractuales; cuando fallan, se genera desconfianza y presión en lugar de aprendizaje." },
+        { "error": "Que el Product Owner no esté disponible durante el sprint.", "consecuencia": "Los Developers deciden por su cuenta qué significa cada elemento, construyen supuestos equivocados y el retrabajo aparece en la review." },
+        { "error": "Saltarse la Retrospective 'porque no hay tiempo'.", "consecuencia": "Los mismos problemas se repiten sprint tras sprint: sin el espacio para mejorar el proceso, el equipo se estanca." }
+      ]
+    },
+    {
+      "type": "checklist",
+      "items": [
+        "Puedo explicar con mis palabras qué son transparencia, inspección y adaptación.",
+        "Distingo el Product Backlog (todo lo posible) del Sprint Backlog (lo comprometido ahora).",
+        "Sé por qué el Daily es del equipo y no un reporte al Scrum Master.",
+        "Puedo escribir un Sprint Goal que sea un resultado, no una lista de tareas.",
+        "Reconozco la diferencia entre 'casi listo' y 'Hecho' según la Definition of Done.",
+        "Entiendo por qué el alcance del sprint no se cambia una vez empezado."
+      ]
+    }
+  ],
+  "glossary": [
+    {
+      "term": "Scrum",
+      "lang": "en",
+      "meaning": "Marco de trabajo ligero para desarrollar productos complejos en ciclos cortos, basado en inspeccionar y adaptar. El nombre viene de la melé del rugby, donde el equipo avanza junto.",
+      "hint": "marco de trabajo ágil",
+      "ipa": "/skrʌm/",
+      "fonetica_es": "scram"
+    },
+    {
+      "term": "sprint",
+      "lang": "en",
+      "meaning": "Ciclo de trabajo de duración fija (una a cuatro semanas) al final del cual el equipo entrega un incremento utilizable.",
+      "hint": "carrera corta; ciclo de trabajo",
+      "ipa": "/sprɪnt/",
+      "fonetica_es": "esprint"
+    },
+    {
+      "term": "sprint planning",
+      "lang": "en",
+      "meaning": "Evento que inicia el sprint: el equipo acuerda el Sprint Goal y elige del Product Backlog qué construir.",
+      "hint": "planificación del sprint",
+      "ipa": "/sprɪnt ˈplænɪŋ/",
+      "fonetica_es": "esprint plánin",
+      "breakdown": [
+        { "word": "sprint", "es": "carrera corta, ciclo" },
+        { "word": "planning", "es": "planificación" }
+      ]
+    },
+    {
+      "term": "daily scrum",
+      "lang": "en",
+      "meaning": "Reunión diaria de 15 minutos donde los Developers sincronizan su avance hacia el Sprint Goal y replanean el día.",
+      "hint": "sincronización diaria",
+      "ipa": "/ˈdeɪli skrʌm/",
+      "fonetica_es": "déili scram",
+      "breakdown": [
+        { "word": "daily", "es": "diario, a diario" },
+        { "word": "scrum", "es": "reunión del equipo (de la melé de rugby)" }
+      ]
+    },
+    {
+      "term": "sprint review",
+      "lang": "en",
+      "meaning": "Evento al final del sprint donde se muestra el incremento a los interesados y se ajusta el Product Backlog con el feedback.",
+      "hint": "revisión del sprint",
+      "ipa": "/sprɪnt rɪˈvjuː/",
+      "fonetica_es": "esprint rivíu",
+      "breakdown": [
+        { "word": "sprint", "es": "carrera corta, ciclo" },
+        { "word": "review", "es": "revisión" }
+      ]
+    },
+    {
+      "term": "sprint retrospective",
+      "lang": "en",
+      "meaning": "Último evento del sprint: el equipo reflexiona sobre cómo trabajó y elige mejoras concretas para el siguiente.",
+      "hint": "retrospectiva del sprint",
+      "ipa": "/sprɪnt ˌretrəˈspektɪv/",
+      "fonetica_es": "esprint retrospéctiv",
+      "breakdown": [
+        { "word": "sprint", "es": "carrera corta, ciclo" },
+        { "word": "retrospective", "es": "retrospectiva, mirada hacia atrás" }
+      ]
+    },
+    {
+      "term": "product backlog",
+      "lang": "en",
+      "meaning": "Lista viva y ordenada de todo lo que podría necesitar el producto. Es la única fuente de trabajo para el equipo.",
+      "hint": "lista de producto",
+      "ipa": "/ˈprɒdʌkt ˈbæklɒɡ/",
+      "fonetica_es": "pródact báklog",
+      "breakdown": [
+        { "word": "product", "es": "producto" },
+        { "word": "backlog", "es": "lista de pendientes, acumulado" }
+      ]
+    },
+    {
+      "term": "sprint backlog",
+      "lang": "en",
+      "meaning": "El Sprint Goal más los elementos elegidos y el plan para lograrlos. Es propiedad de los Developers durante el sprint.",
+      "hint": "lista del sprint",
+      "ipa": "/sprɪnt ˈbæklɒɡ/",
+      "fonetica_es": "esprint báklog",
+      "breakdown": [
+        { "word": "sprint", "es": "carrera corta, ciclo" },
+        { "word": "backlog", "es": "lista de pendientes, acumulado" }
+      ]
+    },
+    {
+      "term": "product owner",
+      "lang": "en",
+      "meaning": "Responsable de maximizar el valor del producto; ordena el Product Backlog y decide qué se construye y en qué orden.",
+      "hint": "dueño del producto",
+      "ipa": "/ˈprɒdʌkt ˈəʊnə/",
+      "fonetica_es": "pródact óuner",
+      "breakdown": [
+        { "word": "product", "es": "producto" },
+        { "word": "owner", "es": "dueño, propietario" }
+      ]
+    },
+    {
+      "term": "scrum master",
+      "lang": "en",
+      "meaning": "Responsable de que Scrum se entienda y se practique; facilita al equipo y remueve impedimentos. No es un jefe.",
+      "hint": "facilitador del equipo",
+      "ipa": "/skrʌm ˈmɑːstə/",
+      "fonetica_es": "scram máster",
+      "breakdown": [
+        { "word": "scrum", "es": "el marco de trabajo (de la melé de rugby)" },
+        { "word": "master", "es": "experto, facilitador" }
+      ]
+    },
+    {
+      "term": "developers",
+      "lang": "en",
+      "meaning": "Las personas del Scrum Team que construyen el incremento: programan, prueban y diseñan. Se autoorganizan.",
+      "hint": "el equipo que construye",
+      "ipa": "/dɪˈveləpəz/",
+      "fonetica_es": "divélopers"
+    },
+    {
+      "term": "increment",
+      "lang": "en",
+      "meaning": "El resultado utilizable y terminado del sprint; la suma de todo lo que cumple la Definition of Done.",
+      "hint": "incremento entregable",
+      "ipa": "/ˈɪŋkrəmənt/",
+      "fonetica_es": "íncrement"
+    },
+    {
+      "term": "definition of done",
+      "lang": "en",
+      "meaning": "El acuerdo de calidad que define cuándo un trabajo está realmente terminado y puede considerarse parte del incremento.",
+      "hint": "definición de terminado",
+      "ipa": "/ˌdefɪˈnɪʃn əv dʌn/",
+      "fonetica_es": "definíshon of dan",
+      "breakdown": [
+        { "word": "definition", "es": "definición" },
+        { "word": "of", "es": "de" },
+        { "word": "done", "es": "terminado, hecho" }
+      ]
+    },
+    {
+      "term": "timebox",
+      "lang": "en",
+      "meaning": "Duración máxima fija que se le pone a un evento o a un sprint. Cuando el tiempo se acaba, el evento termina.",
+      "hint": "caja de tiempo",
+      "ipa": "/ˈtaɪmbɒks/",
+      "fonetica_es": "táimbox"
+    },
+    {
+      "term": "historia de usuario",
+      "lang": "es",
+      "meaning": "Forma de describir un elemento del backlog desde la necesidad de quien lo usa: quién, qué quiere y para qué, con criterios de aceptación."
+    }
+  ],
+  "sources": [
+    { "title": "The Scrum Guide (2020) — Ken Schwaber y Jeff Sutherland", "url": "https://scrumguides.org/scrum-guide.html" },
+    { "title": "Scrum Guides — versión en español", "url": "https://scrumguides.org/docs/scrumguide/v2020/2020-Scrum-Guide-Spanish-Latin-South-American.pdf" }
+  ]
+}
