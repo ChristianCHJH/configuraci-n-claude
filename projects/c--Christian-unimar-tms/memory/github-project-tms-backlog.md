@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: project
   originSessionId: 5580b0bc-e7ef-4333-a7ed-7170adf821df
-  modified: 2026-08-10T15:04:36.735Z
+  modified: 2026-08-12T20:34:02.966Z
 ---
 
 El backlog del TMS vive en el GitHub Project **`TMS: Backlog`** — org `unimar-peru`, número **8**, id `PVT_kwDOEenn8M4Bfr4e`. Los issues van al repo `unimar-peru/unimar_tms`.
@@ -16,7 +16,9 @@ El backlog del TMS vive en el GitHub Project **`TMS: Backlog`** — org `unimar-
 
 **Labels del repo:** `historia`, `tarea`, `TMS`, `sprint-1`…`sprint-4`. **No existen labels `epica:*`** — la épica vive solo en el campo del Project.
 
-**Estado 2026-08-10: el board tiene las 32 historias del MVP** (12 del Sprint 1 + las 20 creadas el 08-10 en `En Refinamiento`, sin assignee). Las épicas de S2-S4 se **infirieron** salvo 013/014/015/016 (EP-06, declarada en el doc de épicas): 011/012→EP-04 · 017/018/021/022/023/030/031/032→EP-06 · 020→EP-03 · 024/026/027/028→EP-05 · 042→EP-01. **Ningún artefacto declara épica para esas 16** — pendiente de validar con la PO.
+**Estado 2026-08-12: el board tiene 33 items** — las 32 historias del MVP + **US-TMS-043** (issue #64, primera historia **técnica** del backlog: contrato de APIs con SAP; EP-01, Sprint 1, M, Must, En Refinamiento). El campo `Iteration` de Sprint 1 se llama literalmente `Sprint 1:Planificación completa (sin app móvil)` (sin espacio tras los dos puntos), id `33742a74`.
+
+**Estado 2026-08-10: el board tenía las 32 historias del MVP** (12 del Sprint 1 + las 20 creadas el 08-10 en `En Refinamiento`, sin assignee). Las épicas de S2-S4 se **infirieron** salvo 013/014/015/016 (EP-06, declarada en el doc de épicas): 011/012→EP-04 · 017/018/021/022/023/030/031/032→EP-06 · 020→EP-03 · 024/026/027/028→EP-05 · 042→EP-01. **Ningún artefacto declara épica para esas 16** — pendiente de validar con la PO.
 
 Las historias de usuario entran como `US-TMS-0NN — nombre`; el trabajo de proyecto que no es funcionalidad (grooming, validación del prototipo) entra con label `tarea` y **sin** ID `US-TMS`, para no ensuciar el conteo de 32 historias del MVP. Formato del body: ver [[feedback-issues-github-breves]].
 
