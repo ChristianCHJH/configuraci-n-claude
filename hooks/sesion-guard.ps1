@@ -4,10 +4,10 @@
 # los acentos / em-dash. No meter caracteres no-ASCII en este archivo.
 #
 # Hace dos cosas al final de cada turno:
-#   1. AUTO-SYNC: commit + push en los 3 repos de memoria
-#      (anti-ruido: maximo 1 sync cada $MinutosDebounce por repo)
-#      SIN pull: traer lo remoto es tarea de /despertar y /despertar-unimar,
-#      una sola vez al arrancar la sesion.
+#   1. AUTO-COMMIT: solo commit local en los 3 repos de memoria
+#      (anti-ruido: maximo 1 commit cada $MinutosDebounce por repo)
+#      SIN push y SIN pull: este hook JAMAS toca el remoto. Ni sube ni baja
+#      nada. El push lo hace Christian a mano cuando quiere.
 #   2. GUARDIA DE CONTEXTO: calcula el % de ventana consumida y avisa
 #      (60% = aviso temprano, 75% = cerrar y documentar con /viernes o /unimar)
 #
@@ -41,11 +41,12 @@ if ($hook) { $transcript = $hook.transcript_path }
 
 $avisos = New-Object System.Collections.Generic.List[string]
 
-# ================================================================ 1) AUTO-SYNC
+# ================================================================ 1) AUTO-COMMIT
+# SOLO commit local. Este bloque NO hace push ni pull: nada de red, nunca.
 foreach ($repo in $Repos) {
     if (-not (Test-Path (Join-Path $repo '.git'))) { continue }
 
-    # anti-ruido: un sync por repo cada N minutos
+    # anti-ruido: un commit por repo cada N minutos
     $slug  = ($repo -replace '[:\\ ]', '-')
     $stamp = Join-Path $EstadoDir "autosync$slug.stamp"
     if (Test-Path $stamp) {
@@ -55,23 +56,12 @@ foreach ($repo in $Repos) {
 
     # OJO: todo git va silenciado. Cualquier texto suelto en stdout corrompe
     # el JSON que el hook le devuelve a Claude Code.
-    $sucio      = & git -C $repo status --porcelain 2>$null
-    $sinPushear = & git -C $repo log '@{u}..HEAD' --oneline 2>$null
-    if (-not $sucio -and -not $sinPushear) { continue }
+    $sucio = & git -C $repo status --porcelain 2>$null
+    if (-not $sucio) { continue }
 
-    # NO se hace pull aqui a proposito: el pull vive en /despertar y /despertar-unimar
-    # (una vez por sesion). Este hook solo commitea y empuja lo local.
-    if (& git -C $repo status --porcelain 2>$null) {
-        $fecha = Get-Date -Format 'yyyy-MM-dd HH:mm'
-        $null = & git -C $repo add -A 2>&1
-        $null = & git -C $repo commit -m "chore(auto): sincronizacion automatica $fecha" --quiet 2>&1
-    }
-
-    $null = & git -C $repo push --quiet 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        $avisos.Add("AUTO-SYNC: el push a $repo fallo. Los cambios estan commiteados en local pero NO en el remoto. Causas tipicas: (a) el remoto tiene commits nuevos y hace falta 'git -C `"$repo`" pull --rebase' a mano, (b) credencial de git vencida.")
-        continue
-    }
+    $fecha = Get-Date -Format 'yyyy-MM-dd HH:mm'
+    $null = & git -C $repo add -A 2>&1
+    $null = & git -C $repo commit -m "chore(auto): commit automatico $fecha" --quiet 2>&1
 
     Set-Content -Path $stamp -Value (Get-Date -Format 'o') -Encoding utf8
 }

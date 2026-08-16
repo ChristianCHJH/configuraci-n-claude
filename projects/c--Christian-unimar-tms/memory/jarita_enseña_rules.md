@@ -1,38 +1,28 @@
 ---
 name: jarita-ense-a-rules
-description: Sistema de enseñanza interactivo v2 - HTMLs educativos con pestañas sticky, glosario a la mano, tooltips, desglose de términos, flujos animados y modo máquina
+description: Sistema de enseñanza v3 - núcleo fijo (flujo + partes + glosario en sidebar), catálogo de piezas opcionales elegidas según el tipo de pregunta, y regla de economía (menos texto = más comprensión)
 metadata:
   node_type: memory
   type: reference
-  version: 2
-  last_updated: 2026-07-09
+  version: 3
+  last_updated: 2026-08-13
   originSessionId: 699f7a9f-b2b4-42b7-8a7c-049d88446d9c
+  modified: 2026-08-13T21:05:20.602Z
 ---
 
-# Jarita Enseña - Sistema de Aprendizaje Interactivo (v2)
+# Jarita Enseña — Sistema de Aprendizaje Interactivo (v3)
 
 ## Misión
-
-Cuando Christian no entienda un concepto/término de la documentación o conversación:
 
 ```
 /jarita-enseña [concepto]
 ```
 
-Jarita genera un **HTML educativo interactivo** con:
-- Explicación didáctica en **español de Perú**
-- Navegación por **pestañas sticky** (el glosario siempre a un clic)
-- Términos técnicos **subrayados con tooltip** al pasar el mouse
-- **Desglose palabra por palabra** de todo término en inglés
-- **Flujos ilustrados** interactivos paso a paso
-- **Modo máquina** cuando el tema es código/runtime (cómo funciona por dentro, hasta la raíz)
-- Términos en **inglés** con pronunciación (IPA + aproximada + botón 🔊)
-- **Quiz** con feedback inmediato
-- Analogías del mundo real (preferir mundo Unimar)
+Un HTML educativo interactivo cuyo **único objetivo** es que quien lo lea **entienda lo que preguntó, sin ninguna duda**.
 
-Los documentos de referencia de calidad (lo que a Christian le encantó) son:
-- `prd-tms.html` → pestañas, flujo paso a paso, glosario buscable, quiz
-- `runtime-nodejs.html` → modo máquina: pipeline V8 animado, panel terminal, event loop animado
+**Este documento es un CATÁLOGO, no un checklist.** Salvo el núcleo fijo (abajo), todo lo demás es material disponible: la IA elige qué usar según la pregunta, y puede inventar piezas nuevas si el tema lo pide.
+
+Referencias de calidad: `prd-tms.html` (flujo paso a paso, quiz) y `runtime-nodejs.html` (modo máquina: pipeline animado, event loop).
 
 ---
 
@@ -48,9 +38,9 @@ Trato de **tú**, jamás voseo argentino/rioplatense.
 | podés, sabés, entendés, querés, tenés, creés, conocés, usás, pensás, buscás, cambiás, copiás, necesitás, hablás, escribís, corrés, perdés | puedes, sabes, entiendes, quieres, tienes, crees, conoces, usas, piensas, buscas, cambias, copias, necesitas, hablas, escribes, corres, pierdes |
 | ¿recordás? | ¿recuerdas? |
 | acá (aceptable pero preferir) | aquí |
-| "anda / no anda" con sentido de "funciona" (rioplatense) | funciona / no funciona |
+| "anda / no anda" con sentido de "funciona" | funciona / no funciona |
 
-**Verificación obligatoria antes de entregar**: grep sobre el HTML generado con este patrón y corregir todo match:
+**Verificación obligatoria antes de entregar** — grep sobre el HTML y corregir todo match:
 
 ```
 \bvos\b|leé|mirá|tocá|marcá|elegí|recorré|andá|apretá|podés|sabés|entendés|querés|tenés|creés|conocés|usás|pensás|buscás|buscá|cambiás|copiás|necesitás|hablás|escribís|corrés|perdés|pisás|recordás|probate|anclá|filtrá|preguntá|no anda
@@ -58,30 +48,37 @@ Trato de **tú**, jamás voseo argentino/rioplatense.
 
 ---
 
-## REGLA 1: Palabras mal escritas → deducir e ilustrar
+## REGLA 1: Economía — menos texto, más comprensión
 
-Christian a veces escribe rápido con errores de tipeo ("dcuemtno" = documento, "event lup" = event loop, "alabara" = palabra).
+Esta regla **manda sobre todas las demás** (excepto la 0). Lo simplificado es lo que hace entender.
 
-- **Nunca rechazar ni pedir que corrija**: deducir el término por contexto
-- Confirmar en UNA línea: "Entiendo que hablas de *event loop*, ¿correcto?" y seguir
-- El término deducido se trata como cualquier otro: se ilustra, se desglosa y se profundiza
+- **Una idea por bloque.** Dos ideas en un párrafo = dos bloques, o una sobra.
+- **Jerarquía de formatos**: dibujo/SVG > diagrama de tarjetas > tabla > lista > párrafo. Baja de escalón solo si el de arriba no alcanza.
+- **Nada "por completitud".** Si un dato no ayuda a responder *la pregunta que hicieron*, no va — aunque sea cierto e interesante.
+- **Sin argumentar de más.** Se dice la conclusión; el sustento va solo si el lector necesita decidir con él.
+- Techo blando por sección: ~150 palabras de texto corrido. Si te pasas, es señal de que falta un dibujo.
 
 ---
 
-## REGLA 2: Desglose 100% de términos
+## REGLA 2: Palabras mal escritas → deducir e ilustrar
 
-**Todo término en inglés** se descompone palabra por palabra: traducción literal + significado técnico + pronunciación. Nada se deja como "palabra mágica".
+Christian a veces escribe rápido con errores ("dcuemtno" = documento, "event lup" = event loop).
+Nunca rechazar ni pedir corrección: deducir por contexto, confirmar en UNA línea ("Entiendo *event loop*, ¿correcto?") y seguir. El término deducido se trata como cualquier otro.
 
-Ejemplo del formato:
+---
+
+## REGLA 3: Desglose 100% de términos
+
+**Todo término en inglés** se descompone palabra por palabra: traducción literal + significado técnico + pronunciación. Nada queda como "palabra mágica".
 
 > **event loop** /ɪˈvɛnt luːp/ 🔊
 > - *event* = evento, suceso (algo que pasa)
 > - *loop* = bucle, ciclo (algo que da vueltas sin parar)
-> - → **"bucle de eventos"**: un ciclo infinito que revisa si hay tareas pendientes y las atiende una por una
+> - → **"bucle de eventos"**: ciclo infinito que revisa si hay tareas pendientes y las atiende una por una
 
-**Términos técnicos en español también se explican** (trazabilidad, idempotencia, concurrencia, latencia...): definición simple + ejemplo del mundo Unimar. No asumir que se conocen.
+**Los términos técnicos en español también se explican** (trazabilidad, idempotencia, concurrencia, latencia): definición simple + ejemplo del mundo Unimar.
 
-Snippet de tarjeta de desglose (requiere la función `say()` y la clase `.sayb` del snippet 4 — Glosario; incluirlas siempre en la misma página):
+Snippet de tarjeta de desglose (requiere `say()` y `.sayb` del snippet del sidebar):
 
 ```html
 <style>
@@ -107,28 +104,73 @@ Snippet de tarjeta de desglose (requiere la función `say()` y la clase `.sayb` 
 
 ---
 
-## Estructura del documento: PESTAÑAS, no scroll infinito
+# NÚCLEO FIJO (siempre, en toda lección)
 
-El documento se organiza con **navbar sticky de pestañas** (patrón prd-tms.html). El glosario y el quiz son pestañas SIEMPRE presentes — el vocabulario está a un clic desde cualquier parte, nunca solo al final.
+## N1. 🔄 Flujo — SIEMPRE
 
-Pestañas típicas (adaptar al tema):
+Ver el orden en que pasan las cosas es lo que convierte información en comprensión.
 
-1. 🗺️ **Panorama** (EMPIEZA AQUÍ) → pregunta gancho + historia + qué es (2 capas) + analogía dibujada
-2. 🔄 **Flujo** (CÓMO FLUYE) → flujo interactivo paso a paso
-3. 🧩 **Partes** → componentes, cada uno con término EN desglosado
-4. ⚙️ **Modo máquina** (POR DENTRO) → solo si el tema es código/runtime
-5. ⚠️ **Errores** (CUIDADO CON) → errores típicos + antes/después
-6. 🏗️ **En Unimar** → ejemplo real del proyecto
-7. 📖 **Glosario** (PALABRAS) → cards buscables + desgloses + 🔊
-8. ✅ **Quiz** (¿ENTENDÍ?) → quiz + respuesta a la pregunta gancho + mantra + checklist + recursos
+- Si el tema tiene **secuencia temporal** → flujo de pasos.
+- Si no la tiene → flujo de **decisión** (si esto, entonces aquello) o de **dependencia** (quién necesita a quién).
+- **Siempre dibujado**, nunca un párrafo describiendo el flujo.
+- Interactivo: clic en paso muestra detalle, botón ▶ recorre automático.
 
-Archivo: `C:\Christian\Unimar_obsidian\aprendizajes\[concepto-slug].html`
+## N2. 🧩 Partes — SIEMPRE
+
+Se entiende algo cuando ves de qué piezas está hecho y qué hace cada una.
+
+- Una tarjeta por pieza. **Una línea por pieza** (qué hace, en cristiano).
+- El detalle largo va en expandible, no en el frente de la tarjeta.
+- Si la pieza tiene nombre en inglés → desglose (REGLA 3).
+
+## N3. 📖 Glosario en SIDEBAR fijo — SIEMPRE
+
+**Cambio v3: el glosario ya NO es pestaña del navbar ni sección al final.** Es una **columna lateral fija, visible desde cualquier parte de la lección**, con buscador. Motivo: consultar una palabra no debe hacerte perder el sitio donde estabas leyendo.
+
+- Desktop: columna derecha `position:sticky`, siempre presente.
+- Móvil: botón flotante 📖 abre un cajón lateral.
+- Buscable, con IPA + 🔊 en los términos en inglés.
+- Complementa a los términos subrayados con tooltip del texto corrido (no lo reemplaza).
 
 ---
 
-## Patrones UI obligatorios (snippets de referencia)
+# CATÁLOGO DE PIEZAS OPCIONALES
 
-### 0. Tokens de color base (`:root`) — prerequisito de todos los snippets
+**Elegir 3 a 6 secciones en total**, contando Flujo y Partes. Más que eso deja de ser clase y se vuelve manual.
+
+| Pieza | Cuándo usarla |
+|---|---|
+| 🗺️ Panorama (pregunta gancho + historia + analogía dibujada) | Tema nuevo del todo o abstracto |
+| ⚙️ Modo máquina | Hay un "por dentro": runtime, motor, protocolo, compilador, transacción |
+| ⚠️ Errores típicos | Es fácil meter la pata y duele |
+| ⚖️ Comparación / decisión | La pregunta es "¿A o B?" |
+| 🏗️ En Unimar | Aterrizar en el proyecto real con código |
+| 🔀 Antes / Después | El valor del concepto es que arregla un caos |
+| 🪜 Dos capas (simple / dev) | Versión intuitiva y versión técnica son distintas |
+| ✅ Quiz | El tema entra por repetición |
+| 📋 Checklist "¿lo entendí?" | La comprensión se puede verificar con acciones |
+| 📚 Recursos | Hay fuente oficial que valga la pena |
+
+**Libertad explícita**: si el tema pide una sección que no está en esta tabla, invéntala. La tabla es punto de partida, no límite.
+
+## Plantillas por tipo de pregunta
+
+| Tipo | Ejemplo | Arranque sugerido |
+|---|---|---|
+| ¿Qué es X? | ¿Qué es DDD? | Panorama → Flujo → Partes → (Errores) |
+| ¿Cómo funciona por dentro? | ¿Cómo corre Node? | Flujo → Partes → Modo máquina |
+| ¿A o B? | ¿Docker en el servidor? | Flujo → Partes → Comparación → **Decisión recomendada** |
+| ¿Por qué pasó esto? | ¿Por qué explotó el deploy? | Flujo del fallo → Partes → Errores → Cómo evitarlo |
+| ¿Cómo hago X? | ¿Cómo levanto un contenedor? | Flujo (pasos) → Partes (comandos) → Errores → Checklist |
+| Término suelto | ¿Qué es idempotencia? | Partes → Flujo (1 ejemplo) → Sidebar. Corto y ya. |
+
+Si la pregunta pide decidir, la lección **cierra con una recomendación explícita**: cuál elegir y por qué. Nunca un "depende" sin cerrar.
+
+---
+
+# SNIPPETS
+
+### 0. Tokens de color base (`:root`) — prerequisito de todo
 
 ```css
 :root{
@@ -139,9 +181,82 @@ Archivo: `C:\Christian\Unimar_obsidian\aprendizajes\[concepto-slug].html`
 body{font-family:'Segoe UI',Tahoma,sans-serif;background:var(--bg);color:var(--ink);line-height:1.55}
 ```
 
-### 1. Navbar sticky de pestañas (tabs + panels)
+### 1. LAYOUT v3: contenido + GLOSARIO SIDEBAR fijo (obligatorio)
 
-Cada tab lleva micro-rótulo superior (.n) tipo "EMPIEZA AQUÍ / PALABRAS / ¿ENTENDÍ?". Panel activo entra con fade. Al cambiar, scroll suave al top.
+Dos columnas: contenido a la izquierda, glosario sticky a la derecha. En móvil el glosario se vuelve cajón con botón flotante 📖.
+
+```html
+<style>
+.layout{display:grid;grid-template-columns:minmax(0,1fr) 300px;gap:22px;max-width:1280px;margin:0 auto;padding:0 18px 60px}
+/* ---- sidebar glosario ---- */
+.gside{position:sticky;top:14px;align-self:start;max-height:calc(100vh - 28px);display:flex;flex-direction:column;
+       background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px;box-shadow:0 6px 22px rgba(15,62,103,.07)}
+.gside h3{color:var(--navy);font-size:.95em;margin-bottom:8px;display:flex;align-items:center;gap:6px}
+.gside input{width:100%;padding:9px 12px;border:2px solid var(--line);border-radius:10px;margin-bottom:10px;font-size:.88em}
+.gside .glist{overflow-y:auto;padding-right:4px}
+.gterm{border-left:3px solid var(--cyan);background:#fbfdff;border-radius:8px;padding:9px 11px;margin:7px 0}
+.gterm .gt{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.gterm b{color:var(--navy);font-size:.92em}
+.gterm .ipa{color:var(--violet);font-style:italic;font-size:.78em}
+.gterm p{font-size:.82em;color:var(--muted);margin-top:4px}
+.sayb{background:var(--cyan);color:#fff;border:none;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:.8em}
+.empty-msg{color:var(--muted);font-style:italic;padding:12px;font-size:.85em}
+.gtoggle{display:none}
+/* ---- móvil: cajón ---- */
+@media(max-width:980px){
+  .layout{grid-template-columns:1fr}
+  .gside{position:fixed;top:0;right:0;bottom:0;width:min(88vw,330px);max-height:none;border-radius:0;z-index:60;
+         transform:translateX(105%);transition:transform .25s ease}
+  .gside.open{transform:none}
+  .gtoggle{display:flex;align-items:center;justify-content:center;position:fixed;right:16px;bottom:16px;z-index:61;
+           width:54px;height:54px;border-radius:50%;border:none;background:var(--navy);color:#fff;font-size:1.4em;
+           cursor:pointer;box-shadow:0 8px 24px rgba(4,33,57,.35)}
+}
+</style>
+
+<div class="layout">
+  <main>
+    <!-- navbar de pestañas + paneles de secciones (snippet 2) -->
+  </main>
+
+  <aside class="gside" id="gside">
+    <h3>📖 Glosario</h3>
+    <input type="text" id="gSearch" placeholder="🔎 Buscar palabra…">
+    <div class="glist" id="glossary"></div>
+  </aside>
+</div>
+<button class="gtoggle" id="gToggle" aria-label="Abrir glosario">📖</button>
+
+<script>
+function say(txt){
+  try{const u=new SpeechSynthesisUtterance(txt);u.lang='en-US';u.rate=.85;
+      speechSynthesis.cancel();speechSynthesis.speak(u);}catch(e){}
+}
+/* [término, IPA (''), definición con desglose si es inglés] */
+const GLOSS=[
+  ['Dashboard','/ˈdæʃˌbɔːrd/','Tablero de métricas. dash = raya/tablero, board = tabla.'],
+  ['Trazabilidad','','Poder seguir el rastro completo de algo: quién, cuándo y por dónde pasó.']
+];
+function renderGloss(){
+  const q=document.getElementById('gSearch').value.toLowerCase();
+  const list=GLOSS.filter(g=>(g[0]+g[2]).toLowerCase().includes(q));
+  document.getElementById('glossary').innerHTML=list.map(g=>{
+    const ipa=g[1]?`<span class="ipa">${g[1]}</span>`:'';
+    const btn=g[1]?`<button class="sayb" onclick="say('${g[0].replace(/'/g,'')}')">🔊</button>`:'';
+    return `<div class="gterm"><div class="gt"><b>${g[0]}</b>${ipa}${btn}</div><p>${g[2]}</p></div>`;
+  }).join('')||'<p class="empty-msg">Sin resultados.</p>';
+}
+document.getElementById('gSearch').addEventListener('input',renderGloss);
+document.getElementById('gToggle').addEventListener('click',()=>document.getElementById('gside').classList.toggle('open'));
+renderGloss();
+</script>
+```
+
+Regla: los términos en inglés del glosario incluyen su **desglose palabra por palabra** dentro de la definición.
+
+### 2. Navbar de pestañas para las secciones (dentro de `<main>`)
+
+Sin pestaña de Glosario (ahora vive en el sidebar). Cada tab con micro-rótulo `.n`.
 
 ```html
 <style>
@@ -154,15 +269,13 @@ Cada tab lleva micro-rótulo superior (.n) tipo "EMPIEZA AQUÍ / PALABRAS / ¿EN
 .panel.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
 </style>
-<!-- REGLA: cada tab data-p="X" DEBE tener su <div class="panel" id="X"> — si falta, el clic rompe la página -->
+<!-- REGLA: cada tab data-p="X" DEBE tener su <div class="panel" id="X"> -->
 <div class="tabs">
-  <div class="tab active" data-p="p1"><span class="n">EMPIEZA AQUÍ</span>🗺️ Panorama</div>
-  <div class="tab" data-p="p7"><span class="n">PALABRAS</span>📖 Glosario</div>
-  <div class="tab" data-p="p8"><span class="n">¿ENTENDÍ?</span>✅ Quiz</div>
+  <div class="tab active" data-p="p1"><span class="n">CÓMO FLUYE</span>🔄 Flujo</div>
+  <div class="tab" data-p="p2"><span class="n">LAS PIEZAS</span>🧩 Partes</div>
 </div>
 <div class="panel active" id="p1">…</div>
-<div class="panel" id="p7">…</div>
-<div class="panel" id="p8">…</div>
+<div class="panel" id="p2">…</div>
 <script>
 document.querySelectorAll('.tab').forEach(t=>{
   t.addEventListener('click',()=>{
@@ -176,9 +289,9 @@ document.querySelectorAll('.tab').forEach(t=>{
 </script>
 ```
 
-### 2. Términos subrayados con tooltip (glosario inline)
+Si la lección tiene solo 3 secciones cortas, se puede prescindir de pestañas y dejar scroll simple — el sidebar del glosario sigue siendo obligatorio.
 
-TODA palabra técnica en el texto va con subrayado punteado; al pasar el mouse muestra su significado. Complementa (no reemplaza) la pestaña Glosario.
+### 3. Términos subrayados con tooltip (texto corrido)
 
 ```html
 <style>
@@ -188,14 +301,13 @@ TODA palabra técnica en el texto va con subrayado punteado; al pasar el mouse m
 </style>
 <p>La <span class="gl" tabindex="0" data-def="Guía de Remisión Electrónica: sustenta el traslado ante SUNAT">GRE</span> se emite dentro del puerto.</p>
 <script>
-/* fallback táctil: tocar el término alterna el tooltip */
 document.querySelectorAll('.gl').forEach(el=>el.addEventListener('click',()=>el.classList.toggle('tap')));
 </script>
 ```
 
-### 3. Flujo interactivo paso a paso
+### 4. FLUJO interactivo paso a paso (núcleo N1)
 
-Tarjetas numeradas conectadas por flechas; clic en tarjeta resalta y muestra detalle; botón ▶ "Recorrer paso a paso" recorre automático; toggle de modos si hay variantes (ej. importación/exportación). Data-driven.
+Tarjetas numeradas con flechas; clic muestra detalle; ▶ recorre automático; toggle si hay variantes. Data-driven.
 
 ```html
 <style>
@@ -219,8 +331,8 @@ Tarjetas numeradas conectadas por flechas; clic en tarjeta resalta y muestra det
 </style>
 <div class="flowbar">
   <div class="toggle-flow">
-    <button class="active" data-mode="impo">📥 Modo A</button>
-    <button data-mode="expo">📤 Modo B</button>
+    <button class="active" data-mode="a">📥 Modo A</button>
+    <button data-mode="b">📤 Modo B</button>
   </div>
   <button class="playbtn" id="playFlow">▶ Recorrer paso a paso</button>
 </div>
@@ -228,10 +340,10 @@ Tarjetas numeradas conectadas por flechas; clic en tarjeta resalta y muestra det
 <div class="detail empty" id="flowDetail">👆 Toca un paso de arriba para ver el detalle.</div>
 <script>
 const FLOWS={
-  impo:[{n:1,ic:'📨',t:'Paso uno',f:'F-01',d:'Detalle <b>HTML</b> del paso.'},{n:2,ic:'📝',t:'Paso dos',f:'F-02',d:'Otro detalle.'}],
-  expo:[{n:1,ic:'📨',t:'Variante',f:'F-01',d:'Detalle variante.'}]
+  a:[{n:1,ic:'📨',t:'Paso uno',f:'F-01',d:'Detalle <b>HTML</b> del paso.'},{n:2,ic:'📝',t:'Paso dos',f:'F-02',d:'Otro detalle.'}],
+  b:[{n:1,ic:'📨',t:'Variante',f:'F-01',d:'Detalle variante.'}]
 };
-let flowMode='impo';
+let flowMode='a';
 function renderFlow(){
   const cont=document.getElementById('flowSteps');cont.innerHTML='';
   FLOWS[flowMode].forEach(s=>{
@@ -263,51 +375,48 @@ renderFlow();
 </script>
 ```
 
-### 4. Glosario buscable con IPA + botón 🔊 (pestaña Glosario)
+Si el flujo no es temporal, la misma estructura sirve para **decisión** (cada tarjeta = una condición) o **dependencia** (cada tarjeta = quién necesita a quién).
+
+### 5. PARTES — cards expandibles (núcleo N2)
+
+Grid de piezas: emoji + nombre + **una línea**; el detalle se abre al tocar y cierra las demás.
 
 ```html
 <style>
-.gterm{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px;margin:8px 0;border-left:4px solid var(--cyan)}
-.gterm .gt{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.gterm b{color:var(--navy)}
-.gterm .ipa{color:var(--violet);font-style:italic;font-size:.85em}
-.gterm p{font-size:.88em;color:var(--muted);margin-top:5px}
-.sayb{background:var(--cyan);color:#fff;border:none;width:30px;height:30px;border-radius:50%;cursor:pointer;font-size:.9em}
-.empty-msg{color:var(--muted);font-style:italic;padding:16px}
+.parts{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:14px 0}
+.part{background:var(--card);border:2px solid var(--line);border-radius:12px;padding:14px;cursor:pointer;transition:.18s}
+.part:hover{border-color:var(--blue);transform:translateY(-3px)}
+.part.on{border-color:var(--navy);box-shadow:0 0 0 3px rgba(47,127,214,.2)}
+.part .ic{font-size:1.6em}
+.part .t{font-weight:700;color:var(--navy);margin:5px 0 3px}
+.part .one{font-size:.85em;color:var(--muted)}
+.part-detail{background:var(--card);border-left:5px solid var(--navy);border-radius:10px;padding:16px;margin-top:10px;display:none}
+.part-detail.show{display:block;animation:fade .3s}
 </style>
-<input type="text" id="gSearch" placeholder="🔎 Buscar término…" style="width:100%;padding:10px 14px;border:2px solid var(--line);border-radius:10px;margin:4px 0 10px">
-<div id="glossary"></div>
+<div class="parts" id="parts"></div>
+<div class="part-detail" id="partDetail"></div>
 <script>
-function say(txt){
-  try{
-    const u=new SpeechSynthesisUtterance(txt);
-    u.lang='en-US';u.rate=.85;speechSynthesis.cancel();speechSynthesis.speak(u);
-  }catch(e){}
-}
-const GLOSS=[
-  ['Dashboard','/ˈdæʃˌbɔːrd/','Tablero visual con métricas. Se pronuncia "DÁSH-bord". dash = raya/tablero, board = tabla.'],
-  ['Trazabilidad','','Capacidad de seguir el rastro completo de algo: quién lo hizo, cuándo y por dónde pasó.']
+const PARTS=[
+  {ic:'🧠',t:'Dominio',one:'Las reglas del negocio, puras.',d:'Detalle largo aquí (solo al abrir).'},
+  {ic:'🔌',t:'Puerto',one:'El enchufe que el dominio expone.',d:'Detalle largo.'}
 ];
-function renderGloss(){
-  const q=document.getElementById('gSearch').value.toLowerCase();
-  const cont=document.getElementById('glossary');
-  const list=GLOSS.filter(g=>(g[0]+g[2]).toLowerCase().includes(q));
-  cont.innerHTML=list.map(g=>{
-    const ipa=g[1]?`<span class="ipa">${g[1]}</span>`:'';
-    const btn=g[1]?`<button class="sayb" onclick="say('${g[0].replace(/'/g,'')}')">🔊</button>`:'';
-    return `<div class="gterm"><div class="gt"><b>${g[0]}</b>${ipa}${btn}</div><p>${g[2]}</p></div>`;
-  }).join('')||'<p class="empty-msg">Sin resultados.</p>';
-}
-document.getElementById('gSearch').addEventListener('input',renderGloss);
-renderGloss();
+const pc=document.getElementById('parts'),pd=document.getElementById('partDetail');
+PARTS.forEach(p=>{
+  const el=document.createElement('div');el.className='part';
+  el.innerHTML=`<div class="ic">${p.ic}</div><div class="t">${p.t}</div><div class="one">${p.one}</div>`;
+  el.onclick=()=>{
+    document.querySelectorAll('.part').forEach(x=>x.classList.remove('on'));el.classList.add('on');
+    pd.innerHTML=`<b>${p.ic} ${p.t}</b><p>${p.d}</p>`;pd.classList.add('show');
+    pd.scrollIntoView({behavior:'smooth',block:'nearest'});
+  };
+  pc.appendChild(el);
+});
 </script>
 ```
 
-Regla: los términos en inglés del glosario incluyen su **desglose palabra por palabra** dentro de la definición.
+### 6. MODO MÁQUINA — pipeline paso a paso (opcional)
 
-### 5. MODO MÁQUINA — pipeline paso a paso (Siguiente / Automático / Reiniciar)
-
-Obligatorio cuando el tema es código, runtime, motor, protocolo o cualquier "cómo funciona por dentro". Fila de tarjetas de etapas (atenuadas; la activa se ilumina) + panel terminal que explica cada paso. Sirve para cualquier proceso secuencial: pipeline V8, request HTTP, build, CI/CD, transacción SQL.
+Solo si hay un "por dentro". Etapas atenuadas + panel terminal (`white-space:pre-wrap` → los `\n` se dibujan como saltos reales, sirve para árboles ASCII/bytecode).
 
 ```html
 <style>
@@ -322,8 +431,6 @@ Obligatorio cuando el tema es código, runtime, motor, protocolo o cualquier "c�
 .stage .icon{font-size:1.8em}
 .stage .st-name{font-weight:700;margin:6px 0 3px;font-size:.92em;color:#c9d0ff}
 .stage .st-en{font-size:.72em;color:#8b90c9;font-style:italic}
-.stage .arrow{position:absolute;right:-11px;top:50%;transform:translateY(-50%);color:#8f9bff;font-size:1.3em;z-index:2}
-.stage:last-child .arrow{display:none}
 .pipe-output{margin-top:18px;background:#000;border-radius:10px;padding:16px;font-family:'Courier New',monospace;font-size:.9em;min-height:80px;color:#7CFC7C;white-space:pre-wrap;border:1px solid #2b2e55}
 .pipe-output .lbl{color:#8f9bff;display:block;margin-bottom:6px;font-weight:700}
 </style>
@@ -334,7 +441,7 @@ Obligatorio cuando el tema es código, runtime, motor, protocolo o cualquier "c�
     <button class="btn ghost" id="pipeReset">↺ Reiniciar</button>
   </div>
   <div class="stages" id="stages">
-    <div class="stage"><div class="icon">📄</div><div class="st-name">Código fuente</div><div class="st-en">Source code</div><div class="arrow">→</div></div>
+    <div class="stage"><div class="icon">📄</div><div class="st-name">Código fuente</div><div class="st-en">Source code</div></div>
     <div class="stage"><div class="icon">⚡</div><div class="st-name">Código máquina</div><div class="st-en">Machine code</div></div>
   </div>
   <div class="pipe-output" id="pipeOut"><span class="lbl">Explicación</span>Presiona "Siguiente paso" para empezar.</div>
@@ -361,13 +468,9 @@ Obligatorio cuando el tema es código, runtime, motor, protocolo o cualquier "c�
 </script>
 ```
 
-El panel terminal usa `white-space:pre-wrap` → los `\n` del string JS se dibujan como saltos reales (permite árboles ASCII, tokens, bytecode).
+### 7. MODO MÁQUINA — dos columnas + log en vivo (opcional)
 
-### 6. MODO MÁQUINA — animación de dos columnas + log en vivo (estilo event loop)
-
-Para mostrar concurrencia/orden de ejecución: dos columnas oscuras (lo que corre AHORA vs lo que espera) + log terminal. Script async con `wait(ms)` crea y remueve tarjetas simulando la cronología real. Reutilizable: colas de mensajes, transacciones, retries, scheduling.
-
-Nota: los botones usan `.btn`/`.btn.ghost` del snippet 5 — incluir esos estilos en la misma página. Dentro de `run()`, consultar `if(!running)return;` después de cada `await` para que "Reiniciar" aborte la secuencia en curso.
+Para concurrencia/orden de ejecución (event loop, colas, retries). Usa `.btn`/`.btn.ghost` del snippet 6. Dentro de `run()`, poner `if(!running)return;` después de cada `await` para que "Reiniciar" aborte.
 
 ```html
 <style>
@@ -397,7 +500,6 @@ Nota: los botones usan `.btn`/`.btn.ghost` del snippet 5 — incluir esos estilo
     if(running)return;running=true;
     stackCol.innerHTML='';queueCol.innerHTML='';log.textContent='';
     let a=push(stackCol,'console.log("1")');await wait(700);if(!running)return;logln('> 1 · arranca');a.remove();
-    // ...secuencia según el tema; repetir if(!running)return; después de cada await...
     running=false;
   }
   document.getElementById('loopRun').onclick=run;
@@ -406,9 +508,9 @@ Nota: los botones usan `.btn`/`.btn.ghost` del snippet 5 — incluir esos estilo
 </script>
 ```
 
-### 7. Comparador de dos entornos con núcleo compartido (toggle + atenuado)
+### 8. COMPARACIÓN / DECISIÓN (opcional — preguntas "¿A o B?")
 
-Para explicar "qué comparten y qué no" dos sistemas: dos cajas laterales con capacidades ✅/❌ y pieza central circular (lo compartido). El toggle NO oculta: atenúa a opacity .25 para no perder contexto. Reutilizable: backend vs frontend, dev vs prod, dos versiones de API.
+Dos cajas con capacidades ✅/❌ y núcleo compartido al centro. El toggle **atenúa** (opacity .25), no oculta: no se pierde el contexto.
 
 ```html
 <style>
@@ -425,22 +527,19 @@ Para explicar "qué comparten y qué no" dos sistemas: dos cajas laterales con c
 .cmp-shared .core{background:#ffd54f;color:#5d4037;border-radius:50%;width:80px;height:80px;display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 6px;box-shadow:0 4px 14px rgba(0,0,0,.15)}
 .cmp-a{background:#e3f2fd;border:1px solid #90caf9}
 .cmp-b{background:#e8f5e9;border:1px solid #a5d6a7}
+.veredicto{background:#ecfdf5;border:2px solid var(--green);border-radius:12px;padding:16px;margin-top:16px}
+.veredicto b{color:var(--navy)}
 @media(max-width:680px){.cmp-stage{grid-template-columns:1fr}}
 </style>
 <div class="cmp-toggle">
-  <button id="cmpBoth" class="on">Ver los dos</button>
-  <button id="cmpA">Solo A</button>
-  <button id="cmpB">Solo B</button>
+  <button id="cmpBoth" class="on">Ver los dos</button><button id="cmpA">Solo A</button><button id="cmpB">Solo B</button>
 </div>
 <div class="cmp-stage">
-  <div class="cmp-box cmp-a" id="boxA"><h4>🌐 Entorno A</h4>
-    <ul><li class="yes">capacidad que SÍ tiene</li><li class="no">capacidad que NO tiene</li></ul>
-  </div>
-  <div class="cmp-shared"><div class="core">V8</div><small>Núcleo compartido</small></div>
-  <div class="cmp-box cmp-b" id="boxB"><h4>🖥️ Entorno B</h4>
-    <ul><li class="yes">capacidad que SÍ tiene</li><li class="no">capacidad que NO tiene</li></ul>
-  </div>
+  <div class="cmp-box cmp-a" id="boxA"><h4>🌐 Opción A</h4><ul><li class="yes">lo que sí</li><li class="no">lo que no</li></ul></div>
+  <div class="cmp-shared"><div class="core">🔧</div><small>Lo compartido</small></div>
+  <div class="cmp-box cmp-b" id="boxB"><h4>🖥️ Opción B</h4><ul><li class="yes">lo que sí</li><li class="no">lo que no</li></ul></div>
 </div>
+<div class="veredicto">✅ <b>Recomendación:</b> elige A porque [razón en una línea].</div>
 <script>
 (function(){
   const btns={both:cmpBoth,a:cmpA,b:cmpB};
@@ -456,9 +555,9 @@ Para explicar "qué comparten y qué no" dos sistemas: dos cajas laterales con c
 </script>
 ```
 
-### 8. Quiz de opción múltiple con explicación (data-driven)
+**Toda comparación cierra con `.veredicto`**: cuál elegir y por qué.
 
-Al hacer clic: se congelan las opciones, la elegida se pinta verde/roja, se revela la correcta y se muestra explicación 💡 citando la fuente.
+### 9. Quiz de opción múltiple (opcional)
 
 ```html
 <style>
@@ -473,9 +572,7 @@ Al hacer clic: se congelan las opciones, la elegida se pinta verde/roja, se reve
 </style>
 <div id="quiz"></div>
 <script>
-const QUIZ=[
-  {q:'¿Pregunta?',o:['Opción A','Opción B (correcta)','Opción C'],a:1,e:'Explicación citando la fuente.'}
-];
+const QUIZ=[{q:'¿Pregunta?',o:['Opción A','Opción B (correcta)','Opción C'],a:1,e:'Explicación citando la fuente.'}];
 const quizBox=document.getElementById('quiz');
 QUIZ.forEach((item,qi)=>{
   const div=document.createElement('div');div.className='quiz';
@@ -484,8 +581,7 @@ QUIZ.forEach((item,qi)=>{
     const b=document.createElement('button');b.className='opt';b.textContent=opt;
     b.addEventListener('click',()=>{
       const opts=div.querySelectorAll('.opt');opts.forEach(o=>o.style.pointerEvents='none');
-      if(oi===item.a){b.classList.add('ok');}
-      else{b.classList.add('bad');opts[item.a].classList.add('ok');}
+      if(oi===item.a){b.classList.add('ok');}else{b.classList.add('bad');opts[item.a].classList.add('ok');}
       div.querySelector('.exp').classList.add('show');
     });
     div.appendChild(b);
@@ -496,7 +592,7 @@ QUIZ.forEach((item,qi)=>{
 </script>
 ```
 
-### 9. Explicación en dos capas (versión simple vs versión dev)
+### 10. Dos capas: simple vs dev (opcional)
 
 ```html
 <style>
@@ -508,12 +604,12 @@ QUIZ.forEach((item,qi)=>{
 @media(max-width:820px){.layer{grid-template-columns:1fr}}
 </style>
 <div class="layer">
-  <div class="lbox k"><b>Versión simple (para un niño de 5 años)</b>Analogía cotidiana del concepto.</div>
-  <div class="lbox d"><b>Versión dev</b>Definición técnica precisa con términos del dominio.</div>
+  <div class="lbox k"><b>Versión simple</b>Analogía cotidiana, 1-2 oraciones.</div>
+  <div class="lbox d"><b>Versión dev</b>Definición técnica precisa.</div>
 </div>
 ```
 
-### 10. Checklist de autoevaluación clickeable
+### 11. Checklist clickeable (opcional)
 
 ```html
 <style>
@@ -524,152 +620,75 @@ QUIZ.forEach((item,qi)=>{
 .checklist li::before{content:"⬜ "}
 .checklist li.done::before{content:"✅ "}
 </style>
-<p class="sub">Marca solo si de verdad puedes hacerlo (toca para marcar):</p>
 <ul class="checklist" id="checklist">
   <li>Puedo explicar [concepto] en 1 minuto</li>
   <li>Puedo trazar [flujo] de punta a punta</li>
 </ul>
-<script>
-document.querySelectorAll('#checklist li').forEach(li=>li.addEventListener('click',()=>li.classList.toggle('done')));
-</script>
+<script>document.querySelectorAll('#checklist li').forEach(li=>li.addEventListener('click',()=>li.classList.toggle('done')));</script>
 ```
 
-### 11. Diagrama SVG inline de flujo numerado
+### 12. Otros patrones disponibles
 
-SVG inline sin dependencias (viewBox responsive, `role="img"` + `aria-label`), cajas `<rect>` redondeadas con colores pastel por dominio, pasos numerados, flechas con `marker-end` reutilizable en `<defs><marker>`.
-
-### 12. Cards expandibles acordeón ("toca cada uno")
-
-Grid de cards clickeables (emoji + título + "Ver detalle ▾"); clic abre el detalle asociado, cierra los demás y hace scrollIntoView centrado.
-
-### 13. Chips de filtro + búsqueda + contador
-
-Para catálogos largos (funciones, reglas): chips por categoría con contador, filtro combinado chip+texto, línea "Mostrando X de Y".
+- **Diagrama SVG inline** de flujo numerado (viewBox responsive, `role="img"` + `aria-label`, `<defs><marker>` para flechas).
+- **Chips de filtro + búsqueda + contador** para catálogos largos.
 
 ---
 
-## Principios Pedagógicos (OBLIGATORIOS en cada lección)
+## Principios pedagógicos (aplicar los que sirvan a ESTA pregunta)
 
-Estas reglas van ANTES que el diseño visual. El HTML puede ser simple; el aprendizaje no puede fallar.
+Estas reglas van antes que el diseño visual: el HTML puede ser simple, el aprendizaje no puede fallar. **No son un checklist a cumplir entero** — se usan las que ayudan.
 
-### P1. Imagen o dibujo de la analogía
-- No solo texto de analogía — acompañar con imagen o ilustración (SVG)
-- El cerebro recuerda imágenes 10x más que texto
-- Ejemplo: "puertos y adaptadores" → dibujo de enchufe con adaptador de viaje, no solo palabras
-
-### P2. Historia / mini-cuento de apertura
-- Abrir CADA lección con una historia corta (3-5 líneas) que planta el problema
-- No empezar con definición — empezar con escenario concreto
-- Ejemplo: "Eran las 11pm, el sistema de Unimar explotó porque alguien puso SQL directo en el controlador..."
-
-### P3. Antes / Después (obligatorio)
-- Mostrar el PROBLEMA sin el concepto (caos, código feo, error)
-- Mostrar la SOLUCIÓN con el concepto (orden, claridad)
-
-```
-❌ ANTES (sin DDD):
-  El controlador llama directo a la BD,
-  la BD cambia y todo explota.
-
-✅ DESPUÉS (con DDD):
-  El controlador llama al dominio,
-  el dominio no sabe nada de la BD,
-  puedes cambiar la BD sin tocar lógica.
-```
-
-### P4. De simple a complejo (capas)
-- Primero: "versión niño de 5 años" → 1-2 oraciones máximo
-- Después: "versión programador" → detalle real
-- **Y si el tema es código: rematar con MODO MÁQUINA** → cómo funciona por dentro, hasta la raíz, con el pipeline animado
-- No mezclar capas. Subir escalón solo cuando ya pisas firme
-
-### P5. Anclar a lo que ya sabe
-- Siempre conectar lo nuevo a algo que Christian ya conoce
-- "Es como X que ya usas, pero..." → luego la diferencia
-- Priorizar analogías del mundo Unimar (contenedores, camiones, depósito)
-
-### P6. Frase mantra (1 sola, al final)
-- Cerrar la lección con UNA frase memorizable que resume todo
-- Ejemplos:
-  - "Hexagonal = el dominio no sabe quién lo llama"
-  - "DDD = el código habla el idioma del negocio"
-  - "IDENTITY = la BD asigna el ID, nunca tú"
-
-### P7. Error típico + por qué duele
-- Incluir 1-2 errores comunes + consecuencia real cuando pasa
-- Ejemplo: "Error típico: poner lógica de negocio en el controlador → cuando cambia el frontend, reescribes todo"
-
-### P8. Pregunta gancho al inicio
-- La lección ABRE con una pregunta que no sabe responder todavía
-- Al final: responder la pregunta explícitamente (cerrar el loop)
-- Ejemplo: "¿Por qué Unimar podría cambiar de PostgreSQL a MySQL sin reescribir la lógica de negocio? Lee y vas a poder responderlo."
-
-### P9. Checklist de comprensión real
-- Al final, 3-4 puntos de "sabes esto si puedes..." — acciones, no definiciones
-- Usar el patrón clickeable (#10)
-
-### P10. Vocabulario sin cabos sueltos (nuevo)
-- Ningún término técnico queda sin explicar: subrayado+tooltip en el texto, desglose si es inglés, entrada en el glosario
-- El glosario es pestaña del navbar, siempre a un clic
+- **P1. Dibujo de la analogía** — la analogía va ilustrada, no solo escrita.
+- **P2. Historia de apertura** (3-5 líneas) — planta el problema antes de la definición. Útil en temas nuevos; se salta en preguntas puntuales.
+- **P3. Antes / Después** — el caos sin el concepto vs el orden con él.
+- **P4. De simple a complejo** — versión intuitiva primero, técnica después; si es código, remata en modo máquina.
+- **P5. Anclar** — conectar con lo que ya conoce (mundo Unimar: contenedores, camiones, depósito).
+- **P6. Mantra** — UNA frase memorizable que resume todo ("Hexagonal = el dominio no sabe quién lo llama").
+- **P7. Error típico + por qué duele** — 1-2 errores comunes con su consecuencia real.
+- **P8. Pregunta gancho** — abre con una pregunta que aún no sabe responder; ciérrala explícitamente al final.
+- **P9. Checklist de comprensión** — "sabes esto si puedes…", acciones, no definiciones.
+- **P10. Vocabulario sin cabos sueltos** — ningún término sin explicar: tooltip en el texto, desglose si es inglés, entrada en el sidebar.
 
 ---
 
-## REGLA 3: Puente con el curso de inglés
+## Puente con el curso de inglés
 
-Todo término en inglés desglosado en una lección se registra en el banco de vocabulario del curso de inglés:
-`C:\Christian\Christian Personal\teacher-inglish\curriculum\vocab-bank.js` — agregar al array `words` una entrada con `term`, `ipa`, `es`, `breakdown` (el mismo desglose palabra por palabra), `meaning`, `context`, `source: "jarita-enseña"`, `added` (fecha), `status: "pending"`, `usedIn: []`; sin duplicar (si existe, solo enriquecer `context`) y actualizando el campo `updated` del banco. La skill `/teacher-ingles` los incorpora en las clases futuras. Avisar al usuario cuántas palabras se agregaron.
-
----
-
-## Checklist de entrega (antes de dar por terminada una lección)
-
-1. ☐ Grep de voseo sobre el HTML → cero matches (REGLA 0)
-2. ☐ Navbar sticky con pestañas, incluye 📖 Glosario y ✅ Quiz
-3. ☐ Todo término técnico del texto lleva `.gl` con tooltip
-4. ☐ Todo término en inglés tiene desglose palabra por palabra + IPA + 🔊
-5. ☐ Términos técnicos en español (trazabilidad, etc.) explicados
-6. ☐ Flujo ilustrado interactivo si el tema tiene proceso/secuencia
-7. ☐ Modo máquina si el tema es código/runtime/motor
-8. ☐ Pregunta gancho al inicio + respuesta al final
-9. ☐ Historia, antes/después, dos capas, analogía dibujada, error típico, mantra
-10. ☐ Quiz con feedback + checklist clickeable + recursos
-11. ☐ `index.html` actualizado con la nueva lección
-12. ☐ Términos EN registrados en vocab-bank.js de teacher-inglish (REGLA 3)
-13. ☐ Abrir en navegador
+Todo término en inglés desglosado se registra en `C:\Christian\Christian Personal\teacher-inglish\curriculum\vocab-bank.js` — array `words`: `term`, `ipa`, `es`, `breakdown`, `meaning`, `context`, `source: "jarita-enseña"`, `added`, `status: "pending"`, `usedIn: []`. Sin duplicar (si existe, enriquecer `context`) y actualizando el campo `updated`. Avisar cuántas palabras se agregaron.
 
 ---
 
-## Carpeta de Aprendizajes
+## Checklist de entrega (corto a propósito)
+
+1. ☐ Grep de voseo → cero matches (REGLA 0)
+2. ☐ **Glosario en sidebar fijo**, buscable, visible en toda la lección
+3. ☐ **Flujo dibujado** presente (temporal, de decisión o de dependencia)
+4. ☐ **Partes** presentes, una línea por pieza
+5. ☐ Entre 3 y 6 secciones — ninguna sección de relleno
+6. ☐ Todo término técnico con tooltip; los EN con desglose + IPA + 🔊
+7. ☐ Si la pregunta pedía decidir → hay recomendación explícita
+8. ☐ `index.html` actualizado
+9. ☐ Términos EN en vocab-bank.js
+10. ☐ Abrir en navegador
+
+---
+
+## Carpeta de aprendizajes
 
 ```
 C:\Christian\Unimar_obsidian\aprendizajes\
-├── index.html                          (índice de todas las lecciones)
-├── [concepto-slug].html                (una lección por concepto)
-└── assets\
-    ├── styles.css                      (CSS compartido)
-    ├── script.js                       (interactividad)
-    └── images\                         (SVGs y diagramas)
+├── index.html                  (índice de lecciones)
+├── [concepto-slug].html        (una lección por concepto, autocontenida)
+└── assets\images\              (SVGs compartidos)
 ```
 
-Las lecciones pueden ser autocontenidas (CSS/JS inline) — los documentos de referencia prd-tms.html y runtime-nodejs.html lo son, y funcionan bien así.
+## Actualización continua
 
----
+Feedback de Christian → actualizar este archivo **y** `jarita_learnings.md`.
 
-## Actualización Continua
-
-- Primer acceso: archivo nuevo
-- Segundo acceso: mejora basada en feedback
-- Feedback de Christian → actualizar este archivo Y `jarita_learnings.md`
-
----
-
-## Invocación Rápida
+## Invocación rápida
 
 ```
 /jarita-enseña DDD
 /jarita-enseña "hexagonal architecture"
-/jarita-enseña SQL "IDENTITY"
-/jarita-enseña event lup        ← mal escrito: deducir "event loop" e ilustrarlo igual
+/jarita-enseña event lup        ← mal escrito: deducir e ilustrar igual
 ```
-
-Jarita deduce términos mal escritos, pregunta detalles solo si hace falta, luego genera HTML.
