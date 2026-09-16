@@ -9,7 +9,7 @@
 #      SIN push y SIN pull: este hook JAMAS toca el remoto. Ni sube ni baja
 #      nada. El push lo hace Christian a mano cuando quiere.
 #   2. GUARDIA DE CONTEXTO: calcula el % de ventana consumida y avisa
-#      (60% = aviso temprano, 75% = cerrar y documentar con /viernes o /unimar)
+#      (40% = aviso temprano, 50% = cerrar y documentar con /viernes o /unimar)
 #
 # Entrada: JSON del hook por stdin (transcript_path, cwd, session_id)
 # Salida:  JSON con hookSpecificOutput.additionalContext (o nada)
@@ -25,8 +25,8 @@ $Repos = @(
     'C:\Christian\Christian Personal\viernes-obsidean'
 )
 $MinutosDebounce = 10
-$UmbralAviso     = 60
-$UmbralAlto      = 75
+$UmbralAviso     = 40
+$UmbralAlto      = 50   # regla dura de CLAUDE.md global: nunca se trabaja pasado el 50%
 
 $EstadoDir = Join-Path $env:USERPROFILE '.claude\session-env'
 if (-not (Test-Path $EstadoDir)) { New-Item -ItemType Directory -Path $EstadoDir -Force | Out-Null }

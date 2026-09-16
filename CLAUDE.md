@@ -19,6 +19,15 @@ Al trabajar en un repositorio, la fuente de verdad es, en este orden:
 
 Si el proyecto no declara un estándar, **preguntar antes de inventarlo**. No asumir el estándar de otro proyecto.
 
+## Límite de contexto — regla dura
+
+Nunca se trabaja por encima del **50 %** de la ventana de contexto. Aplica a toda sesión y a todo repositorio.
+
+- **Al 40 %:** no se empieza una tarea nueva ni una lectura grande. Se termina lo que está en curso.
+- **Al 50 %:** se detiene el trabajo. Se deja el estado por escrito (`/unimar` o `/viernes`, según la sesión), se confirma que quedó guardado y se pide a Christian abrir un chat nuevo. No se sigue «un poco más».
+- **Las tareas largas se parten** en pasos que quepan bajo el límite. Las lecturas y búsquedas amplias se delegan a subagentes, para no cargar el contexto principal.
+- **El aviso lo da el hook** `hooks/sesion-guard.ps1` (umbrales 40 y 50). Solo se ejecuta al final de cada turno: dentro de un turno largo, cortar antes sin esperar el aviso.
+
 ## Idioma
 
 Español para documentación, comentarios y mensajes al usuario, salvo que el repositorio indique lo contrario.
