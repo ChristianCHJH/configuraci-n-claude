@@ -14,5 +14,11 @@
 - [Hook sesion-guard sin push](hook-sesion-guard-sin-push.md) — El hook Stop solo commitea local + mide contexto; el push se quitó el 2026-08-12 y sus avisos de causa eran falsos
 - [Jarita Enseña ubicación aprendizajes](jarita-ensena-ubicacion-aprendizajes.md) — Los HTMLs de jarita-enseña ahora se guardan en C:\Christian\Unimar_obsidian\aprendizajes (movido del home)
 - [GitHub Project TMS Backlog](github-project-tms-backlog.md) — Board unimar-peru/8: campos, labels, convención de items y qué credencial hace falta (PAT clásico con scope project)
+- [Sin tooltips salvo pedido](sin-tooltips-salvo-pedido.md) — Nunca agregar `title`/tooltip por iniciativa propia; solo si se pide explícitamente
 - [Feedback issues GitHub breves](feedback-issues-github-breves.md) — Issues puntuales: título + 1-2 líneas + link al .md; el detalle nunca se duplica en el body
 
+- [Git cuenta GitHub unimar_tms](git-cuenta-github-unimar-tms.md) — "Repository not found" al pushear = credencial de ChristianCHJH; la org solo la ve unimar-christian-jara
+- [Feedback respuestas breves](feedback-respuestas-breves.md) — máximo 5-6 líneas al explicar un diagnóstico o un estado
+- [Feedback sin parches](feedback-sin-parches-arquitectura.md) — arreglar la causa respetando SOLID y la arquitectura; alternativas con riesgo medido
+- [Balanza DT cierra el viaje](tms-balanza-dt-cierre-viaje.md) — SAP→MDM (no es XMS) avisa BALANZA_DT (BL+placa); INGRESO_DT deducido hasta integrar portal de accesos
+- [Commits unimar_tms en bloques](commits-unimar-tms-en-bloques.md) — cuando pide commitear: todo el árbol en commits temáticos, 5 palabras máximo, sin firma; push nunca
