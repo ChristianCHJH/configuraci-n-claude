@@ -10,6 +10,8 @@
 - [TMS Prototipo Scope](tms_prototipo_scope.md) — Pantallas TMS referenciales: diseño visual libre, pero sin funciones extra al PRD
 - [Feedback Regla 100 líneas](feedback-regla-100-lineas.md) — En wikis /unimar y /viernes: 100 líneas = tope de HOJA, no de contenido; se parte en sub-páginas enlazadas, nunca se recorta
 - [TMS UNITRANS mínimo datos conductor](tms-unitrans-minimo-datos-conductor.md) — App del conductor debe pedir mínimos datos (resistencia al uso); ideal: con el código del contenedor se autocompleta todo. Impo lo registra el conductor; expo lo hace el asistente
-- [Git Unimar_obsidian siempre commit+push](git-unimar-obsidian-siempre-commit-push.md) — En el repo del wiki SIEMPRE commit + push automático (no en unimar_tms). Bloqueado hoy por reglas deny de settings.json
+- [Git Unimar_obsidian commit sí, push no](git-unimar-obsidian-siempre-commit-push.md) — En el repo del wiki: commit automático SÍ, push NO (lo hace Christian). En unimar_tms: ni commit ni push
 - [Jarita Enseña ubicación aprendizajes](jarita-ensena-ubicacion-aprendizajes.md) — Los HTMLs de jarita-enseña ahora se guardan en C:\Christian\Unimar_obsidian\aprendizajes (movido del home)
+- [GitHub Project TMS Backlog](github-project-tms-backlog.md) — Board unimar-peru/8: campos, labels, convención de items y qué credencial hace falta (PAT clásico con scope project)
+- [Feedback issues GitHub breves](feedback-issues-github-breves.md) — Issues puntuales: título + 1-2 líneas + link al .md; el detalle nunca se duplica en el body
 
