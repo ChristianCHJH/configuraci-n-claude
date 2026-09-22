@@ -1,0 +1,1079 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1"><style>:root{color-scheme:light}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found]){display:none!important}</style></head><body>
+<title>Auditoría de cliente y expediente</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Serif:wght@500;600&display=swap">
+<style>
+  :root {
+    --marca-50: #F7FAFD;
+    --marca-100: #E8EFF7;
+    --marca-500: #2E5C8A;
+    --marca-700: #1B3A5C;
+    --marca-900: #0F2540;
+    --acento: #C4703A;
+    --lienzo: #F3F5F8;
+    --superficie: #FFFFFF;
+    --superficie-2: #FAFBFD;
+    --borde: #E3E6EB;
+    --borde-fuerte: #CBD2DB;
+    --tinta: #1A1F26;
+    --tinta-suave: #5B6673;
+    --tinta-tenue: #8A94A1;
+    --critico: #A33228;
+    --critico-fondo: #FBEEEC;
+    --alto: #B0632F;
+    --alto-fondo: #FBF2EA;
+    --medio: #4C6580;
+    --medio-fondo: #EEF2F6;
+    --cerrado: #1F6B4E;
+    --cerrado-fondo: #EAF5EF;
+    --sombra: 0 1px 2px rgba(15, 37, 64, .06), 0 8px 24px -18px rgba(15, 37, 64, .35);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --marca-50: #16202C;
+      --marca-100: #1B2A3A;
+      --marca-500: #6FA3D4;
+      --marca-700: #93BCE3;
+      --marca-900: #C6DBF0;
+      --acento: #E29A67;
+      --lienzo: #0D141C;
+      --superficie: #131C26;
+      --superficie-2: #17212D;
+      --borde: #26333F;
+      --borde-fuerte: #38495A;
+      --tinta: #E7EDF4;
+      --tinta-suave: #A2AEBC;
+      --tinta-tenue: #74818F;
+      --critico: #E88478;
+      --critico-fondo: #2C1A18;
+      --alto: #E0A170;
+      --alto-fondo: #2A1F16;
+      --medio: #9DB6CD;
+      --medio-fondo: #1A2632;
+      --cerrado: #6FC79E;
+      --cerrado-fondo: #122019;
+      --sombra: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px -20px rgba(0, 0, 0, .8);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --marca-50: #16202C;
+    --marca-100: #1B2A3A;
+    --marca-500: #6FA3D4;
+    --marca-700: #93BCE3;
+    --marca-900: #C6DBF0;
+    --acento: #E29A67;
+    --lienzo: #0D141C;
+    --superficie: #131C26;
+    --superficie-2: #17212D;
+    --borde: #26333F;
+    --borde-fuerte: #38495A;
+    --tinta: #E7EDF4;
+    --tinta-suave: #A2AEBC;
+    --tinta-tenue: #74818F;
+    --critico: #E88478;
+    --critico-fondo: #2C1A18;
+    --alto: #E0A170;
+    --alto-fondo: #2A1F16;
+    --medio: #9DB6CD;
+    --medio-fondo: #1A2632;
+    --cerrado: #6FC79E;
+    --cerrado-fondo: #122019;
+    --sombra: 0 1px 2px rgba(0, 0, 0, .4), 0 10px 30px -20px rgba(0, 0, 0, .8);
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    margin: 0;
+    background: var(--lienzo);
+    color: var(--tinta);
+    font-family: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .hoja {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+    display: flex;
+    flex-direction: column;
+    gap: 36px;
+  }
+
+  .encabezado { display: flex; flex-direction: column; gap: 18px; }
+
+  .eyebrow {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 12px;
+    letter-spacing: .09em;
+    text-transform: uppercase;
+    color: var(--tinta-tenue);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 14px;
+    align-items: center;
+  }
+
+  .eyebrow .rama { color: var(--marca-500); font-weight: 600; }
+
+  h1 {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(30px, 4.4vw, 42px);
+    line-height: 1.12;
+    letter-spacing: -.015em;
+    margin: 0;
+    text-wrap: balance;
+  }
+
+  .bajada {
+    margin: 0;
+    max-width: 62ch;
+    color: var(--tinta-suave);
+    font-size: 16px;
+  }
+
+  .marcador {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    background: var(--superficie);
+    overflow: hidden;
+    box-shadow: var(--sombra);
+  }
+
+  .marcador div {
+    flex: 1 1 150px;
+    padding: 14px 18px;
+    border-right: 1px solid var(--borde);
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .marcador div:last-child { border-right: none; }
+
+  .marcador .cifra {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: 28px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+  }
+
+  .marcador .etiqueta {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 11px;
+    letter-spacing: .07em;
+    text-transform: uppercase;
+    color: var(--tinta-tenue);
+  }
+
+  .c-critico { color: var(--critico); }
+  .c-alto { color: var(--alto); }
+  .c-medio { color: var(--medio); }
+  .c-marca { color: var(--marca-500); }
+  .c-cerrado { color: var(--cerrado); }
+
+  .decision {
+    border: 1px solid var(--borde);
+    border-left: 3px solid var(--marca-500);
+    background: var(--superficie);
+    border-radius: 4px 12px 12px 4px;
+    padding: 22px 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    box-shadow: var(--sombra);
+  }
+
+  .decision h2 {
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: 19px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  .decision p { margin: 0; max-width: 70ch; color: var(--tinta-suave); }
+  .decision strong { color: var(--tinta); font-weight: 600; }
+
+  .decision .pasos {
+    margin: 6px 0 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+  }
+
+  .decision .pasos li {
+    display: grid;
+    grid-template-columns: 22px 1fr;
+    gap: 8px;
+    color: var(--tinta-suave);
+  }
+
+  .decision .pasos span {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 12px;
+    color: var(--marca-500);
+    padding-top: 2px;
+  }
+
+  section.bloque { display: flex; flex-direction: column; gap: 14px; }
+
+  .titulo-bloque {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    flex-wrap: wrap;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--borde-fuerte);
+  }
+
+  .titulo-bloque h2 {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    margin: 0;
+  }
+
+  .titulo-bloque .nota {
+    font-size: 13px;
+    color: var(--tinta-tenue);
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  }
+
+  .lista { display: flex; flex-direction: column; gap: 10px; }
+
+  article.hallazgo {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    background: var(--superficie);
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: var(--sombra);
+  }
+
+  article.hallazgo .indice {
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 16px 0 0;
+    font-family: 'IBM Plex Serif', Georgia, serif;
+    font-size: 17px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    border-right: 1px solid var(--borde);
+  }
+
+  article.critico .indice { background: var(--critico-fondo); color: var(--critico); }
+  article.alto .indice { background: var(--alto-fondo); color: var(--alto); }
+  article.medio .indice { background: var(--medio-fondo); color: var(--medio); }
+
+  .cuerpo {
+    padding: 14px 18px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 7px;
+    min-width: 0;
+  }
+
+  .cuerpo h3 {
+    margin: 0;
+    font-size: 15.5px;
+    font-weight: 600;
+    line-height: 1.35;
+    text-wrap: balance;
+  }
+
+  .ruta {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 12.5px;
+    color: var(--marca-500);
+    overflow-x: auto;
+    white-space: nowrap;
+    padding-bottom: 2px;
+  }
+
+  .escenario {
+    margin: 0;
+    font-size: 13.5px;
+    color: var(--tinta-suave);
+    max-width: 84ch;
+  }
+
+  .escenario code {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 12.5px;
+    background: var(--marca-50);
+    border: 1px solid var(--borde);
+    border-radius: 4px;
+    padding: 0 4px;
+    color: var(--tinta);
+  }
+
+  .chips { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+
+  .chip {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 10.5px;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    padding: 2px 7px;
+    border-radius: 999px;
+    border: 1px solid var(--borde-fuerte);
+    color: var(--tinta-tenue);
+  }
+
+  .chip.verificado { border-color: var(--marca-500); color: var(--marca-500); }
+
+  footer.cierre {
+    border-top: 1px solid var(--borde-fuerte);
+    padding-top: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    color: var(--tinta-tenue);
+    font-size: 13px;
+  }
+
+  footer.cierre strong { color: var(--tinta-suave); font-weight: 600; }
+
+  article.resuelto { border-color: var(--cerrado); }
+
+  article.resuelto .indice {
+    background: var(--cerrado-fondo);
+    color: var(--cerrado);
+  }
+
+  article.resuelto .cuerpo h3 { color: var(--tinta-suave); }
+
+  .chip.cerrado {
+    border-color: var(--cerrado);
+    color: var(--cerrado);
+    font-weight: 600;
+  }
+
+  .arreglo {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--cerrado);
+    border-left: 2px solid var(--cerrado);
+    padding-left: 10px;
+    max-width: 84ch;
+  }
+
+  .arreglo code {
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 12px;
+    background: transparent;
+    border: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  .pendiente {
+    margin: 4px 0 0;
+    font-size: 13px;
+    color: var(--alto);
+    border-left: 2px solid var(--alto);
+    padding-left: 10px;
+    max-width: 84ch;
+  }
+
+  .verificacion {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 26px;
+    padding: 14px 18px;
+    border: 1px solid var(--cerrado);
+    background: var(--cerrado-fondo);
+    border-radius: 10px;
+    font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-size: 12.5px;
+    color: var(--cerrado);
+  }
+
+  @media (max-width: 640px) {
+    .hoja { padding: 28px 14px 60px; }
+    article.hallazgo { grid-template-columns: 34px 1fr; }
+    .cuerpo { padding: 12px 13px 14px; }
+  }
+</style>
+
+<div class="hoja">
+
+  <header class="encabezado">
+    <div class="eyebrow">
+      <span class="rama">feat/cliente-y-expediente</span>
+      <span>·</span>
+      <span>3 commits contra develop</span>
+      <span>·</span>
+      <span>revisión max · 9 ángulos</span>
+    </div>
+    <h1>Auditoría de cliente y expediente</h1>
+    <p class="bajada">
+      Treinta y un hallazgos sobre el módulo <strong>cliente</strong> de la API, la migración
+      <strong>1788048000000</strong> y las cuatro pantallas Angular, ordenados por lo que costaría
+      dejarlos entrar. <strong>Nueve ya están corregidos</strong> y la suite completa corre en verde;
+      tres esperan una decisión tuya porque crean o cambian una tabla, y la regla del proyecto pide
+      ADR antes que migración.
+    </p>
+
+    <div class="marcador">
+      <div>
+        <span class="cifra c-cerrado">9</span>
+        <span class="etiqueta">Corregidos</span>
+      </div>
+      <div>
+        <span class="cifra c-alto">3</span>
+        <span class="etiqueta">Esperan tu decisión</span>
+      </div>
+      <div>
+        <span class="cifra c-medio">19</span>
+        <span class="etiqueta">Abiertos</span>
+      </div>
+      <div>
+        <span class="cifra c-marca">641</span>
+        <span class="etiqueta">Pruebas en verde</span>
+      </div>
+    </div>
+
+    <div class="verificacion">
+      <span>44 suites · 641 pruebas · 0 fallos</span>
+      <span>tsc --noEmit limpio en api y web</span>
+      <span>sin-comentarios: 596 archivos</span>
+    </div>
+  </header>
+
+  <div class="decision">
+    <h2>El ámbito de empresa, ya decidido</h2>
+    <p>
+      El comprador separa con la empresa A y factura con la B, así que la persona no es de una empresa:
+      lo que es de una empresa es la relación. <strong>La ficha de identidad se queda global</strong>
+      —una persona, un DNI, un expediente— y nace <strong>cliente_empresa</strong> con el asesor asignado,
+      la fecha de primer contacto y el estado comercial, que hoy están mal puestos sobre la persona.
+      La relación se crea en el mismo <code>POST</code> de alta, con la empresa de quien registra: no existe
+      el cliente huérfano.
+    </p>
+    <ul class="pasos">
+      <li><span>ADR</span>ADR-024 «el cliente es del grupo, la relación es de la empresa» — se escribe primero.</li>
+      <li><span>SQL</span>Migración: tabla <code>cliente_empresa</code> y traslado de <code>asesor_asignado_id</code> y <code>fecha_primer_contacto</code>.</li>
+      <li><span>API</span><code>listar</code> hace <code>INNER JOIN</code> con la empresa del solicitante; <code>obtener</code> responde 404 sin relación.</li>
+    </ul>
+    <p>
+      Esa decisión cierra los hallazgos <strong>1</strong> y, en parte, <strong>18</strong> y <strong>25</strong>.
+      Es la primera de las tres que faltan.
+    </p>
+  </div>
+
+  <div class="decision">
+    <h2>Las tres decisiones que faltan</h2>
+    <p>
+      Cada una crea o cambia una tabla, y el propio <code>CLAUDE.md</code> dice que un cambio de esquema
+      va con <strong>ADR primero</strong>. Por eso quedaron fuera de esta tanda: no es que sean difíciles,
+      es que escribir la migración antes que la decisión es exactamente lo que la regla prohíbe.
+    </p>
+    <ul class="pasos">
+      <li><span>1</span>El ámbito del cliente: tabla <code>cliente_empresa</code> — modelo ya acordado arriba, falta el ADR-024.</li>
+      <li><span>4</span>El expediente por tipo de persona: tabla <code>requisito_expediente</code>, con el eje <code>momento_solicitud</code> que ya existe.</li>
+      <li><span>7</span>El formato del documento: cambiar la expresión regular libre por un catálogo cerrado, lo que migra los datos del catálogo actual.</li>
+    </ul>
+    <p>
+      Hay una cuarta, más chica, que atraviesa los hallazgos <strong>3</strong> y <strong>14</strong>:
+      qué significa un <code>null</code> en un <code>PATCH</code>. ADR-017 solo habla de la clave ausente.
+    </p>
+  </div>
+
+  <section class="bloque">
+    <div class="titulo-bloque">
+      <h2 class="c-critico">Bloquea el merge</h2>
+      <span class="nota">9 hallazgos · 6 corregidos · 3 esperan decisión</span>
+    </div>
+    <div class="lista">
+
+      <article class="hallazgo critico">
+        <div class="indice">1</div>
+        <div class="cuerpo">
+          <h3>La cartera de clientes es global: un asesor de A lee y edita las fichas de B</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/infraestructura/persistencia/cliente.entity.ts:16</div>
+          <p class="escenario">
+            <code>Cliente</code> hereda de <code>EntidadBase</code> y ningún caso de uso llama
+            <code>empresaDelSolicitante()</code>. <code>GET /clientes</code> devuelve la cartera completa del grupo
+            —nombre, DNI, RUC, domicilio, teléfono— y <code>PATCH /clientes/:id</code> deja reasignarse un cliente
+            ajeno por <code>asesorAsignadoId</code>. Contradice ADR-013 sin que ningún ADR lo autorice.
+          </p>
+          <p class="pendiente">Espera tu decisión. El modelo está acordado —ficha global más <code>cliente_empresa</code>— pero crea una tabla, y la regla del proyecto pide ADR antes que migración.</p>
+          <div class="chips">
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Seguridad</span>
+            <span class="chip">Resuelto por ADR-024</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo resuelto critico">
+        <div class="indice">2</div>
+        <div class="cuerpo">
+          <h3>PLANOS_VER alcanza los documentos de identidad de todos los clientes</h3>
+          <div class="ruta">apps/api/src/modulos/archivo/api/archivo.controller.ts:12</div>
+          <p class="escenario">
+            Los escaneos de DNI se registran como filas de <code>archivo</code>, pero el controlador sigue con un
+            único <code>@Permisos(PLANOS_VER)</code> y no filtra por <code>tipoArchivo</code>. Un usuario de planos
+            hace <code>GET /archivos?limit=100</code> y recibe la ruta en disco, el nombre original y el
+            <code>clienteId</code> de cada documento del sistema. Al revés, quien solo tiene CLIENTES_GESTIONAR
+            recibe 403 sobre el archivo que él mismo subió.
+          </p>
+          <p class="arreglo">Cerrado · <strong>ADR-025</strong>. <code>ArchivoController</code>, <code>ListarArchivosCasoUso</code> y su DTO se eliminaron: <code>archivo</code> es ahora módulo de soporte, declarado en <code>arquitectura.spec.ts</code> junto a <code>correo</code>. El binario se sirve por la ruta de su dueño.</p>
+          <div class="chips">
+            <span class="chip cerrado">Cerrado</span>
+            <span class="chip">Seguridad</span>
+            <span class="chip">Permiso cruzado</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo resuelto critico">
+        <div class="indice">3</div>
+        <div class="cuerpo">
+          <h3>Editar el tipo de documento de una ficha jurídica devuelve 500</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/aplicacion/actualizar-cliente.caso-uso.ts:41</div>
+          <p class="escenario">
+            En una persona jurídica <code>numeroDocumento</code> es NULL, pero se pasa como
+            <code>as string</code> y <code>formato-de-documento.ts:11</code> hace <code>.length</code> sobre él:
+            TypeError, que el filtro traduce a 500. La variante <code>{"ruc": null}</code> es peor y silenciosa:
+            <code>buscarPorRuc(null)</code> genera <code>WHERE ruc IS NULL</code>, empareja con cualquier ficha
+            y devuelve un 409 nombrando a un tercero.
+          </p>
+          <p class="arreglo">Cerrado. Nueva función pura <code>identidadDeclaradaEn</code> en <code>dominio/ficha-coherente.ts</code>: devuelve el par tipo+número solo cuando la ficha lo declara. Desaparecieron los dos <code>as</code>, y el <code>ruc</code> nulo ya no entra a la búsqueda de duplicados. Con prueba unitaria y de integración.</p>
+          <div class="chips">
+            <span class="chip cerrado">Cerrado</span>
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Corrección</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo critico">
+        <div class="indice">4</div>
+        <div class="cuerpo">
+          <h3>El expediente exige DNI a las personas jurídicas, así que nunca queda completo</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/dominio/expediente-del-cliente.ts:28</div>
+          <p class="escenario">
+            <code>listarTodos()</code> entrega el catálogo entero sin eje de <code>tipoPersona</code>, y la
+            migración siembra DNI con <code>obligatorio = true</code>. Toda empresa —y todo cliente con pasaporte
+            o carné— arrastra <code>faltantes: ['Documento Nacional de Identidad']</code> para siempre.
+            Las pruebas solo usan PERSONA_NATURAL con DNI, por eso pasa en verde.
+          </p>
+          <p class="pendiente">Espera tu decisión. La salida escalable es <code>requisito_expediente(tipo_documento_id, tipo_persona, momento_solicitud)</code>: tabla nueva, ADR primero.</p>
+          <div class="chips">
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Regla de negocio</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo resuelto critico">
+        <div class="indice">5</div>
+        <div class="cuerpo">
+          <h3>Reemplazar un documento puede dejar al cliente sin ninguna versión</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/aplicacion/adjuntar-documento-al-cliente.caso-uso.ts:75</div>
+          <p class="escenario">
+            Cuatro escrituras sin transacción, y la versión anterior se da de baja <em>antes</em> de insertar la nueva.
+            Si el último INSERT falla, la anterior ya quedó con <code>motivoEliminacion = 'Reemplazado por una
+            versión más reciente'</code> y la nueva no existe: el DNI desaparece del expediente y quedan huérfanos
+            el binario en disco y la fila de <code>archivo</code>. El puerto ni siquiera declara <code>eliminar()</code>
+            para compensar.
+          </p>
+          <p class="arreglo">Cerrado. El puerto gana <code>reemplazarVersionVigente</code>, que hace la baja y el alta dentro de una transacción en el adaptador TypeORM. Si algo falla después de escribir el binario, el almacén lo borra con el nuevo <code>eliminar()</code>.</p>
+          <div class="chips">
+            <span class="chip cerrado">Cerrado</span>
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Pérdida de datos</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo resuelto critico">
+        <div class="indice">6</div>
+        <div class="cuerpo">
+          <h3>No hay forma de volver a ver el documento subido</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/api/documento-cliente.controller.ts:39</div>
+          <p class="escenario">
+            El controlador expone lista de metadatos, alta y baja. <code>ArchivoController</code> solo devuelve la
+            fila, nunca el binario: no hay <code>StreamableFile</code> ni <code>sendFile</code> en ninguna ruta, y la
+            pantalla de documentos tampoco tiene enlace de descarga. Se sube el escaneo del DNI y el expediente
+            queda de solo escritura.
+          </p>
+          <p class="arreglo">Cerrado. <code>GET /clientes/:clienteId/documentos/:documentoId/contenido</code> devuelve el binario con <code>StreamableFile</code> y <code>@SinEnvolver()</code>, y la pantalla de documentos estrena su botón «Ver». El puerto del almacén gana <code>abrir()</code>.</p>
+          <div class="chips">
+            <span class="chip cerrado">Cerrado</span>
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Funcionalidad ausente</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo critico">
+        <div class="indice">7</div>
+        <div class="cuerpo">
+          <h3>El campo «formato» se compila como expresión regular sin validarlo</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/dominio/formato-de-documento.ts:15</div>
+          <p class="escenario">
+            El DTO solo valida <code>@IsString @MaxLength(60)</code>. Un <code>formato = '['</code> guardado desde la
+            pantalla de catálogo hace que todo alta de cliente con ese tipo responda 500. Un
+            <code>^(a+)+$</code> —once caracteres— es backtracking catastrófico que congela el event loop para todos.
+            Y sin anclas, <code>[0-9]{8}</code> acepta <code>abc12345678xyz</code> como DNI.
+          </p>
+          <p class="pendiente">Espera tu decisión. La propuesta es cambiar la expresión regular libre por un catálogo cerrado de formatos, lo que migra los datos del catálogo actual.</p>
+          <div class="chips">
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Disponibilidad</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo resuelto critico">
+        <div class="indice">8</div>
+        <div class="cuerpo">
+          <h3>La migración aborta en cualquier base que ya tenga un lote con cliente</h3>
+          <div class="ruta">apps/api/src/migraciones/1788048000000-ClienteYExpediente.ts:168</div>
+          <p class="escenario">
+            <code>lote.cliente_id</code> existe desde la migración anterior y los DTOs lo aceptan sin comprobar nada,
+            así que hoy puede tener cualquier entero. La tabla <code>cliente</code> nace vacía en esta misma migración:
+            un solo lote con <code>cliente_id = 5</code> hace fallar el <code>ADD CONSTRAINT</code> con 23503 y revierte
+            todo el <code>up()</code> —ni cliente, ni tipo_documento, ni permisos—. En la suite pasa porque la base
+            de prueba arranca vacía.
+          </p>
+          <p class="arreglo">Cerrado. La migración limpia los <code>cliente_id</code> huérfanos antes del <code>ADD CONSTRAINT</code>, y <code>CrearLoteCasoUso</code> y <code>ActualizarLoteCasoUso</code> comprueban que el cliente exista para que un id inválido sea un 404 de dominio y no un 23503 del driver.</p>
+          <div class="chips">
+            <span class="chip cerrado">Cerrado</span>
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Despliegue</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo resuelto critico">
+        <div class="indice">9</div>
+        <div class="cuerpo">
+          <h3>La subida de archivos no tiene tope: el proceso se cae por memoria</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/api/documento-cliente.controller.ts:48</div>
+          <p class="escenario">
+            <code>FileInterceptor('archivo')</code> sin <code>limits</code>, sin <code>MulterModule.register</code> y sin
+            <code>ParseFilePipe</code>: multer usa memoria y el cuerpo entero llega al heap antes de que se miren los
+            tres bytes de firma que lo van a rechazar. <code>configuracion.ts:84</code> ya define
+            <code>tamanoMaximoMb</code> y no se usa en ninguna parte.
+          </p>
+          <p class="arreglo">Cerrado. Nuevo <code>SubidaDeArchivosModule</code> en <code>comun/archivos/</code> que registra <code>MulterModule</code> con <code>limits.fileSize</code> desde <code>TAMANO_MAXIMO_MB</code>. Lo importan cliente y plano: el próximo módulo que suba archivos lo hereda.</p>
+          <div class="chips">
+            <span class="chip cerrado">Cerrado</span>
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Disponibilidad</span>
+          </div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="bloque">
+    <div class="titulo-bloque">
+      <h2 class="c-alto">Antes de producción</h2>
+      <span class="nota">10 hallazgos · 2 corregidos de paso</span>
+    </div>
+    <div class="lista">
+
+      <article class="hallazgo resuelto alto">
+        <div class="indice">10</div>
+        <div class="cuerpo">
+          <h3>Nada impide dos versiones vigentes de la misma cara</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/infraestructura/persistencia/documento-cliente.repositorio.typeorm.ts:38</div>
+          <p class="escenario">
+            Falta el índice único parcial sobre <code>(cliente_id, tipo_documento_id, cara) WHERE eliminado = false</code>
+            —el módulo <code>plano</code> sí lo sella así— y <code>ultimaVersionDe</code> ordena por
+            <code>versionActual</code> sin desempate por <code>id</code>. Dos envíos concurrentes (doble clic desde el móvil)
+            dejan dos anversos vivos y el siguiente reemplazo sepulta uno al azar. Además, tras un <code>DELETE</code>
+            el contador de versiones reinicia en 1.
+          </p>
+          <p class="arreglo">Cerrado. La migración crea <code>ux_documento_cliente_vigente</code> — único parcial sobre cliente+tipo+cara con <code>NULLS NOT DISTINCT</code> y <code>WHERE eliminado = false</code> — y <code>ultimaVersionDe</code> desempata por <code>id</code>.</p>
+          <div class="chips">
+            <span class="chip cerrado">Cerrado</span>
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Integridad</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo alto">
+        <div class="indice">11</div>
+        <div class="cuerpo">
+          <h3>Se puede dar de baja un documento de un cliente ya dado de baja</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/aplicacion/dar-de-baja-documento-del-cliente.caso-uso.ts:21</div>
+          <p class="escenario">
+            Listar y adjuntar abren con <code>obtenerCliente.ejecutar()</code>; la baja va directo a
+            <code>buscarPorId</code> y solo compara el <code>clienteId</code> de la URL. Con el cliente dado de baja,
+            GET y POST responden 404 pero <code>DELETE .../documentos/12</code> responde 200: se sigue borrando
+            evidencia de un expediente que el sistema ya declaró inaccesible.
+          </p>
+          <div class="chips"><span class="chip">Seguridad</span></div>
+        </div>
+      </article>
+
+      <article class="hallazgo alto">
+        <div class="indice">12</div>
+        <div class="cuerpo">
+          <h3>La extensión en disco sale del nombre que manda el cliente</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/infraestructura/almacenamiento/almacen-de-documentos.disco.ts:23</div>
+          <p class="escenario">
+            El contenido sí se valida por magic bytes, pero el sufijo lo elige quien sube: un archivo con firma PNG
+            llamado <code>dni.svg</code> queda en disco como <code>&lt;uuid&gt;.svg</code>. El día que ese volumen se sirva
+            estático —el uso natural de la carpeta— el navegador lo interpreta por extensión: XSS almacenado en el
+            propio dominio, con las cookies de sesión en juego.
+          </p>
+          <div class="chips"><span class="chip">Seguridad</span></div>
+        </div>
+      </article>
+
+      <article class="hallazgo alto">
+        <div class="indice">13</div>
+        <div class="cuerpo">
+          <h3>La vigencia de poderes se alarga cuando el día no existe en el mes destino</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/dominio/expediente-del-cliente.ts:53</div>
+          <p class="escenario">
+            <code>setUTCMonth</code> desborda: emitido el 31 de agosto con seis meses de vigencia, vence el 3 de marzo
+            en vez del 28 de febrero (comprobado en Node). El aviso de «Vencidos» no aparece justo en la ventana en la
+            que alguien firma un contrato con poderes caducos. El <code>.spec.ts</code> solo prueba días 15 y 30.
+          </p>
+          <div class="chips">
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Regla de negocio</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo alto">
+        <div class="indice">14</div>
+        <div class="cuerpo">
+          <h3>Ningún campo opcional se puede vaciar desde el formulario</h3>
+          <div class="ruta">apps/web/.../cliente-formulario/cliente-formulario.component.ts:528</div>
+          <p class="escenario">
+            <code>limpio('')</code> devuelve <code>undefined</code> y <code>JSON.stringify</code> descarta la clave, así que
+            el PATCH ni menciona el campo y ADR-017 manda conservarlo. El usuario borra un correo equivocado, la UI
+            dice «guardado» y el valor viejo sigue ahí. Igual con teléfono, domicilio, fecha de nacimiento, estado
+            civil, rubro, contacto, representante legal y domicilio fiscal.
+          </p>
+          <div class="chips">
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Corrección</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo alto">
+        <div class="indice">15</div>
+        <div class="cuerpo">
+          <h3>«Abrir su ficha» puede llevar a un cliente que no es el duplicado</h3>
+          <div class="ruta">apps/web/.../cliente-formulario/cliente-formulario.component.ts:491</div>
+          <p class="escenario">
+            Tras el 409 se busca el duplicado con un <code>ILIKE '%…%'</code> sobre siete columnas —incluidos los dos
+            teléfonos— ordenado por nombre, y se toma <code>datos[0]</code>. Un DNI que aparezca dentro del celular de
+            otro cliente gana. El servidor ya conoce el id exacto: <code>DuenoDelDocumento</code> lo arma y lo descarta,
+            quedándose solo con la prosa del mensaje.
+          </p>
+          <div class="chips">
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Corrección</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo alto">
+        <div class="indice">16</div>
+        <div class="cuerpo">
+          <h3>Desactivar un tipo de documento no lo saca de circulación</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/infraestructura/persistencia/tipo-documento.repositorio.typeorm.ts:15</div>
+          <p class="escenario">
+            <code>listarTodos</code> filtra <code>eliminado</code> y nunca <code>estado</code>, aunque esta misma rama agrega
+            <code>estado</code> al DTO justo para retirar un tipo. El tipo apagado sigue contando como obligatorio en
+            todos los expedientes y sigue apareciendo en el selector del alta. Aparte,
+            <code>listarTodos(soloIdentidad)</code> trata <code>false</code> como filtro en vez de como ausencia de filtro.
+          </p>
+          <div class="chips"><span class="chip">Corrección</span></div>
+        </div>
+      </article>
+
+      <article class="hallazgo alto">
+        <div class="indice">17</div>
+        <div class="cuerpo">
+          <h3>La baja del cliente deja <code>estado</code> en true</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/aplicacion/dar-de-baja-cliente.caso-uso.ts:20</div>
+          <p class="escenario">
+            Proyecto y lote bajan las dos banderas juntas; aquí solo se marca <code>eliminado</code>. La ficha
+            desaparece del listado pero cualquier consulta que se apoye en <code>estado</code> —reparto de cartera,
+            un futuro contrato que exija cliente activo, un informe agrupado— la sigue contando como viva.
+          </p>
+          <div class="chips"><span class="chip">Consistencia</span></div>
+        </div>
+      </article>
+
+      <article class="hallazgo alto">
+        <div class="indice">18</div>
+        <div class="cuerpo">
+          <h3>CLIENTES_VER existe, se concede y no habilita nada</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/api/cliente.controller.ts:32</div>
+          <p class="escenario">
+            La migración lo inserta y lo enlaza a ADMINISTRADOR, pero los tres controladores y las dos rutas Angular
+            exigen CLIENTES_GESTIONAR incluso en los GET, y tampoco aparece en el menú lateral. Un rol de consulta
+            con CLIENTES_VER recibe 403; para que vea algo hay que darle escritura completa. El par
+            PLANOS_VER / PLANOS_GESTIONAR sí está bien partido.
+          </p>
+          <div class="chips">
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Permisos</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo resuelto alto">
+        <div class="indice">19</div>
+        <div class="cuerpo">
+          <h3>El guard mecánico no mira ninguna de las tres tablas nuevas</h3>
+          <div class="ruta">apps/api/test/arquitectura.spec.ts:41</div>
+          <p class="escenario">
+            Las entidades se registran en Jest solo por los imports explícitos de la cabecera, y esta rama no los
+            agregó. Todas las aserciones de metadata —herencia de <code>EntidadBase</code>, tabla en singular,
+            snake_case, columnas de actualización nulables, escaneo de secretos— pasan en verde sin haber
+            examinado <code>cliente</code>, <code>tipo_documento</code> ni <code>documento_cliente</code>.
+          </p>
+          <p class="arreglo">Cerrado. <code>cliente</code>, <code>tipo_documento</code> y <code>documento_cliente</code> ya se importan en <code>arquitectura.spec.ts</code>: el guard mecánico de metadata vuelve a mirar las tablas nuevas.</p>
+          <div class="chips">
+            <span class="chip cerrado">Cerrado</span><span class="chip">Cobertura</span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="bloque">
+    <div class="titulo-bloque">
+      <h2 class="c-medio">Deuda del módulo</h2>
+      <span class="nota">12 hallazgos · 1 corregido de paso</span>
+    </div>
+    <div class="lista">
+
+      <article class="hallazgo medio">
+        <div class="indice">20</div>
+        <div class="cuerpo">
+          <h3>La prueba de cliente inyecta el repositorio real de archivo</h3>
+          <div class="ruta">apps/api/test/cliente.spec.ts:127</div>
+          <p class="escenario">
+            <code>plano.spec.ts</code> hace lo contrario: dobla <code>RegistrarArchivoCasoUso</code> por
+            <code>useValue</code>, que es lo que manda el CLAUDE.md. Así, un cambio dentro de la persistencia de
+            <code>archivo</code> pone en rojo la suite de cliente por una razón ajena, y la prueba deja de demostrar
+            que los módulos solo se hablan por casos de uso.
+          </p>
+          <div class="chips"><span class="chip">Convención</span></div>
+        </div>
+      </article>
+
+      <article class="hallazgo resuelto medio">
+        <div class="indice">21</div>
+        <div class="cuerpo">
+          <h3>Falta el índice de <code>lote.cliente_id</code>; la ficha hace seq scan</h3>
+          <div class="ruta">apps/api/src/migraciones/1788048000000-ClienteYExpediente.ts:168</div>
+          <p class="escenario">
+            La migración crea <code>idx_documento_cliente_cliente_id</code> e <code>idx_archivo_cliente_id</code> pero no
+            el de lote, y en la misma rama se estrena el filtro que lo consulta en cada apertura de ficha.
+            <code>findAndCount</code> lo recorre dos veces: con 30k lotes son ~60k lecturas para devolver los dos o tres
+            de un cliente.
+          </p>
+          <p class="arreglo">Cerrado. <code>CREATE INDEX idx_lote_cliente_id</code> en la misma migración, junto a los de proyecto y manzana.</p>
+          <div class="chips">
+            <span class="chip cerrado">Cerrado</span>
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Rendimiento</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo medio">
+        <div class="indice">22</div>
+        <div class="cuerpo">
+          <h3>El listado ordena por tipo de persona, no alfabéticamente</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/infraestructura/persistencia/cliente.repositorio.typeorm.ts:29</div>
+          <p class="escenario">
+            <code>ORDER BY razon_social ASC</code> pone los NULL al final y toda persona natural tiene esa columna en
+            NULL. Con 200 empresas y 3.000 personas, las primeras veinte páginas son solo jurídicas y buscar a
+            «Ticona» paginando no lo encuentra nunca. El nombre que la tabla muestra —<code>nombreCompleto</code>—
+            es justo el valor por el que nadie ordena.
+          </p>
+          <div class="chips"><span class="chip">Usabilidad</span></div>
+        </div>
+      </article>
+
+      <article class="hallazgo medio">
+        <div class="indice">23</div>
+        <div class="cuerpo">
+          <h3>La búsqueda no escapa <code>%</code> ni <code>_</code></h3>
+          <div class="ruta">apps/api/src/modulos/cliente/infraestructura/persistencia/cliente.repositorio.typeorm.ts:96</div>
+          <p class="escenario">
+            No hay inyección SQL —el parámetro va enlazado—, pero los metacaracteres siguen siendo patrón:
+            <code>busqueda=_</code> devuelve la tabla entera y <code>100%</code> busca «100» seguido de cualquier cosa.
+            Eso además envenena la recuperación del duplicado del hallazgo 15.
+          </p>
+          <div class="chips"><span class="chip">Corrección</span></div>
+        </div>
+      </article>
+
+      <article class="hallazgo medio">
+        <div class="indice">24</div>
+        <div class="cuerpo">
+          <h3>El contador «en cartera» muestra el largo de la página</h3>
+          <div class="ruta">apps/web/.../cliente-ficha/cliente-ficha.component.ts:214</div>
+          <p class="escenario">
+            La consulta trunca en 50 y la plantilla imprime <code>lotes().length</code>. Un inversionista con 63 lotes
+            lee «50 en cartera» y la tabla omite trece sin aviso ni paginador. <code>pagina.meta.total</code> trae el
+            número correcto y no se usa.
+          </p>
+          <div class="chips">
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Corrección</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo medio">
+        <div class="indice">25</div>
+        <div class="cuerpo">
+          <h3>La ficha pide <code>/lotes</code> con un permiso que su propia ruta no exige</h3>
+          <div class="ruta">apps/web/.../cliente-ficha/cliente-ficha.component.ts:213</div>
+          <p class="escenario">
+            <code>LoteController</code> exige INVENTARIO_GESTIONAR y la ruta <code>/clientes/:id</code> solo
+            CLIENTES_GESTIONAR. Un asesor comercial abre la ficha, la petición de lotes responde 403 y el
+            <code>subscribe</code> no tiene handler de error: el panel queda vacío para siempre sin decir por qué.
+          </p>
+          <div class="chips"><span class="chip">Permisos</span></div>
+        </div>
+      </article>
+
+      <article class="hallazgo medio">
+        <div class="indice">26</div>
+        <div class="cuerpo">
+          <h3>Tres lecturas encadenadas que no dependen entre sí</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/aplicacion/listar-documentos-del-cliente.caso-uso.ts:31</div>
+          <p class="escenario">
+            El guard de 404, la lista de documentos y el catálogo de tipos se esperan uno tras otro. Cada carga del
+            expediente paga tres viajes secuenciales a PostgreSQL donde bastaría uno de reloj, y triplica el tiempo
+            de retención de conexión del pool. Un solo <code>Promise.all</code> lo resuelve.
+          </p>
+          <div class="chips">
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Rendimiento</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo medio">
+        <div class="indice">27</div>
+        <div class="cuerpo">
+          <h3><code>GET /tipos-documento</code> devuelve un arreglo sin paginar</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/api/tipo-documento.controller.ts:24</div>
+          <p class="escenario">
+            El DTO no extiende <code>PaginacionDto</code>, a diferencia de los otros cuatro catálogos del repo. Como la
+            respuesta no lleva <code>meta</code>, <code>api.service.ts</code> la fabrica y el frontend informa una
+            paginación falsa. El catálogo crece por HTTP, así que no es de cardinalidad fija.
+          </p>
+          <div class="chips"><span class="chip">Convención</span></div>
+        </div>
+      </article>
+
+      <article class="hallazgo medio">
+        <div class="indice">28</div>
+        <div class="cuerpo">
+          <h3>La fecha de carga se muestra en UTC</h3>
+          <div class="ruta">apps/web/.../cliente-documentos/cliente-documentos.component.ts:80</div>
+          <p class="escenario">
+            <code>fechaCarga.slice(0, 10)</code> corta la cadena ISO, que siempre es UTC. Perú es UTC-5: todo documento
+            subido después de las 19:00 queda fechado al día siguiente, lo que rompe la conciliación contra el
+            registro en papel. Corresponde <code>DatePipe</code>.
+          </p>
+          <div class="chips"><span class="chip">Corrección</span></div>
+        </div>
+      </article>
+
+      <article class="hallazgo medio">
+        <div class="indice">29</div>
+        <div class="cuerpo">
+          <h3>42 líneas de validación de identidad duplicadas entre crear y actualizar</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/aplicacion/actualizar-cliente.caso-uso.ts:57</div>
+          <p class="escenario">
+            <code>exigirDocumentoValidoYLibre</code> y <code>exigirRucLibre</code> son copia literal; solo cambia que
+            <code>exceptoId</code> es opcional en una. Cuatro reglas y dos mensajes de 409 viviendo dos veces: el día
+            que cambie una, el PATCH aceptará lo que el POST rechaza y las pruebas, que ejercitan las rutas por
+            separado, no lo verán.
+          </p>
+          <div class="chips"><span class="chip">Simplificación</span></div>
+        </div>
+      </article>
+
+      <article class="hallazgo medio">
+        <div class="indice">30</div>
+        <div class="cuerpo">
+          <h3>La pantalla de documentos pide la ficha del cliente y nunca la usa</h3>
+          <div class="ruta">apps/web/.../cliente-documentos/cliente-documentos.component.ts:258</div>
+          <p class="escenario">
+            La señal <code>cliente</code> se llena en <code>ngOnInit</code> y no se lee en ninguna parte de la plantilla,
+            que usa el <code>clienteId</code> plano para su enlace. Es un <code>GET /clientes/:id</code> por apertura,
+            más la inyección del servicio y el import, todo eliminable.
+          </p>
+          <div class="chips">
+            <span class="chip verificado">Verificado</span>
+            <span class="chip">Código muerto</span>
+          </div>
+        </div>
+      </article>
+
+      <article class="hallazgo medio">
+        <div class="indice">31</div>
+        <div class="cuerpo">
+          <h3>Seis columnas y un catálogo de contratos que nadie lee</h3>
+          <div class="ruta">apps/api/src/modulos/cliente/infraestructura/persistencia/documento-cliente.entity.ts:22</div>
+          <p class="escenario">
+            <code>recorteAutomaticoAplicado</code>, <code>ajusteManualRecorte</code>, <code>asesorId</code>,
+            <code>latitud</code>, <code>longitud</code> e <code>intentosCaptura</code> tienen una sola referencia cada una:
+            su declaración; <code>asesorId</code> arrastra además una FK real que nada puebla. Y
+            <code>CODIGO_TIPO_DOCUMENTO</code> redeclara seis códigos que la migración siembra, sin un solo import,
+            sobre un catálogo editable en caliente.
+          </p>
+          <div class="chips"><span class="chip">Código muerto</span></div>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <footer class="cierre">
+    <p><strong>Alcance.</strong> <code>git diff develop...HEAD</code>: módulo <code>cliente</code> de la API,
+    migración 1788048000000, <code>funcionalidades/cliente/**</code> en Angular,
+    <code>packages/contratos/src/cliente.ts</code> y ADR-023.</p>
+    <p><strong>Verificados</strong> son los dieciséis hallazgos comprobados contra el código fuente, con
+    <code>tsc --noEmit</code> limpio en ambos workspaces y reproducción en Node para las cuentas de fecha y las
+    expresiones regulares. El resto se sostiene en lectura cruzada de los archivos citados.</p>
+  </footer>
+
+</div>
+
+</body></html>

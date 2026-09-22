@@ -1,0 +1,4 @@
+- [Agentes propios, no Unimar](agentes-propios-no-unimar.md) — nunca nombrar/reusar el roster BMAD (Winston, Amelia...) en este proyecto; subagentes propios por función técnica.
+- [Código sin comentarios](codigo-sin-comentarios.md) — cero comentarios en el código, en todos los proyectos; solo directivas de herramienta.
+- [Prefiere prosa, no selector](prefiere-prosa-no-selector.md) — responder en prosa con una recomendación; interrumpe el selector de opciones.
+- [Respuestas de cinco líneas](respuestas-de-cinco-lineas.md) — máximo 5 líneas por respuesta; solo se extiende si lo pide insistentemente.
