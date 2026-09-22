@@ -33,3 +33,6 @@ projects/**/*.jsonl
 projects/**/*.json
 projects/**/*.txt
 projects/**/*.pdf
+
+# Llave del daemon local
+daemon/
