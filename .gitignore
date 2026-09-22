@@ -39,3 +39,6 @@ daemon/
 
 # Descarga del marketplace de plugins
 plugins/marketplaces/
+
+# Papelera de skills sincronizadas
+skills/.trash/
