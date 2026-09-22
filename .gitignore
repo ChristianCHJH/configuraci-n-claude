@@ -33,3 +33,9 @@ projects/**/*.jsonl
 projects/**/*.json
 projects/**/*.txt
 projects/**/*.pdf
+
+# Llave del daemon local
+daemon/
+
+# Descarga del marketplace de plugins
+plugins/marketplaces/

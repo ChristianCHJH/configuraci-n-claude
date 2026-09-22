@@ -5,6 +5,10 @@
       "repo": "anthropics/claude-plugins-official"
     },
     "installLocation": "C:\\Users\\Christian\\.claude\\plugins\\marketplaces\\claude-plugins-official",
+<<<<<<< HEAD
     "lastUpdated": "2026-09-22T16:07:38.849Z"
+=======
+    "lastUpdated": "2026-09-22T16:17:36.855Z"
+>>>>>>> 2f7c1f2676cf3c5b7ba01928ca653b21e7105add
   }
 }

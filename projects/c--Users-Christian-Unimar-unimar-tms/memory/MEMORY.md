@@ -1,3 +1,11 @@
 - [Clon web Unimar](clon-web-unimar.md) — reconstruir unimar.com.pe en C:\Proyectos\unimar-web; scaffold listo, falta extraer con navegador
 - [Plataforma de cursos](plataforma-cursos.md) — teacher-english es multi-curso; /profe-dev (Leo) gestiona JS/Docker/K8s, /teacher-ingles (Emily) el inglés (intocable)
 - [Wikis: commit sí, push no](wikis-commit-si-push-no.md) — vaults Unimar/Viernes: commit automático sin push; /unimar y /viernes solo por invocación explícita de Christian
+- [StarUML con colores](staruml-tablas-con-colores.md) — todo ERD que genere va con tablas en pastel agrupadas por rol funcional
+- [Código en español, sin comentarios](codigo-espanol-sin-comentarios.md) — todo identificador en español; comentar solo el porqué no deducible
+- [Quitar del front limpia el back](quitar-del-front-limpia-el-back.md) — dato que deja de pintarse deja de consultarse: limpiar SELECT, cálculo y contrato
+- [Guía de remisión TMS → XMS](guia-remision-tms-xms.md) — la piden la app UNITRANS y la bandeja web; TMS pide a XMS por HTTP, sin simulado; XMS nativo en Windows con VPN
+- [Commits en unimar_tms](commits-unimar-tms.md) — máximo 5 palabras, sin firma, uno por tema
+- [Explicar por pantalla](explicar-por-pantalla.md) — el hallazgo se cuenta desde la pantalla y el gesto, no desde el símbolo
+- [Remediar auditorías](remediar-auditorias.md) — lo que mueve lógica queda 🔒 sin tocar; la limpieza se corrige y pasa a «Resueltos» al final
+- [Candado SAP en maestras](candado-sap-maestras.md) — solo SAP crea/edita maestras; web solo usuario_ums y horas libres; data actual es de prueba

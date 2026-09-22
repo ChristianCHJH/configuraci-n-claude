@@ -1,0 +1,9 @@
+- [Nada de reglas de negocio inventadas](nada-de-reglas-de-negocio-inventadas.md) — un umbral sin respaldo del cliente no se rebaja: se borra.
+- [Canvas de diseño del proyecto](canvas-de-diseno-del-proyecto-inmobiliaria.md) — URLs de los canvas publicados (acceso, venta, plantillas de contrato) y dónde están sus fuentes.
+- [Dos repos: docs y sistema](dos-repos-docs-y-sistema.md) — el código vive en inmobiliaria-sistema, no en inmobiliaria.
+- [El precio se acuerda al separar](el-precio-se-acuerda-al-separar.md) — no hay tabla de precios ni padrón de lotes; el lote nace en la separación.
+- [Recuperación de datos históricos](recuperacion-datos-historicos.md) — el pipeline recorrió los 5098 documentos; no queda nada pendiente.
+- [Cinco líneas de negocio](cinco-lineas-de-negocio-inmobiliaria.md) — no venden solo lotes: hay membresías, titulación, inversión y honorarios.
+- [Existe un tarifario de precios](existe-tarifario-de-precios.md) — PRECIO LOTES.xlsx tiene 20 tarifas, y calzan con precio_base + ajuste_ubicacion; no reabrir el modelo de precios.
+- [El DNI se ata por OCR, no por carpeta](dni-se-ata-por-ocr-no-por-carpeta.md) — un escaneo va al cliente cuyo número se leyó; lo ilegible va a revisión manual.
+- [La carga inicial no se rellena](carga-inicial-no-se-rellena.md) — sin fecha de nacimiento del DNI, sin asesor, teléfono vacío aceptado; se regulariza después.

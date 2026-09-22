@@ -1,0 +1,2 @@
+- [Landing en producción](landing-es-produccion.md) — nunca placeholders ni datos inventados
+- [Deploy Yanapay](landing-yanapay-deploy.md) — Vercel, push directo a main, yanapay.tech no existe, S/ 90
