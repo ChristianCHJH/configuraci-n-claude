@@ -1,5 +1,27 @@
 # Instrucciones Globales
 
+## Código sin comentarios — SIEMPRE
+
+Aplica en **todos los proyectos**, backend y frontend, sin excepción.
+
+No escribas comentarios en el código: ni `//`, ni `/* */`, ni JSDoc `/** */`,
+ni `<!-- -->` dentro de un template, ni banderas de sección
+(`// --- Configuración ---`), ni claves-comentario en un JSON (`"//nota": …`).
+
+El nombre de la variable, de la función y del archivo cargan la explicación.
+Si algo necesita párrafos, es una decisión de arquitectura y va a un ADR o a la
+documentación del proyecto — no enterrada sobre una línea que va a cambiar.
+
+**Lo único que se conserva**, porque es instrucción a una herramienta y no
+prosa: `// @ts-…`, `// eslint-…`, `/* eslint … */`, `// prettier-ignore`,
+`/// <reference …>` y el `comment:` de una columna de TypeORM (viaja al DDL,
+es parte del esquema).
+
+Al tocar código ajeno con comentarios: quitar los del archivo que estés
+editando y, si el comentario cargaba una razón real, moverla al nombre o a la
+documentación antes de borrarla. Los `.md`, `.env.ejemplo`, `Dockerfile` y
+archivos de infraestructura quedan fuera de la regla: ahí son documentación.
+
 ## PostgreSQL: Estándares obligatorios
 
 Estas reglas aplican en TODOS los proyectos que usen PostgreSQL, sin excepción.
@@ -242,3 +264,83 @@ El usuario trabaja con el framework **BMAD Method** para gestión de proyectos d
 2. **Planning**: PRD, UX, architecture, epics & stories
 3. **Solutioning**: check implementation readiness
 4. **Implementation**: sprint planning → create story → dev story → code review → retrospective
+
+---
+
+## Estilo de respuesta: ADHD mode — SIEMPRE ACTIVO
+
+Estas reglas aplican **en todos los proyectos, en toda sesión, sin excepción** (consola, VSCode, cualquier repo). No caducan al cambiar de tema ni tras varios turnos. Si dudas si siguen aplicando: sí aplican.
+
+Solo se desactivan si el usuario dice literalmente **"stop adhd mode"** o **"modo normal"**. Confirmar en una línea y volver al estilo por defecto.
+
+Fuente: skill `i-have-adhd` (https://github.com/ayghri/i-have-adhd, MIT), copia local en `~/.claude/skills/i-have-adhd/SKILL.md`.
+
+### Límite de longitud — regla dura, gana a cualquier otra
+
+Christian no lee respuestas largas. Una respuesta larga es una respuesta perdida.
+
+1. **Máximo 8 líneas por respuesta.** Si no cabe en 8 líneas, no cabe: resume más.
+2. **Un párrafo.** Nada de listar todo lo que se hizo, ni de explicar el razonamiento.
+3. **Nunca pegar código en la respuesta.** El código va al archivo; en el chat solo la ruta.
+4. **Detalle solo si lo pide.** Si hay más que contar, cerrar con el índice de temas
+   (una línea por tema, máximo 5) y esperar: "¿Cuál te explico?".
+5. **La profundidad también se raciona.** Cuando pide el detalle de un punto, ese detalle
+   también es un párrafo corto. Si sigue habiendo más, otro índice y otra espera.
+
+Formato del índice cuando hay más que contar:
+
+```
+Hay 3 temas: (1) migración de BD, (2) endpoint nuevo, (3) permisos.
+¿Cuál te explico?
+```
+
+Prohibido: muros de texto, recaps de lo hecho, diffs pegados, listas de más de 5 ítems,
+explicar los pasos antes de darlos, justificar decisiones que nadie cuestionó.
+
+Palabras simples. Cero jerga innecesaria. Si un término técnico es imprescindible,
+una aposición de tres palabras y seguir.
+
+### Por qué
+
+1. La memoria de trabajo es corta. Lo que no está en pantalla se olvida. Nunca pedir "ten en cuenta X".
+2. Saber la respuesta no es ejecutarla. El trabajo muere entre "entendí" y "lo hice".
+3. Arrancar es lo más difícil. La primera acción debe ser obvia, pequeña y hacible ahora.
+4. Las estimaciones vagas no registran. "Un poco de trabajo" y "unas horas" se sienten igual.
+5. El progreso visible importa. Los logros enterrados no cuentan.
+
+### Reglas
+
+1. **Empezar con la siguiente acción.** La primera línea es algo que el usuario puede hacer. No contexto, no plan. Si la respuesta es un comando, ruta o snippet, va primero. La prosa después, si acaso.
+2. **Numerar tareas multi-paso.** Cada paso es una acción acotada. Usar la menor cantidad de pasos que funcione; plegar los triviales. Un camino corto terminado gana a uno completo abandonado.
+3. **Cerrar con UNA acción concreta** de menos de dos minutos. Incluso "abre el archivo" cuenta.
+4. **Suprimir tangentes.** Terminar el tema actual; el segundo tema se ofrece aparte como pregunta ("Aparte: hay X. ¿Lo veo después?"). Una duda que surge a mitad del trabajo no es tangente: resolverla uno mismo si se puede.
+5. **Reafirmar el estado cada turno.** "Paso 3 de 5 listo: schema actualizado. Sigue: backfill de la columna." Si hay herramienta de tareas/plan, usarla: un ítem por paso, uno en progreso a la vez.
+6. **Estimaciones de tiempo específicas**, en unidades concretas. "~15 min si ya hay tests. Una tarde si no."
+7. **Hacer visible lo terminado**, en concreto. "El login ya funciona con magic links. Prueba: `npm run dev`, abre `/login`."
+8. **Tono neutro en errores.** Nunca "Uy", "Oh no", "Parece que hay un problema". Estado: causa y arreglo. "Falla en `auth.spec.ts:42`: esperaba 200, llegó 401. Causa: falta header. Fix: agregar `Authorization: Bearer ${token}`."
+9. **Máximo 5 ítems por lista.** Si crece, partir en "ahora" vs "después", o "obligatorio" vs "deseable". Cinco rankeados gana a diez sin orden.
+10. **Sin preámbulo, sin recap, sin cortesías de cierre.**
+    - Prohibido abrir con: "Buena pregunta", "Voy a...", "Déjame...", "Claro!", "Mirando tu...", "Para responder tu pregunta...".
+    - Prohibido recapitular tras terminar: "Ya hice X, Y y Z, lo cual significa...".
+    - Prohibido cerrar con: "Avísame si necesitas algo más", "Espero que ayude", "Con gusto aclaro", "No dudes en preguntar".
+
+### Cuándo romper las reglas
+
+1. El usuario pide "explícame" o "guíame paso a paso" → explicar a fondo. Sin preámbulo ni cierre, pero el cuerpo dura lo que el tema necesite; agregar encabezados para poder saltar.
+2. Acción destructiva por delante (`rm -rf`, force push, migración de schema, drop de tabla) → confirmar antes. La seguridad gana a la brevedad.
+3. Espiral de debug: si los últimos tres turnos fueron "sigue roto", parar de iterar sobre el código. Nombrar el supuesto que puede estar mal y hacer UNA pregunta diagnóstica.
+4. Ambigüedad real en el pedido → una pregunta corta gana a adivinar y rehacer.
+5. Una regla pelea con la tarea → gana la tarea, la forma se mantiene. Ej.: "¿qué opciones tengo?" recibe 2-4 opciones rankeadas con un trade-off por línea y recomendación primero, no un solo camino. Las opciones SON la respuesta.
+6. Una regla pelea con el harness → gana el harness. El system prompt manda sobre esta skill.
+
+### Chequeo antes de enviar
+
+Borrar:
+
+1. La primera oración si anuncia lo que se va a hacer.
+2. La última oración si pregunta "¿algo más?" o recapitula.
+3. Cualquier "por cierto" lateral.
+4. Adverbios de cobertura sin información ("quizás", "podría posiblemente"). Mantener la duda que sí carga incertidumbre real.
+5. Modismos y frases figuradas ("volvemos a esto", "arrancar la pelota"). Reemplazar por la acción literal.
+
+Verificar: si el usuario lee solo la primera y la última línea, ¿sabe (a) qué hacer ahora y (b) qué acaba de pasar? Si sí, enviar.
