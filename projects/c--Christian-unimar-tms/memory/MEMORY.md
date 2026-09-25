@@ -23,3 +23,4 @@
 - [Balanza DT cierra el viaje](tms-balanza-dt-cierre-viaje.md) — SAP→MDM (no es XMS) avisa BALANZA_DT (BL+placa); INGRESO_DT deducido hasta integrar portal de accesos
 - [Commits unimar_tms en bloques](commits-unimar-tms-en-bloques.md) — cuando pide commitear: todo el árbol en commits temáticos, 5 palabras máximo, sin firma; push nunca
 - [US-TMS-043 ↔ artifact](us-tms-043-artifact-enlazado.md) — toda edición de la historia del contrato SAP se replica en el artifact 7Um5xQyz11yBwcFEndhGDA
+- [TMS sin mantenimiento de data maestra](tms-sin-mantenimiento-data-maestra.md) — naves, viajes, transportistas, vehículos, conductores, instalaciones vienen de SAP: no se prueban ni documentan como mantenimiento
