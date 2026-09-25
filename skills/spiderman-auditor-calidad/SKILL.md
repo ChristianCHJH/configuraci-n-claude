@@ -1,5 +1,5 @@
 ---
-name: auditor-calidad
+name: spiderman-auditor-calidad
 description: >
   Auditoría de CALIDAD DE CÓDIGO (nunca funcional) para proyectos de la suite Unimar, con el TMS
   como proyecto por defecto. Valida contra el estándar unimar_arch + unimar-shells, contra las
@@ -7,7 +7,7 @@ description: >
   y code smells de refactoring.guru. Al final entrega una tabla de violaciones, mejoras y
   optimizaciones, y otra de decisiones pre-resueltas por el estándar con la evaluación de si existe
   una opción mejor; todo con respuesta técnica y explicación en lenguaje sencillo. Invoca con
-  /auditor-calidad [ruta | rama | "diff"]. Auto-activa con "auditar calidad", "revisar calidad del
+  /spiderman-auditor-calidad [ruta | rama | "diff"]. Auto-activa con "auditar calidad", "revisar calidad del
   código", "validar contra el estándar", "revisar patrones" o "qué corregiría Alberto".
 ---
 
