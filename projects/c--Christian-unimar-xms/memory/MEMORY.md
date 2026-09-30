@@ -1,0 +1,1 @@
+- [Respuestas cortas](respuestas-cortas.md) — máximo ~150 palabras por respuesta
