@@ -1,5 +1,5 @@
 {
-  "etag": "W/\"Y9AzykI19IflnZCmbghiljGx4ohXrJyW2km5hLgGJNE\"",
+  "etag": "W/\"T89UJ_25Ozy_YEkFIU1lGN04waJlDd4QbZ0DWZfW4XU\"",
   "rows": [
     {
       "name": "anthropic-plugin-directory",
@@ -9,7 +9,7 @@
         "source": "claudeai"
       },
       "id": "marketplace_01VNB7JgJyYTuJiDfXSABKm3",
-      "updated_at": "2026-10-01T16:32:06.771103Z"
+      "updated_at": "2026-10-01T17:50:44.955415Z"
     }
   ],
   "parserVersion": 2
