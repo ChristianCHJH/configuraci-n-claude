@@ -1,0 +1,660 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Correcciones del PR 125</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#f3f5f5;--surface:#ffffff;--surface-2:#eaeff0;--ink:#16212a;--muted:#56666e;--line:#d6dee0;
+  --accent:#1d4e89;--ok:#2a7a57;--ok-soft:#dcf0e6;--parcial:#9a6412;--parcial-soft:#f8ecd2;--no:#b42318;--no-soft:#fde4e1;
+  --chip-texto:rgb(15 63 103);--chip-fondo:rgb(232 239 246);--chip-punto:rgb(62 101 132);
+  --font-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --font-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",Consolas,"Courier New",monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1417;--surface:#162026;--surface-2:#1d2a31;--ink:#e3ebee;--muted:#93a5ad;--line:#2a3940;
+  --accent:#86b4ee;--ok:#5fc79c;--ok-soft:#173328;--parcial:#e2b45a;--parcial-soft:#352a14;--no:#f2786d;--no-soft:#3b1d1a;
+  --chip-texto:rgb(127 177 222);--chip-fondo:rgb(41 56 74);--chip-punto:rgb(127 165 196);color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1417;--surface:#162026;--surface-2:#1d2a31;--ink:#e3ebee;--muted:#93a5ad;--line:#2a3940;
+  --accent:#86b4ee;--ok:#5fc79c;--ok-soft:#173328;--parcial:#e2b45a;--parcial-soft:#352a14;--no:#f2786d;--no-soft:#3b1d1a;
+  --chip-texto:rgb(127 177 222);--chip-fondo:rgb(41 56 74);--chip-punto:rgb(127 165 196);color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55;margin:0}
+.envoltura{max-width:960px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(1.8rem,4.5vw,2.6rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.25rem;font-weight:800}
+code{font-family:var(--font-mono);font-size:.86em;background:var(--surface-2);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+.ceja{font-family:var(--font-mono);font-size:.8rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.cabecera{display:flex;flex-direction:column;gap:10px}
+.cabecera p{margin:0;color:var(--muted);max-width:68ch}
+.cifras{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.cifra{all:unset;cursor:pointer;background:var(--surface);border:2px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:2px;min-width:0}
+.cifra:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.cifra b{font-family:var(--font-display);font-weight:800;font-size:clamp(2rem,6vw,2.8rem);line-height:1;font-variant-numeric:tabular-nums}
+.cifra span{font-weight:700}
+.cifra small{color:var(--muted);font-size:.86rem}
+.cifra.ok b{color:var(--ok)}.cifra.parcial b{color:var(--parcial)}.cifra.no b{color:var(--no)}
+.cifra.ok[aria-pressed="true"]{border-color:var(--ok);background:var(--ok-soft)}
+.cifra.parcial[aria-pressed="true"]{border-color:var(--parcial);background:var(--parcial-soft)}
+.cifra.no[aria-pressed="true"]{border-color:var(--no);background:var(--no-soft)}
+.revision{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.revision-cabecera{display:flex;justify-content:space-between;align-items:baseline;gap:10px;flex-wrap:wrap}
+.revision-cabecera span{color:var(--muted);font-size:.92rem;font-variant-numeric:tabular-nums}
+.barra{display:flex;height:12px;border-radius:99px;overflow:hidden;background:var(--surface-2)}
+.barra span{display:block;height:100%;background:var(--ok);transition:width .2s}
+.revision p{margin:0;font-size:.92rem;color:var(--muted)}
+.tareas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.tarea{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;min-width:0}
+.tarea h3{font-size:1rem;margin-bottom:6px}
+.tarea ol{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;font-size:.93rem}
+.tarea li{min-width:0}
+.filtros{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.filtros select,.filtros input[type=search]{font:inherit;font-size:.92rem;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-width:0}
+.filtros input[type=search]{flex:1 1 200px}
+.casilla{display:flex;gap:6px;align-items:center;font-size:.9rem;color:var(--muted)}
+.estado-lista{font-size:.9rem;color:var(--muted)}
+.lista{display:flex;flex-direction:column;gap:10px}
+.obs{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.obs[open]{border-color:var(--accent)}
+.obs.revisada{border-left:4px solid var(--ok)}
+.obs.revisada summary .titulo{color:var(--muted)}
+.obs summary{cursor:pointer;list-style:none;padding:13px 16px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start}
+.obs summary::-webkit-details-marker{display:none}
+.obs summary:focus-visible{outline:3px solid var(--accent);outline-offset:-3px;border-radius:12px}
+.num{font-family:var(--font-mono);font-weight:600;font-size:.85rem;color:var(--muted);padding-top:2px;min-width:3.2ch;font-variant-numeric:tabular-nums}
+.cuerpo-sum{display:flex;flex-direction:column;gap:6px;min-width:0}
+.titulo{font-weight:700;font-size:1.02rem}
+.etiquetas{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pill{font-size:.74rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;border-radius:99px;padding:2px 8px;white-space:nowrap}
+.p-ok{background:var(--ok-soft);color:var(--ok)}
+.p-parcial{background:var(--parcial-soft);color:var(--parcial)}
+.p-no{background:var(--no-soft);color:var(--no)}
+.p-area{background:var(--surface-2);color:var(--muted)}
+.p-hecho{background:var(--ok);color:var(--surface)}
+.detalle{padding:14px 16px 16px;display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--line)}
+.seccion h4{font-family:var(--font-body);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 3px}
+.seccion p{margin:0;max-width:72ch}
+.seccion.mirar{border-radius:10px;padding:10px 12px;background:var(--parcial-soft)}
+.seccion.mirar h4{color:var(--parcial)}
+.commits{display:flex;flex-direction:column;gap:4px;margin:0;padding:0;list-style:none}
+.commits li{display:flex;gap:10px;flex-wrap:wrap;font-size:.92rem;min-width:0}
+.commits code{font-weight:600}
+.acciones{display:flex;justify-content:flex-end}
+.marcar{display:flex;gap:8px;align-items:center;font-weight:700;font-size:.92rem;cursor:pointer}
+.marcar input{width:18px;height:18px;accent-color:var(--ok)}
+.vacio{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:20px;text-align:center;color:var(--muted)}
+.pie{font-size:.85rem;color:var(--muted)}
+.cerrar{display:flex;flex-direction:column;gap:22px}
+.cerrar>p{margin:0;color:var(--muted);max-width:70ch}
+.grupo{display:flex;flex-direction:column;gap:10px}
+.grupo h3{font-size:1.05rem;display:flex;gap:8px;align-items:baseline;flex-wrap:wrap}
+.grupo h3 small{font-family:var(--font-body);font-weight:400;color:var(--muted);font-size:.9rem}
+.ficha{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:flex;flex-direction:column;gap:12px}
+.ficha-cabecera{display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+.ficha-cabecera .num{padding-top:0}
+.ficha-cabecera strong{font-size:1.05rem}
+.filas{display:grid;grid-template-columns:minmax(120px,170px) 1fr;gap:8px 16px;margin:0}
+.filas dt{font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);font-weight:700;padding-top:3px}
+.filas dd{margin:0;min-width:0;max-width:70ch}
+.filas dd.pide{font-weight:700}
+.captura{display:inline-flex;gap:6px;align-items:center;font-size:.8rem;font-weight:700;border-radius:99px;padding:3px 10px}
+.captura.si{background:var(--parcial-soft);color:var(--parcial)}
+.captura.no{background:var(--surface-2);color:var(--muted)}
+.recreacion{border:1px dashed var(--line);border-radius:10px;padding:12px;display:flex;flex-direction:column;gap:10px;background:var(--bg)}
+.recreacion>span{font-size:.78rem;color:var(--muted)}
+.lado-a-lado{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.pantalla{background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.pantalla b{font-size:.85rem}
+.pantalla small{color:var(--muted);font-size:.8rem}
+.chip-app{display:inline-flex;align-items:center;gap:6px;align-self:flex-start;border-radius:99px;padding:3px 10px;font-size:.82rem;font-weight:700;background:var(--chip-fondo);color:var(--chip-texto)}
+.chip-app i{width:7px;height:7px;border-radius:50%;background:var(--chip-punto)}
+.error-app{border-radius:8px;padding:8px 10px;font-size:.88rem;background:var(--no-soft);color:var(--no)}
+pre.sql{margin:0;overflow-x:auto;background:var(--surface-2);border-radius:8px;padding:10px 12px;font-family:var(--font-mono);font-size:.84rem}
+.pasos{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:3px}
+@media (max-width:620px){.cifras,.tareas,.lado-a-lado{grid-template-columns:1fr}.filas{grid-template-columns:1fr;gap:2px 0}.filas dd{margin-bottom:8px}}
+@media (prefers-reduced-motion:reduce){.barra span{transition:none}}
+</style>
+
+<div class="envoltura">
+  <header class="cabecera">
+    <span class="ceja">PR #125 · feature/maestras-sap · 2026-10-05</span>
+    <h1>Correcciones del PR 125</h1>
+    <p>Los puntos de la revisión de Alberto que no impactan la lógica, corregidos con Claude. Cada uno dice qué se hizo, en qué commit y qué conviene mirar antes de darlo por bueno. Los commits son locales, en <code>C:\Users\Christian\Unimar\unimar_tms-maestras</code>, sin push. #1 y #2 no están aquí: ya los habías cerrado tú.</p>
+  </header>
+
+  <section class="cifras" aria-label="Resumen">
+    <button class="cifra ok" type="button" data-estado="ok" aria-pressed="false"><b id="n-ok">–</b><span>Corregidos</span><small>Con su commit y sus pruebas</small></button>
+    <button class="cifra parcial" type="button" data-estado="parcial" aria-pressed="false"><b id="n-parcial">–</b><span>A medias</span><small>Una parte quedó igual a propósito</small></button>
+    <button class="cifra no" type="button" data-estado="no" aria-pressed="false"><b id="n-no">–</b><span>Sin hacer</span><small>Falta un dato o una decisión</small></button>
+  </section>
+
+  <section class="revision" aria-labelledby="t-revision">
+    <div class="revision-cabecera"><h2 id="t-revision">Tu revisión</h2><span id="texto-revision"></span></div>
+    <div class="barra" aria-hidden="true"><span id="barra-revision" style="width:0"></span></div>
+    <p>Abre cada punto y marca «Revisado» cuando lo hayas visto. La marca se guarda solo en este navegador.</p>
+  </section>
+
+  <section class="tareas" aria-label="Pendientes">
+    <div class="tarea">
+      <h3>Te toca decidir</h3>
+      <ol>
+        <li><strong>#32</strong> ¿Subir <code>security-crypto</code> a 1.1.0 estable? Con 1.0.0 la app no compila.</li>
+        <li><strong>S2</strong> Pegar los 11 pendientes de la descripción del PR para registrarlos en GAPS.md.</li>
+        <li><strong>G23</strong> Elegir el texto: «En espera de balanza» o «En espera balanza».</li>
+        <li><strong>G36</strong> Confirmar el nombre DNS que cubre el certificado de UAT.</li>
+        <li><strong>#14</strong> Los dos defectos de la migración de flota que encontraron las pruebas (van con #11).</li>
+      </ol>
+    </div>
+    <div class="tarea">
+      <h3>Hacer en SRVTMS</h3>
+      <ol>
+        <li>Preguntar a TI si UMS entra con <code>sa</code>: el guion lo deshabilita y se detiene si está en uso.</li>
+        <li>Volver a correr <code>crear-base-uat.sql</code> con <code>CLAVE_TMS_MIGRADOR</code>.</li>
+        <li>Copiar <code>nssm.exe</code> a <code>C:\apps\tms-api\herramientas\</code>.</li>
+        <li>Reinstalar el servicio para tomar la cuenta virtual y los permisos nuevos.</li>
+        <li>Confirmar que existe <code>E:\SQLServer\Backup</code> antes del primer <code>-Migrar</code>.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="cerrar" aria-labelledby="t-cerrar" id="por-cerrar">
+    <h2 id="t-cerrar">Los 13 por cerrar, explicados</h2>
+    <p>Los 2 que quedaron a medias y los 11 sin hacer, contados desde la pantalla. Cada ficha dice dónde se ve, qué pasa, por qué no lo corregí, cómo se corrige y qué necesito de ti. Solo G23 y #20 se ven en una pantalla del TMS; para esos dos va una recreación con los colores y textos reales de la app.</p>
+
+    <div class="grupo">
+      <h3>Se ven en pantalla <small>2 puntos</small></h3>
+
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">G23</span><strong>El mismo estado del viaje tiene dos nombres</strong><span class="pill p-no">Sin hacer</span><span class="captura si">Se ve en pantalla</span></div>
+        <dl class="filas">
+          <dt>Dónde se ve</dt><dd>En «Citas de transporte» (columna Estado, filtro de estados y seguimiento del viaje) y en «Servicios en ejecución», que se abre desde «Consolidado por nave».</dd>
+          <dt>Qué pasa</dt><dd>El conductor llegó a la balanza y espera. En «Citas de transporte» el viaje dice «En espera balanza». En «Servicios en ejecución» el mismo viaje, en el mismo momento, dice «En espera de balanza». El color es igual; solo cambia el texto.</dd>
+          <dt>Por qué no lo corregí</dt><dd>Hay dos tablas de estados casi iguales. Juntarlas en una obliga a quedarse con uno de los dos textos, y ese texto lo lee el asistente de transporte.</dd>
+          <dt>Cómo se corrige</dt><dd>Una sola tabla de estados para las dos pantallas, con el texto que elijas. Unos 10 minutos.</dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">El texto. Recomiendo «En espera de balanza»: se lee completo, como «Inicio de viaje».</dd>
+        </dl>
+        <div class="recreacion" aria-label="Recreación de las dos pantallas">
+          <span>Recreación con los colores y textos reales de la app, no es una captura.</span>
+          <div class="lado-a-lado">
+            <div class="pantalla"><b>Citas de transporte</b><small>Columna Estado</small><span class="chip-app"><i></i>En espera balanza</span></div>
+            <div class="pantalla"><b>Servicios en ejecución</b><small>Columna Estado</small><span class="chip-app"><i></i>En espera de balanza</span></div>
+          </div>
+        </div>
+      </article>
+
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">#20</span><strong>Ante dos errores a la vez, cada pantalla avisa uno distinto</strong><span class="pill p-parcial">A medias</span><span class="captura si">Se ve en pantalla</span></div>
+        <dl class="filas">
+          <dt>Dónde se ve</dt><dd>En «Citas de transporte», al asignar un viaje, y en la carga suelta: «Consolidado por nave» › Iniciar planificación › Carga suelta, y el modal de carga suelta de «Citas de transporte».</dd>
+          <dt>Qué pasa</dt><dd>El asistente de transporte elige un conductor sin cuenta de UMS y un transportista dado de baja, y guarda. Al asignar el viaje, la pantalla avisa del transportista. En la carga suelta, avisa del conductor. Hay que corregir los dos, pero cada pantalla nombra primero uno distinto. Con conductor y vehículo dados de baja pasa lo mismo: una nombra el conductor y la otra el vehículo. Con un solo error, las dos dicen lo mismo.</dd>
+          <dt>Qué ya quedó hecho</dt><dd>La regla «sin cuenta de UMS no hay oferta» vive en un solo lugar y la usan las tres pantallas.</dd>
+          <dt>Por qué no lo terminé</dt><dd>Para que las dos pantallas revisen en el mismo orden, la carga suelta tiene que cambiar el aviso que muestra en ese caso doble. Es poco, pero es un cambio que se ve.</dd>
+          <dt>Cómo se corrige</dt><dd>La carga suelta revisa en el orden de «Asignar viaje»: conductor, vehículo, transportista y al final la cuenta de UMS. Unos 20 minutos con sus pruebas.</dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">Un sí.</dd>
+        </dl>
+        <div class="recreacion" aria-label="Recreación de los dos avisos">
+          <span>Recreación con los mensajes reales de la API, no es una captura. Caso: conductor sin cuenta de UMS y transportista dado de baja.</span>
+          <div class="lado-a-lado">
+            <div class="pantalla"><b>Asignar viaje</b><small>Citas de transporte</small><div class="error-app" role="note">Ese transportista no existe o está inactivo.</div></div>
+            <div class="pantalla"><b>Carga suelta</b><small>Iniciar planificación</small><div class="error-app" role="note">Ese conductor todavía no tiene cuenta de UMS vinculada: no puede recibir el viaje en el teléfono. Vincúlala en el mantenimiento de conductores.</div></div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="grupo">
+      <h3>Necesito un dato o tu decisión <small>6 puntos</small></h3>
+
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">#32</span><strong>La sesión del conductor se cifra con una librería de prueba</strong><span class="pill p-no">Sin hacer</span><span class="captura no">Sin pantalla</span></div>
+        <dl class="filas">
+          <dt>Dónde pasa</dt><dd>En la app UNITRANS del teléfono, cuando el conductor inicia sesión: la sesión se guarda cifrada en el aparato.</dd>
+          <dt>Qué pasa</dt><dd>La librería que cifra está en 1.1.0-alpha06, una versión de prueba. Alberto pide no usar versiones alfa en el camino de la sesión.</dd>
+          <dt>Por qué no lo corregí</dt><dd>Alberto proponía volver a 1.0.0, pero con esa versión la app no compila: el código usa una pieza (MasterKey) que no existe en 1.0.0.</dd>
+          <dt>Cómo se corrige</dt><dd>Subir a 1.1.0, que es estable y compila sin cambiar código. Una línea y compilar: 5 minutos. Después alguien prueba en un teléfono: iniciar sesión, cerrar la app, abrirla y ver que sigue con sesión.</dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">Un sí.</dd>
+        </dl>
+      </article>
+
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">G36</span><strong>La app de UAT confía en el servidor por su IP</strong><span class="pill p-no">Sin hacer</span><span class="captura si">Captura tuya del certificado</span></div>
+        <dl class="filas">
+          <dt>Dónde pasa</dt><dd>En la app UNITRANS de UAT. Hoy funciona; el problema llega si TI cambia la IP del servidor.</dd>
+          <dt>Qué pasa</dt><dd>La app solo confía en el servidor de UAT si lo llama por la IP 10.1.20.30. Si la IP cambia, todos los teléfonos dejan de conectarse y hay que reinstalar la app en cada uno.</dd>
+          <dt>Por qué no lo corregí</dt><dd>El nombre que ponga tiene que figurar en el certificado del servidor; si no, la app no conecta. En el repo aparecen srvtms y SRVTMS.unimar.com.pe, y ninguno está confirmado. Desde esta máquina la IP no responde, así que no puedo mirarlo.</dd>
+          <dt>Cómo lo averiguas</dt><dd><ol class="pasos"><li>En una PC de la red, abre https://10.1.20.30:5443 en Chrome.</li><li>Pulsa el ícono a la izquierda de la dirección › «La conexión es segura» › «El certificado es válido».</li><li>En «Detalles», busca «Nombre alternativo del asunto» y copia los nombres DNS.</li></ol></dd>
+          <dt>Cómo se corrige</dt><dd>Con ese nombre cambio la configuración de red y las direcciones del build de UAT. Unos 15 minutos y reinstalar la app de UAT una vez.</dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">Los nombres DNS del certificado, o una captura de esa pestaña.</dd>
+        </dl>
+      </article>
+
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">S2</span><strong>Los 11 pendientes del PR no están en GAPS.md</strong><span class="pill p-no">Sin hacer</span><span class="captura no">Sin pantalla</span></div>
+        <dl class="filas">
+          <dt>Dónde pasa</dt><dd>En la descripción del PR 125 en GitHub y en GAPS.md.</dd>
+          <dt>Qué pasa</dt><dd>La descripción dice «quedan 11 pendientes anotados», pero GAPS.md no los tiene. Al fusionar el PR, esa lista queda enterrada en GitHub y nadie la revisa.</dd>
+          <dt>Por qué no lo corregí</dt><dd>No pude leer la descripción: la cuenta de GitHub de esta máquina (ChristianCHJH) no tiene acceso al repositorio.</dd>
+          <dt>Cómo se corrige</dt><dd>Registrar los 11 con su criterio de cierre. Unos 15 minutos.</dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">Pega aquí la lista, o corre <code>gh auth login</code> con la cuenta unimar-christian-jara y la leo yo.</dd>
+        </dl>
+      </article>
+
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">G45</span><strong>Cuatro migraciones nuevas son pasos intermedios</strong><span class="pill p-no">Sin hacer</span><span class="captura no">Sin pantalla</span></div>
+        <dl class="filas">
+          <dt>Dónde pasa</dt><dd>En la ventana de salida, cuando se corren las migraciones contra la base.</dd>
+          <dt>Qué pasa</dt><dd>De las 8 migraciones nuevas, 4 hacen y deshacen cosas: la vista de conductores para planificar se crea tres veces, y un valor por defecto «TRACTO» nace en una y desaparece en otra. Cada paso de más es otro punto donde la salida puede fallar.</dd>
+          <dt>Por qué no lo corregí</dt><dd>Lo dejaste fuera: si la base de UAT ya corrió esas migraciones, juntarlas es editar migraciones publicadas y la base de UAT queda descuadrada.</dd>
+          <dt>Cómo lo averiguas</dt><dd>En DBeaver, sobre la base db-tms-uat (1 minuto):<pre class="sql">SELECT name FROM migracion_ejecutada
+ WHERE timestamp &gt;= 1792800000000
+ ORDER BY timestamp;</pre>Si no sale ninguna fila, las junto en una (alrededor de 1 hora, con pruebas contra SQL Server). Si salen filas, se quedan como están y el punto se cierra.</dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">Cuántas filas devuelve esa consulta.</dd>
+        </dl>
+      </article>
+
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">G20</span><strong>Dos búsquedas deciden qué RD va con qué viaje, y no miran igual la operación</strong><span class="pill p-no">Sin hacer</span><span class="captura no">Sin pantalla</span></div>
+        <dl class="filas">
+          <dt>Dónde pasa</dt><dd>No hay un error a la vista. Decide qué RD aparecen ligadas a cada viaje de nave en «Consolidado por nave».</dd>
+          <dt>Qué pasa</dt><dd>Una RD se liga a su viaje en dos momentos. Si el viaje ya existe cuando se sube el Excel en «Carga de Archivo», se busca el viaje al subirlo. Si SAP crea el viaje después, se buscan las RD que lo esperaban. Las dos búsquedas comparan igual nave, número de viaje, instalación y manifiesto. La diferencia es la operación: la primera usa la del reporte que se subió y la segunda la saca de las cargas de la RD. Si una RD tiene cargas de otra operación que la del reporte, un camino la liga y el otro no.</dd>
+          <dt>Por qué no lo corregí</dt><dd>Para escribir la regla una sola vez hay que decir cuál es «la operación de una RD», y eso es de negocio.</dd>
+          <dt>Cómo se corrige</dt><dd>Con tu respuesta, una sola definición que usen las dos búsquedas. Unos 30 minutos.</dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">¿La operación de una RD es la del reporte o la de sus cargas? ¿Puede una RD tener cargas de importación y de exportación a la vez?</dd>
+        </dl>
+      </article>
+
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">G35</span><strong>El prototipo repite el modal «Iniciar RD» de la web real</strong><span class="pill p-no">Sin hacer</span><span class="captura no">Sin pantalla del TMS</span></div>
+        <dl class="filas">
+          <dt>Dónde pasa</dt><dd>En el prototipo (src/apps/prototipo-web), no en el TMS. El 2026-09-21 se le agregó el modal «Iniciar RD», de 766 líneas, con el pegado de fechas, la grilla de citas y la carga suelta.</dd>
+          <dt>Corrección</dt><dd>Antes te dije que el archivo no existía. Me equivoqué: el agente lo buscó en la carpeta equivocada. Sí existe.</dd>
+          <dt>Qué pasa</dt><dd>La web real ya tiene ese modal. Con dos versiones del mismo flujo, la próxima vez que cambie la web el prototipo va a mostrar otra cosa.</dd>
+          <dt>Cómo se corrige</dt><dd>Quitar el modal del prototipo y dejar en su lugar un enlace a la pantalla real. Unos 20 minutos.</dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">¿Alguien de Transporte todavía revisa ese flujo en el prototipo? Si no, lo quito.</dd>
+        </dl>
+      </article>
+    </div>
+
+    <div class="grupo">
+      <h3>Lo puedo hacer ya <small>1 punto</small></h3>
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">G41</span><strong>El ejemplo de configuración entra a la base con el usuario sa</strong><span class="pill p-parcial">A medias</span><span class="captura no">Sin pantalla</span></div>
+        <dl class="filas">
+          <dt>Dónde pasa</dt><dd>En el archivo de ejemplo que copia quien arma la API en su máquina (.env.example).</dd>
+          <dt>Qué ya quedó hecho</dt><dd>La API de ejemplo escucha solo en la propia máquina (127.0.0.1), no en toda la red.</dd>
+          <dt>Qué falta</dt><dd>El ejemplo sigue entrando a la base como sa, la cuenta con todo el poder. Si alguien lo copia tal cual a un servidor, la API entra con sa.</dd>
+          <dt>Por qué no lo terminé</dt><dd>La base de Docker de desarrollo solo crea sa. Cambiar el ejemplo sin crear otra cuenta rompe el arranque local.</dd>
+          <dt>Cómo se corrige</dt><dd>El guion de la base de desarrollo crea un usuario propio del TMS con permiso solo sobre su base, y el ejemplo usa ese. Unos 20 minutos. Cada uno tendría que recrear su base local o correr el guion una vez.</dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">Un sí.</dd>
+        </dl>
+      </article>
+    </div>
+
+    <div class="grupo">
+      <h3>Propongo cerrarlos sin cambiar código <small>2 puntos</small></h3>
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">G15</span><strong>Una pieza compartida está marcada como «global»</strong><span class="pill p-no">Sin hacer</span><span class="captura no">Sin pantalla</span></div>
+        <dl class="filas">
+          <dt>Dónde pasa</dt><dd>Por dentro de la API. Cuando SAP crea un viaje de nave, el sistema liga las RD que lo esperaban.</dd>
+          <dt>Qué pasa</dt><dd>La pieza que liga las RD vive en el módulo de Relación detallada y la usa el de Naves. Para no declararlo, está marcada «global». Alberto pide declararlo a la vista.</dd>
+          <dt>Por qué no lo corregí</dt><dd>Relación detallada ya usa Naves. Si Naves declara que usa Relación detallada, los dos quedan en círculo, y una prueba del proyecto prohíbe los círculos entre módulos. Lo «global» es la salida menos mala.</dd>
+          <dt>Propuesta</dt><dd>Dejarlo así y responder a Alberto con el motivo. La otra salida es pasar la pieza a un módulo aparte, 1 o 2 horas, sin ganancia que se note.</dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">Un sí a cerrarlo así.</dd>
+        </dl>
+      </article>
+
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">G24</span><strong>La sección de carga suelta empuja sus datos al modal</strong><span class="pill p-no">Sin hacer</span><span class="captura no">Se ve bien: la captura no aporta</span></div>
+        <dl class="filas">
+          <dt>Dónde pasa</dt><dd>En «Consolidado por nave» › Iniciar planificación › Carga suelta, donde el asistente de transporte llena los viajes.</dd>
+          <dt>Qué pasa</dt><dd>Hoy funciona bien y no hay error a la vista. Es cómo está armada por dentro: la sección calcula lo que se llenó y se lo pasa al modal a cada cambio, en vez de que el modal sea el dueño de esos datos. Es más frágil para quien la toque después.</dd>
+          <dt>Por qué no lo corregí</dt><dd>Para que el modal sea dueño de los datos, «Consolidado por nave» tiene que usar piezas de «Citas de transporte», y la regla de la web lo prohíbe. Primero habría que mover esas piezas a una carpeta común: es un rediseño de medio día.</dd>
+          <dt>Propuesta</dt><dd>Cerrarlo sin cambio y dejarlo anotado como deuda, para hacerlo la próxima vez que se toque esa pantalla.</dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">Un sí a dejarlo como deuda.</dd>
+        </dl>
+      </article>
+    </div>
+
+    <div class="grupo">
+      <h3>Se hacen en GitHub, no en el código <small>2 puntos</small></h3>
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">S3</span><strong>El PR no tiene el checklist completo ni el número de tarea</strong><span class="pill p-no">Sin hacer</span><span class="captura no">Sin pantalla</span></div>
+        <dl class="filas">
+          <dt>Qué pasa</dt><dd>En el PR 125 quedan 3 casillas sin marcar y falta el número de issue. Los commits viejos no siguen el formato («up», «data maestra»…) y la rama no se llama feature/TMS-*.</dd>
+          <dt>Por qué no lo corregí</dt><dd>Se arregla en la página del PR, y aquí no tengo acceso ni permiso para tocar PR.</dd>
+          <dt>Cómo se corrige</dt><dd>Lo haces tú en 5 minutos: marcar las casillas, poner el número de issue y, al fusionar con squash, un título como <code>feat(maestras): maestras desde SAP y carga suelta</code>. Ese único commit es el que queda en develop. La rama no se renombra: rompería el PR.</dd>
+        </dl>
+      </article>
+
+      <article class="ficha">
+        <div class="ficha-cabecera"><span class="num">S4</span><strong>El PR mezcla cinco trabajos en uno</strong><span class="pill p-no">Sin hacer</span><span class="captura no">Sin pantalla</span></div>
+        <dl class="filas">
+          <dt>Qué pasa</dt><dd>464 archivos: maestras SAP, carga suelta, la app Android, la infraestructura del servidor de UAT y el plan de pruebas, que incluye un Excel de 4,2 MB. Si hay que deshacer un problema del servidor, se deshacen también las maestras.</dd>
+          <dt>Opciones</dt><dd><ol class="pasos"><li>Dejarlo junto. La revisión ya está hecha y partir ahora obliga a Alberto a revisar de nuevo.</li><li>Sacar la infraestructura de UAT y el plan de pruebas a dos PR propios. Unas 2 horas, y Alberto revisa dos PR más.</li></ol></dd>
+          <dt>Qué necesito de ti</dt><dd class="pide">Elegir. Si la revisión ya terminó, recomiendo dejarlo junto.</dd>
+        </dl>
+      </article>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-lista" style="display:flex;flex-direction:column;gap:14px">
+    <h2 id="t-lista">Punto por punto</h2>
+    <div class="filtros">
+      <select id="f-area" aria-label="Área"></select>
+      <input type="search" id="f-texto" placeholder="Buscar por punto, commit o texto" aria-label="Buscar">
+      <label class="casilla"><input type="checkbox" id="f-ocultar"> Ocultar los revisados</label>
+    </div>
+    <div class="estado-lista" id="estado"></div>
+    <div class="lista" id="lista"></div>
+  </section>
+
+  <p class="pie">Verificación al cerrar: API con 2037 pruebas en verde y 2 en rojo en el almacén de archivos, que ya fallaban antes en Windows por el separador de rutas. Integración contra SQL Server: 26 de 26 suites y 117 de 117 pruebas. Web: pruebas, lint y tipos en verde. Android: compila y sus pruebas pasan.</p>
+</div>
+
+<script>
+const AREAS = {
+  infra: "Infra y despliegue", docs: "Documentación", migraciones: "Migraciones",
+  planificacion: "API · planificación", maestras: "API · maestras SAP", web: "Web", android: "Android", salida: "Salida del PR"
+};
+const ESTADOS = { ok: ["Corregido", "p-ok"], parcial: ["A medias", "p-parcial"], no: ["Sin hacer", "p-no"] };
+
+const PUNTOS = [
+{n:"#3",a:"infra",e:"ok",t:"Cabeceras de seguridad en la web de UAT",
+c:[["5ae0f486","fix(infra): cabeceras de seguridad iis"]],
+h:"El web.config pone las mismas cabeceras que el nginx del clúster: CSP con el mismo hash, frame-ancestors, nosniff y Referrer-Policy. Quita X-Powered-By y Server. El guion de publicación comprueba que salgan y falla si no. En /api no se repiten, porque las pone helmet.",
+m:"removeServerHeader exige IIS 10 o más; en uno anterior el sitio da 500.19. El script que vigila el hash de CSP solo compara contra nginx, no contra el web.config. ARR puede seguir agregando X-Powered-By en /api."},
+{n:"#4",a:"infra",e:"ok",t:"La cuenta de la API ya no cambia la estructura de la base",
+c:[["0c3bcaa4","fix(infra): migrador separado de app"]],
+h:"Dos cuentas: tms_migrador con db_ddladmin, solo para migrar, y tms_app solo con lectura y escritura de datos.",
+m:"En SRVTMS hay que volver a correr crear-base-uat.sql con CLAVE_TMS_MIGRADOR. Eso también le quita db_ddladmin a tms_app."},
+{n:"#5",a:"infra",e:"ok",t:"El servicio corre con cuenta propia y el .env queda cerrado",
+c:[["f63e5a1f","fix(infra): servicio con cuenta virtual"]],
+h:"El servicio corre como NT SERVICE\\UnimarTmsApi. El .env solo lo leen esa cuenta y Administradores. Solo se escribe en logs y en el almacén de archivos.",
+m:"El NSSM del servidor tiene que admitir cuentas virtuales; si no, sc.exe config hace lo mismo. SYSTEM ya no lee el .env. Copiar el paquete pide consola de administrador. Hay que reinstalar el servicio."},
+{n:"#6",a:"infra",e:"ok",t:"Si falla un ajuste del servicio, el guion se detiene",
+c:[["dd556054","fix(infra): verificar cada nssm set"]],
+h:"Fijar-Nssm ejecuta cada nssm set, falla si el código de salida no es 0 y relee el entorno con nssm get. Probado en PowerShell 5.1 contra un nssm falso.",m:""},
+{n:"#7",a:"infra",e:"ok",t:"SQL Server sin sa activo y con el 1433 acotado",
+c:[["e836fac2","fix(infra): endurecer sql server uat"]],
+h:"El firewall del 1433 solo abre a -SubredesPermitidas, un parámetro obligatorio: no se inventó la subred real. sa queda deshabilitado al terminar. El login de DBeaver tiene solo lectura y escritura de datos, con caducidad de clave.",
+m:"El guion se niega a deshabilitar sa si hay sesiones activas. UmsUat comparte la instancia: si UMS usa sa, se detiene ahí. La clave de DBeaver ahora caduca según la política de Windows."},
+{n:"#9",a:"infra",e:"ok",t:"Desplegar y migrar en el orden correcto",
+c:[["ad81f1c1","feat(infra): migrar dentro de publicación"]],
+h:"publicar-uat-5443.ps1 tiene la opción -Migrar: detener, respaldar, copiar la API, migrar con el dist nuevo, copiar la web, arrancar y verificar. Pide la clave de tms_migrador antes de detener nada. El README sigue el mismo orden.",m:""},
+{n:"#10",a:"infra",e:"ok",t:"Respaldo antes de migrar y rollback escrito",
+c:[["8829c67b","feat(infra): respaldo antes de migrar"]],
+h:"Antes de migrar corre BACKUP DATABASE con COPY_ONLY, CHECKSUM e INIT. Si el respaldo falla no se copió nada y basta con arrancar la versión anterior. El RESTORE queda escrito en la sección Rollback del README.",
+m:"La carpeta por defecto es E:\\SQLServer\\Backup; confirmar que existe en el servidor."},
+{n:"#15",a:"infra",e:"ok",t:"El script de datos de prueba ya no escribe en cualquier base",
+c:[["7f4ad5bf","fix(datos): guardas al cargar rds"]],
+h:"Aborta en producción y si la base no está en la lista blanca, que hoy solo tiene unimar_tms. Muestra la base destino y pide --si. Cierra en finally, sale con 1 ante error y calcula las fechas desde hoy.",m:""},
+{n:"G40",a:"infra",e:"ok",t:"Scripts sin banderines ni estados viejos",
+c:[["ec069580","style(infra): quitar banderines y estados"]],
+h:"Fuera los separadores decorativos y las frases como «YA EXISTE» o «28 tablas, 32 migraciones».",m:""},
+{n:"G41",a:"infra",e:"parcial",t:"El ejemplo de desarrollo escucha solo en local",
+c:[["c4e73493","fix(api): ejemplo escucha en loopback"]],
+h:"API_DIRECCION pasa a 127.0.0.1.",
+m:"DB_USUARIO sigue en sa: en desarrollo el contenedor de SQL Server solo crea ese login."},
+{n:"G42",a:"infra",e:"ok",t:"El aprovisionamiento se puede correr dos veces",
+c:[["f56c7d36","fix(infra): enlace ssl repetible"]],
+h:"Solo pone el certificado si el enlace no tiene uno o si cambió la huella del certificado.",m:""},
+{n:"G43",a:"infra",e:"ok",t:"La instalación falla si la API no responde",
+c:[["f1819eeb","fix(infra): reintento y liberar clave"]],
+h:"Usa el mismo bucle de reintento de publicar-uat-5443, falla si no llega success: true y libera la clave en un finally.",m:""},
+{n:"G44",a:"infra",e:"ok",t:"nssm.exe propio del TMS",
+c:[["63731824","fix(infra): nssm propio del tms"]],
+h:"Se toma de C:\\apps\\tms-api\\herramientas, que ya está fuera del /MIR y donde solo escriben Administradores y SYSTEM. Una carpeta común dejaría que cualquier usuario cambie el binario del servicio.",
+m:"Copiar nssm.exe a esa carpeta antes de reinstalar."},
+{n:"#8",a:"docs",e:"ok",t:"UAT declara sus desviaciones del ADR de entornos",
+c:[["98aa7d7d","docs(adr): desviaciones de uat declaradas"]],
+h:"La D8 del ADR-TMS-026 nombra las tres desviaciones (SQL Server 2019 Express, instancia compartida con UmsUat, base db-tms-uat), cada una con su criterio de retiro. El ADR pasa a 1.1.0.",
+m:"G-239 ya existía, así que el pendiente nuevo es G-240. Los contadores de GAPS.md se subieron a mano: el validador de unimar-core no está en esta máquina."},
+{n:"#31",a:"docs",e:"ok",t:"La historia técnica cita las migraciones correctas",
+c:[["68b2f7c2","docs(construccion): migraciones de ts-tms-010 corregidas"]],
+h:"Ahora cita los sellos reales: 1792800000000, 1792886400000, 1792972800000 y 1793059200000, más las dos vistas que rehace MoverFlotaAlModeloDeSap.",m:""},
+{n:"S5",a:"docs",e:"ok",t:"La preparación de la entrega conoce las migraciones nuevas",
+c:[["d1f36183","docs(entrega): migraciones nuevas y reversiones"]],
+h:"El documento pasa de 66 a 74 migraciones. Una tabla con las 8 nuevas: 3 se revierten del todo y 5 en parte, porque necesitan restaurar la copia. CompletadoEInicioDeViaje no deshace nada si algún viaje ya marcó INICIO_VIAJE. Quedan 25 reversiones posibles en base vacía.",
+m:"El conteo sale de leer los archivos, no de correrlos contra SQL Server."},
+{n:"G39",a:"docs",e:"ok",t:"El inventario del servidor ya no publica la red interna",
+c:[["231a3e46","docs(entrega): inventario uat sin datos internos"]],
+h:"El inventario queda como estructura con marcadores y una línea que manda el dato real a la wiki. El original quedó copiado en la carpeta temporal de esta sesión para pasarlo a la wiki.",
+m:"La IP y los nombres siguen en el historial de git y en otros archivos: apps/unitrans-android (README, build.gradle.kts, configuracion_red.xml), instalar-sqlserver-uat.ps1 y entornos-tms.md."},
+{n:"#13",a:"migraciones",e:"ok",t:"Una prueba avisa si alguien edita una migración publicada",
+c:[["bb3ae315","test(migraciones): huellas de migraciones publicadas"]],
+h:"Guarda la huella SHA-256 de las 74 migraciones en un archivo versionado y la prueba la compara. Si falta una, dice qué comando correr (npm run migracion:registrar-huellas). Si una cambió, falla con «una migración publicada no se edita».",
+m:"La huella sale del SQL que generan up() y down(), no del texto del archivo. Con la huella del texto, renombrar un miembro del enum pasaría sin aviso. La regla de armar los CHECK con el enum sigue igual en CLAUDE.md: ahora se detecta, pero no se impide."},
+{n:"#14",a:"migraciones",e:"ok",t:"Las migraciones que mueven datos se prueban con datos",
+c:[["6f7425d7","test(migraciones): migraciones que mueven datos"]],
+h:"Una prueba crea su propia base, migra hasta antes de MoverFlotaAlModeloDeSap, siembra conductores, vehículos y viajes, corre las cuatro migraciones, revisa filas, índice, vistas y checkpoints, y después revierte. 13 pruebas en verde.",
+m:"Encontró dos defectos y los dejó fijados tal como están hoy. 1) Tras un down(), volver a aplicar la migración choca con uq_tipo_documento_identidad_codigo. 2) Al revertir, un conductor con dos vehículos pierde uno. No se corrigieron porque deciden qué datos sobreviven, igual que #11."},
+{n:"S1",a:"salida",e:"ok",t:"Las pruebas contra la base real se corrieron",
+c:[],
+h:"npm run test:integracion: 26 de 26 suites y 117 de 117 pruebas en verde.",
+m:"No hay commit. Falta anotar el resultado en la descripción del PR."},
+{n:"#19",a:"planificacion",e:"ok",t:"La carga suelta del conductor se prueba contra SQL Server",
+c:[["e5401d08","test(planificacion): registro de carga suelta"]],
+h:"Pruebas contra la base real: registra, reenvío igual, datos distintos, viaje ajeno, tipo inactivo, y dos envíos simultáneos que escriben una sola vez.",m:""},
+{n:"#20",a:"planificacion",e:"parcial",t:"«Sin cuenta UMS no hay oferta» escrita una sola vez",
+c:[["868d7d41","refactor(planificacion): regla de cuenta única"]],
+h:"exigirConductorConCuenta vive en un solo archivo y la usan las tres escrituras. La copia invertida era equivalente.",
+m:"recursosDeLaPeticion solo lo usan el asignador y el editor. El planificador de carga suelta resuelve en otro orden; unificarlo cambiaría qué error ve el usuario cuando fallan varios a la vez."},
+{n:"G1",a:"planificacion",e:"ok",t:"Los avisos push salen en paralelo",
+c:[["5362379e","perf(planificacion): avisos en paralelo acotado"]],
+h:"Lotes de 5 con Promise.allSettled: un push fallido no frena a los demás.",
+m:"Las líneas del relato de cada oferta pueden salir intercaladas."},
+{n:"G2",a:"planificacion",e:"ok",t:"Los casos de uso piden el avisador por su puerto",
+c:[["985461aa","refactor(planificacion): avisador por su puerto"]],
+h:"Usan @Inject(AVISADOR_DE_OFERTAS) en vez de la clase concreta.",m:""},
+{n:"G3",a:"planificacion",e:"ok",t:"El error habla de «cuenta de UMS»",
+c:[["d8ce9e1f","fix(planificacion): conductor sin cuenta UMS"]],
+h:"El mensaje dice «cuenta de UMS» y ya no dice «vuelve a asignar». El tipo pasa a CONDUCTOR_SIN_CUENTA_UMS.",
+m:"El tipo es interno: por HTTP solo viajan BUSINESS_RULE_ERROR y el mensaje. Ni la web ni la app lo leen."},
+{n:"G4",a:"planificacion",e:"ok",t:"Las ofertas se registran después de confirmar la transacción",
+c:[["97d97194","fix(planificacion): ofertas narradas tras confirmar"]],
+h:"El registro de las ofertas salió de la transacción y ahora lo hace IniciarPlanificacionCasoUso cuando el repositorio respondió bien. La función pasó a la capa de aplicación de planificación.",m:""},
+{n:"G5",a:"planificacion",e:"ok",t:"Un puerto por responsabilidad",
+c:[["cfdbd71a","refactor(planificacion): puertos por responsabilidad"]],
+h:"La operación independiente y la que se une a una transacción ajena son dos puertos. El creador depende solo del segundo.",m:""},
+{n:"G6",a:"planificacion",e:"ok",t:"Un solo cierre en el depósito",
+c:[["f796cf68","refactor(planificacion): cierre en el depósito compartido"]],
+h:"Ingreso al depósito y cierre de viaje usan cerrarEnElDeposito.",
+m:"Desde el portal ahora va primero el UPDATE condicionado y después los hitos, igual que en control de accesos. Si algo falla la transacción se revierte, así que el resultado es el mismo."},
+{n:"G9",a:"planificacion",e:"ok",t:"Mensajes de conflicto sin conversión forzada",
+c:[["f91097b1","refactor(planificacion): conflicto sin conversión forzada"]],
+h:"comoConflicto ya no usa as: el compilador avisa si a un error le falta su mensaje.",m:""},
+{n:"G10",a:"planificacion",e:"ok",t:"La lectura de la carga en su propio archivo",
+c:[["6a2de149","refactor(planificacion): lectura de la carga aparte"]],
+h:"leerCargaDeclarada pasó a lectura-de-la-carga.ts; el archivo de sentencias vuelve a tener solo SQL.",m:""},
+{n:"G11",a:"planificacion",e:"ok",t:"La máquina de estados del viaje en una tabla",
+c:[["0f0a08f4","refactor(planificacion): tabla del recorrido"]],
+h:"Una tabla por checkpoint dice cuál sigue, si el viaje sigue en curso, quién lo marca y qué evidencia exige. Las constantes de antes se derivan de ella.",
+m:"Las constantes se calculan al cargar el módulo y fallan en ese momento si la tabla queda inconsistente."},
+{n:"G12",a:"planificacion",e:"ok",t:"La búsqueda de cargas tiene su prueba",
+c:[["9e244f1a","test(planificacion): búsqueda de cargas"]],
+h:"Cubre UUID válido, UUID inválido con 400 y el alias antiguo «suelta».",m:""},
+{n:"#22",a:"maestras",e:"ok",t:"SAP vacía la caché del consolidado solo cuando toca",
+c:[["adc8fc13","perf(maestras): sap invalida solo consolidado"]],
+h:"Las rutas de SAP solo invalidan si llevan @InvalidaElConsolidado(): naves, viajes de nave e instalaciones portuarias. El consolidado no lee ninguna tabla de flota.",
+m:"Las escrituras que no vienen de SAP siguen invalidando como antes."},
+{n:"#24",a:"maestras",e:"ok",t:"El relato de las relaciones de vehículo dice lo que pasó",
+c:[["750a5c07","fix(flota): relato tras relacionar vehículo"],["ca30e191","fix(flota): traza al relacionar vehículo"]],
+h:"La etapa se registra después del resultado, con fallida si falló, más el efecto de la escritura y una decisión cuando SAP manda una referencia que no existe. El segundo commit agrega la traza que exige la prueba de aspectos.",m:""},
+{n:"#25",a:"maestras",e:"ok",t:"Lo delicado de las maestras se prueba contra SQL Server",
+c:[["0b8aaeec","test(maestras): integración contra sql server"]],
+h:"Cuatro archivos con 16 pruebas: relaciones de vehículo (incluidas dos simultáneas), vinculador de RD y búsqueda de códigos SAP en flota y en naves.",m:""},
+{n:"#26",a:"maestras",e:"ok",t:"SQL a mano solo donde hace falta",
+c:[["dab396dd","refactor(maestras): sentencias aparte y orm"]],
+h:"El UPDATE del vinculador pasó a sentencias-vinculador.ts con una línea del porqué (compare-and-set, ADR-TMS-023). El alta y los cierres de relaciones de flota pasaron al ORM dentro de la misma transacción.",m:""},
+{n:"#27",a:"maestras",e:"ok",t:"Cada módulo busca sus propios códigos SAP",
+c:[["132120cc","refactor(maestras): códigos sap por módulo"]],
+h:"En shared queda solo el puerto CodigosSap. Flota y naves lo implementan con sus propias entidades, sin armar nombres de tabla.",m:""},
+{n:"#29",a:"maestras",e:"ok",t:"La cuenta UMS solo se escribe al vincular",
+c:[["d2357d74","refactor(flota): cuenta ums solo al vincular"]],
+h:"usuarioUms salió de DatosConductor y de crear y actualizar. Si alguien intenta pasarla por la vía de SAP, el compilador no lo deja.",m:""},
+{n:"#30",a:"maestras",e:"ok",t:"Los porqués no evidentes vuelven junto al código",
+c:[["00923d56","docs(seguridad): porqués junto al código"]],
+h:"Siete comentarios de una línea, recuperados de la historia técnica TS-TMS-010: cuatro en verificador-ums.ts, uno en identidad.ts, uno en normalizarCuentaUms y dos en cobertura-de-rutas.spec.ts.",
+m:"Choca con tu regla global de código sin comentarios. Se siguió la del proyecto: solo el porqué que no se deduce."},
+{n:"G14",a:"maestras",e:"ok",t:"Todos los sincronizadores por composición",
+c:[["7ab8c985","refactor(maestras): sincronizadores por composición"]],
+h:"Los siete reciben el sincronizador en vez de heredarlo.",m:""},
+{n:"G16",a:"maestras",e:"ok",t:"La auditoría de las maestras en un solo DTO",
+c:[["521de7f0","refactor(maestras): auditoría compartida en dto"],["cd4c58fe","test(api): línea base de maestras"]],
+h:"AuditoriaDeMaestra pasó a shared/maestras y los DTO de naves la extienden. El segundo commit ajusta la línea base de las reglas de tamaño.",
+m:"Swagger queda igual en tipos y formatos. Solo cambia el texto de las cinco descripciones de naves, que ahora dice «la fila» en vez de «la nave»."},
+{n:"G18",a:"maestras",e:"ok",t:"El DTO de horas libres en su archivo",
+c:[["fc42fd38","refactor(naves): dto de horas libres"]],
+h:"HorasLibresDto pasó a horas-libres.dto.ts.",m:""},
+{n:"G19",a:"maestras",e:"ok",t:"Sin restos del CRUD retirado",
+c:[["760d00b8","refactor(maestras): quitar ramas sin uso"]],
+h:"loQueLlega, estadoQueSeEdita y la rama de usuarioUms ya no hacen falta: SAP siempre manda todo y los campos son obligatorios. cambiarEstado pasó a darDeBaja.",
+m:"CambiarEstadoDto se quedó porque lo usa planificación."},
+{n:"#33",a:"web",e:"ok",t:"El modal «Iniciar RD» ya no arrastra errores",
+c:[["5c0d6db1","fix(web): error del modal iniciar"]],
+h:"El error se limpia al abrir el modal. Mientras se envía no se puede cerrar: Cancelar, Esc, la X y el fondo no hacen nada. Una prueba cubre: falla, se cierra, se abre otra RD sin error.",m:""},
+{n:"#35",a:"web",e:"ok",t:"Sin ciclo entre el catálogo y las pantallas",
+c:[["e3fcd122","fix(web): rutas de pantalla compartidas"]],
+h:"Las rutas viven en compartido/rutas-de-pantalla.ts. ESLint prohíbe importar @/app/* desde funcionalidades/, con su caso en la prueba de reglas.",m:""},
+{n:"#38",a:"web",e:"ok",t:"El modal de carga suelta vuelve a explicar sus límites",
+c:[["2297cda6","fix(web): conteo y nota de viajes"]],
+h:"Vuelven «N de M viajes en esta tanda» y la nota de que la autorización ya existe y los viajes heredan su cita. Las pruebas vuelven a comprobarlo.",
+m:"«Añadir viaje» sigue apagado mientras cargan las opciones: sin el máximo de la API se podría pasar el tope."},
+{n:"#39",a:"web",e:"ok",t:"La carga suelta se prueba de punta a punta",
+c:[["e2a119dd","test(web): iniciar RD con carga suelta"]],
+h:"Con MSW carga la pantalla real desde el catálogo, abre «Iniciar», elige carga suelta, llena los datos y revisa el cuerpo del POST.",m:""},
+{n:"G21",a:"web",e:"ok",t:"Un solo estado para el paso del asistente",
+c:[["c1446c72","refactor(web): paso del inicio único"]],h:"El paso es ELEGIR o CARGAR y vive en el hook.",m:""},
+{n:"G22",a:"web",e:"ok",t:"La sección de carga suelta es obligatoria",
+c:[["ee7a3c48","refactor(web): sección suelta obligatoria"]],h:"Sin valor por defecto: el compilador obliga a cablearla y las pruebas la pasan explícita.",m:""},
+{n:"G25",a:"web",e:"ok",t:"Tipos de descripción usa las consultas de maestras",
+c:[["890f664c","refactor(web): escritura de maestra compartida"]],
+h:"useListadoDeMaestra y useEscrituraDeMaestra quedan en compartido/maestras. Tipos de descripción conserva su refresco tras un error.",m:""},
+{n:"G26",a:"web",e:"ok",t:"Sin restos de pantallas retiradas",
+c:[["d35148a0","refactor(web): borrar restos sin uso"]],
+h:"Borrados Cabecera y las variantes neutro y exito de Boton. FECHA_CON_OFFSET pasó a compartido/formato/fecha.ts.",m:""},
+{n:"G27",a:"web",e:"ok",t:"Las pantallas de solo lectura se llaman «Consulta de…»",
+c:[["0fc8f53b","fix(web): consulta en maestras de SAP"]],
+h:"Naves, viajes de nave, transportistas y vehículos cambian título y pestaña.",
+m:"Las listas vacías de planificación siguen diciendo «Da de alta uno en Mantenimientos», aunque esas pantallas ya no crean nada."},
+{n:"G28",a:"web",e:"ok",t:"La prueba de solo lectura ya no incluye tipos de descripción",
+c:[["31a7e49d","test(web): tipos fuera de solo lectura"]],h:"El diff se ve grande porque Prettier volvió a sangrar el bloque.",m:""},
+{n:"G29",a:"web",e:"ok",t:"Cada botón de fila tiene su nombre",
+c:[["9249cd75","fix(web): nombre accesible por fila"]],h:"El lector de pantalla oye «Horas libres de DPW» o «Vincular cuenta UMS de Pérez, Juan».",m:""},
+{n:"G30",a:"web",e:"ok",t:"Los avisos de error se anuncian",
+c:[["f77ffacd","fix(web): avisos con rol alerta"]],h:"role=\"alert\" en el aviso del inicio y en el de ModalMaestra.",m:""},
+{n:"G31",a:"web",e:"ok",t:"Los botones se apagan mientras hay un cambio en curso",
+c:[["964cc17f","fix(web): apagar fila durante cambio"]],h:"Se apagan mientras isPending.",
+m:"Se apagan todas las filas, no solo la tocada. Es lo mismo que ya hacía el hook al ignorar los clics."},
+{n:"G32",a:"web",e:"ok",t:"Aviso antes de desvincular la cuenta UMS",
+c:[["d663303c","feat(web): aviso al desvincular cuenta"]],h:"Al vaciar una cuenta que existía, el modal avisa que se desvincula y se dan de baja los aparatos. La regla no cambia.",m:""},
+{n:"G33",a:"web",e:"ok",t:"La búsqueda de cargas codifica su URL",
+c:[["003d6a2f","refactor(web): consulta de cargas con URLSearchParams"]],h:"Toda la consulta se arma con URLSearchParams.",
+m:"Los espacios salen como + en vez de %20; el servidor los lee igual."},
+{n:"G34",a:"web",e:"ok",t:"Sin conversiones as sin justificar",
+c:[["54eb82de","refactor(web): guardias en vez de as"]],h:"segunLaFila y la operación usan guardias de tipo. El as de RUTA_DE_LA_PANTALLA ya lo quitó #35.",m:""},
+{n:"G37",a:"android",e:"ok",t:"Espacio después del igual",
+c:[["041ff2c9","style(android): espacio en inquilinoUms"]],h:"Solo formato en build.gradle.kts.",m:""},
+{n:"G38",a:"android",e:"ok",t:"Un solo mapa de gestos y el porqué de recargar",
+c:[["044d50ce","refactor(android): declaración usa gestos pendientes"]],
+h:"La declaración usa gestosPendientes y se borró GestosDeDeclaracion. Volvió la línea: «Tras cada gesto se relee el detalle: el servidor decide qué paso toca y qué falta antes de marcarlo». Las cinco pruebas pasaron a ModeloViajeTest.",m:""},
+{n:"#32",a:"android",e:"no",t:"security-crypto sigue en la versión alfa",c:[],
+h:"Con 1.0.0 la app no compila: AlmacenDeSesion usa MasterKey, que no existe en esa versión.",
+m:"La 1.1.0 estable sí compila con el código actual. Falta tu visto bueno para subirla."},
+{n:"G36",a:"android",e:"no",t:"La confianza en la CA de UAT sigue atada a la IP",c:[],
+h:"El repo no confirma qué nombre DNS cubre el certificado (CN=SRVTMS). Aparecen srvtms y SRVTMS.unimar.com.pe.",
+m:"Con un nombre equivocado la app deja de conectarse. Hace falta el nombre que figura en el certificado."},
+{n:"S2",a:"salida",e:"no",t:"Los 11 pendientes del PR siguen sin registrar",c:[],
+h:"No se pudo leer la descripción del PR: la cuenta de gh de esta máquina no tiene acceso al repositorio.",
+m:"Si pegas la lista, se registran en GAPS.md con su criterio de cierre."},
+{n:"G15",a:"maestras",e:"no",t:"El módulo del vinculador sigue siendo global",c:[],
+h:"Quitar @Global() obliga a que naves importe relación detallada, que ya depende de naves. La prueba de ciclos entre módulos lo rechaza.",m:""},
+{n:"G20",a:"maestras",e:"no",t:"La regla de recalada sigue en dos sitios",c:[],
+h:"Las dos versiones no son iguales: una saca la operación de las cargas y recorta en SQL, la otra usa la operación declarada, recorta en JS y elige un solo viaje. Unificarlas cambiaría qué RD se enlaza.",m:""},
+{n:"G23",a:"web",e:"no",t:"La tabla de estados sigue duplicada",c:[],
+h:"Los colores coinciden, pero las etiquetas no: «En espera de balanza» en el consolidado y «En espera balanza» en citas.",
+m:"Elige un texto y se unifica."},
+{n:"G24",a:"web",e:"no",t:"El hook de carga suelta sigue subiendo datos con un efecto",c:[],
+h:"Que el padre maneje el borrador obliga a que el consolidado importe de planificación de citas, y ESLint lo prohíbe. También cambia lo que inyecta el catálogo.",
+m:"Hace falta decidir el diseño antes de tocarlo."},
+{n:"G35",a:"web",e:"no",t:"El prototipo repite el modal «Iniciar RD»",c:[],
+h:"El modal sí existe, en src/apps/prototipo-web (766 líneas). Antes dije que no: el agente lo buscó en la carpeta equivocada.",
+m:"Falta decidir si se quita. Ver «Los 13 por cerrar, explicados»."},
+{n:"G45",a:"migraciones",e:"no",t:"Las migraciones intermedias quedan como están",c:[],
+h:"Lo dejaste fuera: depende de si UAT ya las corrió.",m:""},
+{n:"S3",a:"salida",e:"no",t:"Checklist y número de tarea del PR",c:[],
+h:"Lo dejaste fuera: se arregla en el PR y en el mensaje del squash, no en el código.",m:""},
+{n:"S4",a:"salida",e:"no",t:"Partir el PR",c:[],
+h:"Lo dejaste fuera: es una decisión de organización.",m:""}
+];
+
+const CLAVE = "correcciones-pr-125-revisados";
+let revisados = new Set();
+try { revisados = new Set(JSON.parse(localStorage.getItem(CLAVE) || "[]")); } catch (e) {}
+function guardar() { try { localStorage.setItem(CLAVE, JSON.stringify([...revisados])); } catch (e) {} }
+
+let estadoActivo = null;
+const $ = (id) => document.getElementById(id);
+const esc = (s) => s.replace(/[&<>"]/g, (c) => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+
+for (const k of Object.keys(ESTADOS)) $("n-" + k).textContent = PUNTOS.filter((p) => p.e === k).length;
+
+const selArea = $("f-area");
+selArea.innerHTML = '<option value="">Todas las áreas</option>' +
+  Object.entries(AREAS).filter(([k]) => PUNTOS.some((p) => p.a === k)).map(([k, v]) => `<option value="${k}">${v}</option>`).join("");
+
+function tarjeta(p) {
+  const [rotulo, clase] = ESTADOS[p.e];
+  const hecho = revisados.has(p.n);
+  const commits = p.c.length
+    ? `<ul class="commits">${p.c.map(([h, m]) => `<li><code>${h}</code><span>${esc(m)}</span></li>`).join("")}</ul>`
+    : `<p>Sin commit.</p>`;
+  return `<details class="obs${hecho ? " revisada" : ""}" data-n="${p.n}">
+    <summary><span class="num">${p.n}</span><span class="cuerpo-sum"><span class="titulo">${esc(p.t)}</span>
+      <span class="etiquetas"><span class="pill ${clase}">${rotulo}</span><span class="pill p-area">${AREAS[p.a]}</span>${hecho ? '<span class="pill p-hecho">Revisado</span>' : ""}</span></span></summary>
+    <div class="detalle">
+      <div class="seccion"><h4>${p.e === "no" ? "Por qué no se hizo" : "Qué se hizo"}</h4><p>${esc(p.h)}</p></div>
+      ${p.m ? `<div class="seccion mirar"><h4>${p.e === "no" ? "Qué falta" : "Qué mirar"}</h4><p>${esc(p.m)}</p></div>` : ""}
+      <div class="seccion"><h4>Commit</h4>${commits}</div>
+      <div class="acciones"><label class="marcar"><input type="checkbox" data-marcar="${p.n}"${hecho ? " checked" : ""}> Revisado</label></div>
+    </div></details>`;
+}
+
+function pintar() {
+  const area = selArea.value;
+  const texto = $("f-texto").value.trim().toLowerCase();
+  const ocultar = $("f-ocultar").checked;
+  const abiertos = new Set([...document.querySelectorAll(".obs[open]")].map((d) => d.dataset.n));
+  const visibles = PUNTOS.filter((p) =>
+    (!estadoActivo || p.e === estadoActivo) && (!area || p.a === area) && (!ocultar || !revisados.has(p.n)) &&
+    (!texto || [p.n, p.t, p.h, p.m, ...p.c.flat()].join(" ").toLowerCase().includes(texto)));
+  $("lista").innerHTML = visibles.length ? visibles.map(tarjeta).join("") : '<div class="vacio">Ningún punto coincide con los filtros.</div>';
+  for (const n of abiertos) { const d = document.querySelector(`.obs[data-n="${CSS.escape(n)}"]`); if (d) d.open = true; }
+  $("estado").textContent = `Mostrando ${visibles.length} de ${PUNTOS.length}`;
+  const total = PUNTOS.length, hechos = PUNTOS.filter((p) => revisados.has(p.n)).length;
+  $("texto-revision").textContent = `${hechos} de ${total} revisados`;
+  $("barra-revision").style.width = (100 * hechos / total) + "%";
+}
+
+document.querySelectorAll(".cifra").forEach((b) => b.addEventListener("click", () => {
+  estadoActivo = estadoActivo === b.dataset.estado ? null : b.dataset.estado;
+  document.querySelectorAll(".cifra").forEach((x) => x.setAttribute("aria-pressed", String(x.dataset.estado === estadoActivo)));
+  pintar();
+}));
+selArea.addEventListener("change", pintar);
+$("f-texto").addEventListener("input", pintar);
+$("f-ocultar").addEventListener("change", pintar);
+$("lista").addEventListener("change", (ev) => {
+  const n = ev.target.dataset && ev.target.dataset.marcar;
+  if (!n) return;
+  if (ev.target.checked) revisados.add(n); else revisados.delete(n);
+  guardar();
+  pintar();
+});
+pintar();
+</script>
+
+</body></html>

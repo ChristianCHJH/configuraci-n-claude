@@ -1,0 +1,2084 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Anatomía de instalaciones-portuarias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Condensed:wght@500;600;700&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap">
+<style>
+:root{
+  --bg:#F3F5F8; --surface:#FFFFFF; --surface-2:#EBEFF4; --ink:#152030; --muted:#566476; --line:#D5DCE5;
+  --code-bg:#F7F9FB; --code-ink:#1D2B3C; --tok-k:#8A3FFC; --tok-s:#0F7A4D; --tok-c:#7A8594; --tok-d:#B45309;
+  --c-cli:#5B6B80; --c-nest:#0E7490; --c-api:#2257D6; --c-app:#A85A06; --c-dom:#177A3C; --c-infra:#7040D8; --c-bd:#B4233F;
+  --ida:#2F3E52; --vuelta:#0E8A7A; --error:#C0262D; --vuelta-band:rgba(14,138,122,.06);
+  --sel:#FFE89A;
+  --f-sans:'IBM Plex Sans',system-ui,-apple-system,'Segoe UI',sans-serif;
+  --f-cond:'IBM Plex Sans Condensed','Arial Narrow',system-ui,sans-serif;
+  --f-mono:'IBM Plex Mono',ui-monospace,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark;
+    --bg:#0F151D; --surface:#161E29; --surface-2:#1D2735; --ink:#E4EAF2; --muted:#98A5B6; --line:#2B3747;
+    --code-bg:#111923; --code-ink:#D8E1EC; --tok-k:#B892FF; --tok-s:#5CCB94; --tok-c:#728095; --tok-d:#F0A95A;
+    --c-cli:#93A3B8; --c-nest:#37B5CF; --c-api:#6D9BFF; --c-app:#F0A24A; --c-dom:#4FC27A; --c-infra:#A887FF; --c-bd:#FF6F8A;
+    --ida:#B8C4D4; --vuelta:#3FD1BC; --error:#FF6B6B; --vuelta-band:rgba(63,209,188,.07);
+    --sel:#5A4A12;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --bg:#0F151D; --surface:#161E29; --surface-2:#1D2735; --ink:#E4EAF2; --muted:#98A5B6; --line:#2B3747;
+  --code-bg:#111923; --code-ink:#D8E1EC; --tok-k:#B892FF; --tok-s:#5CCB94; --tok-c:#728095; --tok-d:#F0A95A;
+  --c-cli:#93A3B8; --c-nest:#37B5CF; --c-api:#6D9BFF; --c-app:#F0A24A; --c-dom:#4FC27A; --c-infra:#A887FF; --c-bd:#FF6F8A;
+  --ida:#B8C4D4; --vuelta:#3FD1BC; --error:#FF6B6B; --vuelta-band:rgba(63,209,188,.07);
+  --sel:#5A4A12;
+}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font:15px/1.55 var(--f-sans);padding-inline:16px;padding-block:28px 64px}
+.envoltura{max-width:1320px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--f-cond);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(28px,4vw,40px);font-weight:700;letter-spacing:-.01em}
+h2{font-size:24px;font-weight:600}
+h3{font-size:17px;font-weight:600}
+p{margin:0}
+code{font-family:var(--f-mono);font-size:.88em;background:var(--surface-2);padding:1px 5px;border-radius:4px}
+.eti{font-family:var(--f-cond);font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.cabecera{display:grid;gap:12px}
+.cabecera p{max-width:72ch;color:var(--muted)}
+.ruta-archivo{font-family:var(--f-mono);font-size:13px}
+
+.selector{display:flex;flex-wrap:wrap;gap:8px}
+.endpoint{display:flex;align-items:center;gap:10px;border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:10px 14px;cursor:pointer;font:inherit;text-align:left}
+.endpoint:hover{border-color:var(--muted)}
+.endpoint[aria-pressed="true"]{border-color:var(--c-api);box-shadow:inset 0 0 0 1px var(--c-api)}
+.verbo{font-family:var(--f-mono);font-size:12px;font-weight:600;padding:2px 7px;border-radius:4px;color:#fff}
+.verbo.GET{background:var(--c-dom)} .verbo.PATCH{background:var(--c-app)}
+.endpoint .r{font-family:var(--f-mono);font-size:13px}
+.endpoint .s{display:block;font-size:12px;color:var(--muted)}
+.escenarios{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.esc{font:500 13px var(--f-sans);border:1px solid var(--line);background:transparent;color:var(--ink);border-radius:999px;padding:5px 12px;cursor:pointer}
+.esc[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.esc.err[aria-pressed="true"]{background:var(--error);border-color:var(--error);color:#fff}
+
+.trabajo{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,1fr);gap:20px;align-items:start}
+@media (max-width:980px){.trabajo{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:10px}
+.diagrama{padding:14px 12px 10px}
+.diagrama .ayuda{font-size:13px;color:var(--muted);padding:0 4px 10px;display:flex;flex-wrap:wrap;gap:14px}
+.leyenda-i{display:inline-flex;align-items:center;gap:6px}
+.leyenda-i svg{flex:none}
+.lienzo{overflow-x:auto}
+.lienzo svg{display:block;min-width:640px;width:100%;height:auto}
+.nodo{cursor:pointer}
+.nodo:focus{outline:none}
+.nodo:focus-visible rect.caja{stroke-width:3}
+
+.detalle{position:sticky;top:calc(env(safe-area-inset-top,0px) + 12px);padding:20px;display:flex;flex-direction:column;gap:16px;max-height:calc(100vh - 24px);overflow:auto}
+@media (max-width:980px){.detalle{position:static;max-height:none}}
+.det-cab{display:flex;flex-direction:column;gap:8px}
+.chips{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.chip{font:600 11px var(--f-cond);letter-spacing:.07em;text-transform:uppercase;padding:3px 8px;border-radius:4px;color:#fff}
+.chip.contorno{background:transparent;color:var(--muted);border:1px solid var(--line)}
+.det-texto{display:flex;flex-direction:column;gap:10px;max-width:68ch}
+.io{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media (max-width:560px){.io{grid-template-columns:1fr}}
+.io div{background:var(--surface-2);border-radius:8px;padding:10px 12px;display:flex;flex-direction:column;gap:4px;font-size:13.5px}
+.io div span:last-child{font-family:var(--f-mono);font-size:12.5px;overflow-wrap:anywhere}
+.bloque{border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.bloque-cab{display:flex;align-items:center;justify-content:space-between;gap:8px;padding:7px 10px;background:var(--surface-2);border-bottom:1px solid var(--line)}
+.bloque-cab .ruta-archivo{overflow-wrap:anywhere;font-size:12px}
+.copiar{flex:none;font:500 12px var(--f-sans);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:6px;padding:3px 9px;cursor:pointer}
+.copiar:hover{border-color:var(--muted)}
+pre.codigo{margin:0;padding:10px 0;background:var(--code-bg);color:var(--code-ink);font:12.5px/1.6 var(--f-mono);overflow-x:auto}
+pre.codigo .l{display:block;padding-right:14px;white-space:pre}
+pre.codigo .n{display:inline-block;width:3.2em;padding-right:.9em;text-align:right;color:var(--tok-c);user-select:none}
+pre.codigo .l.con-nota .n{color:var(--c-api);font-weight:600}
+pre.codigo .l.marca{background:var(--sel)}
+.notas{list-style:none;margin:0;padding:6px 0;border-top:1px solid var(--line);display:flex;flex-direction:column}
+.notas li{display:grid;grid-template-columns:4.2em 1fr;gap:10px;padding:7px 12px;font-size:13.5px;line-height:1.5;cursor:default}
+.notas li:hover,.notas li:focus{background:var(--surface-2);outline:none}
+.notas .nl{font:600 12px/1.9 var(--f-mono);color:var(--c-api);text-align:right}
+.notas .nt{overflow-wrap:anywhere}
+.tag{display:inline-block;font:600 10.5px/1 var(--f-cond);letter-spacing:.06em;text-transform:uppercase;padding:3px 6px;border-radius:4px;margin-right:7px;vertical-align:1px}
+.tag.doc{background:var(--surface-2);color:var(--muted);border:1px dashed var(--muted)}
+.tag.efecto{background:var(--c-api);color:#fff}
+.url{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0}
+.url .seg{display:flex;flex-direction:column;gap:3px;border-top:4px solid var(--c);background:var(--surface-2);border-radius:0 0 6px 6px;padding:7px 10px;min-width:0}
+.url .txt{font:600 13px var(--f-mono);color:var(--c);overflow-wrap:anywhere}
+.url .nom{font:600 11px var(--f-cond);letter-spacing:.06em;text-transform:uppercase;color:var(--ink)}
+.url .ori{font:11.5px var(--f-mono);color:var(--muted)}
+table.mini{min-width:560px;font-size:13px}
+table.mini td,table.mini th{padding:6px 8px}
+.k{color:var(--tok-k)} .s{color:var(--tok-s)} .c{color:var(--tok-c);font-style:italic} .d{color:var(--tok-d)}
+.sigue{border-left:3px solid var(--c-api);padding:10px 14px;background:var(--surface-2);border-radius:0 8px 8px 0;display:flex;flex-direction:column;gap:6px}
+.sigue code{background:transparent;padding:0;font-size:12.5px;overflow-wrap:anywhere}
+.navega{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.btn{font:500 14px var(--f-sans);border:1px solid var(--line);background:var(--surface);color:var(--ink);border-radius:8px;padding:8px 14px;cursor:pointer}
+.btn:hover:not(:disabled){border-color:var(--muted)}
+.btn:disabled{opacity:.4;cursor:default}
+.btn.primario{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+:focus-visible{outline:2px solid var(--c-api);outline-offset:2px}
+
+.seccion{display:flex;flex-direction:column;gap:14px}
+.seccion > p{max-width:72ch;color:var(--muted)}
+.tipos{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:12px}
+.tipo{padding:16px;display:flex;flex-direction:column;gap:10px}
+.tipo .cab{display:flex;align-items:center;gap:10px}
+.tipo p{font-size:14px}
+.tipo .vs{font-size:13px;color:var(--muted)}
+.tipo pre{margin:0;background:var(--code-bg);border-radius:6px;padding:8px 10px;font:12px/1.55 var(--f-mono);overflow-x:auto;color:var(--code-ink)}
+.ir{align-self:flex-start;font:500 13px var(--f-sans);color:var(--c-api);background:none;border:none;padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+kbd{font-family:var(--f-mono);font-size:12px;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;padding:0 5px;background:var(--surface)}
+.receta{padding:18px 22px}
+.receta ol{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:10px;max-width:80ch}
+.tabla-env{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:13.5px;min-width:620px}
+th,td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font:600 12px var(--f-cond);letter-spacing:.07em;text-transform:uppercase;color:var(--muted)}
+td.ruta-archivo{font-size:12.5px;overflow-wrap:anywhere}
+.punto{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px;vertical-align:1px}
+.aviso{font-size:12.5px;color:var(--muted)}
+@media (prefers-reduced-motion:no-preference){ .nodo rect.caja{transition:stroke-width .15s} }
+</style>
+
+<div class="envoltura">
+  <header class="cabecera">
+    <span class="eti">unimar_tms · módulo naves · API NestJS</span>
+    <h1>Anatomía de instalaciones-portuarias</h1>
+    <p>Un endpoint recorrido de punta a punta: desde que llega la petición HTTP hasta SQL Server, y de vuelta hasta el JSON. Cada paso muestra el código real con su número de línea y, sobre todo, <strong>cómo pasa el control de una pieza a la siguiente</strong>: una llamada, una interfaz, un método heredado, un decorador o algo que hace el framework sin que lo veas.</p>
+    <p class="ruta-archivo">src/apps/api/src/modules/naves/api/instalacion-portuaria.controller.ts</p>
+  </header>
+
+  <section class="seccion" aria-label="Elegir endpoint">
+    <div class="selector" id="selector"></div>
+    <div class="escenarios" id="escenarios"></div>
+  </section>
+
+  <section class="trabajo">
+    <div class="panel diagrama">
+      <div class="ayuda">
+        <span class="leyenda-i"><svg width="30" height="10"><line x1="0" y1="5" x2="30" y2="5" stroke="var(--ida)" stroke-width="2"/></svg>ida (llama)</span>
+        <span class="leyenda-i"><svg width="30" height="10"><line x1="0" y1="5" x2="30" y2="5" stroke="var(--ida)" stroke-width="2" stroke-dasharray="6 4"/></svg>método heredado</span>
+        <span class="leyenda-i"><svg width="30" height="10"><line x1="0" y1="5" x2="30" y2="5" stroke="var(--ida)" stroke-width="2" stroke-dasharray="2 4"/></svg>inyección / framework</span>
+        <span class="leyenda-i"><svg width="30" height="10"><line x1="0" y1="5" x2="30" y2="5" stroke="var(--vuelta)" stroke-width="2"/></svg>vuelta (retorna)</span>
+        <span class="leyenda-i"><svg width="30" height="10"><line x1="0" y1="5" x2="30" y2="5" stroke="var(--error)" stroke-width="2"/></svg>excepción</span>
+      </div>
+      <div class="lienzo" id="lienzo"></div>
+      <p class="aviso" style="padding:8px 4px 0">Toca un paso o usa <kbd>↑</kbd> <kbd>↓</kbd>. Cada columna es una capa; la línea muestra cómo viaja el control entre ellas.</p>
+    </div>
+    <aside class="panel detalle" id="detalle" aria-live="polite"></aside>
+  </section>
+
+  <section class="seccion">
+    <span class="eti">Lo que hay entre una pieza y otra</span>
+    <h2>Seis formas en que una pieza llega a la siguiente</h2>
+    <p>Leer código cuesta cuando la conexión no es una llamada evidente. En este endpoint aparecen seis tipos de enlace. Aprende a reconocerlos y sabrás adónde saltar en VS Code.</p>
+    <div class="tipos" id="tipos"></div>
+  </section>
+
+  <section class="seccion">
+    <span class="eti">Receta</span>
+    <h2>Cómo leer cualquier endpoint hacia atrás</h2>
+    <div class="panel receta">
+      <ol>
+        <li><strong>Empieza por la ruta.</strong> Busca el texto de la URL (<code>'instalaciones-portuarias'</code>) y llegas al <code>@Controller</code>. El verbo (<code>@Get</code>, <code>@Patch</code>) te dice qué método atiende.</li>
+        <li><strong>Lee los decoradores de arriba del método.</strong> <code>@Exige</code> es el permiso (lo revisa <code>GuardUms</code>), <code>@MensajeRespuesta</code> es el texto de la respuesta, <code>@ErroresDocumentados</code> te anticipa qué códigos HTTP puede devolver.</li>
+        <li><strong>Lee los parámetros.</strong> <code>@Body()</code> con una clase DTO = validación automática. <code>@Escribe()</code> = usuario + If-Match. <code>@Query()</code> sin DTO = se sanea a mano.</li>
+        <li><strong>Sigue <code>this.algo</code>.</strong> Si no sabes qué es <code>algo</code>, míralo en el <code>constructor</code>. Su tipo te dice la clase o la interfaz.</li>
+        <li><strong>Si el tipo es una interfaz</strong>, busca el <code>@Inject(TOKEN)</code>, y después busca ese TOKEN en el <code>*.module.ts</code>: ahí está <code>useClass</code> con la clase real. Atajo: <kbd>Ctrl</kbd>+<kbd>F12</kbd> sobre el método.</li>
+        <li><strong>Si el método no aparece en la clase</strong>, mira el <code>extends</code>: está en la clase padre, casi siempre en <code>src/shared/maestras/</code>.</li>
+        <li><strong>Para la vuelta, mira los tipos de retorno.</strong> <code>Result&lt;T, Error&gt;</code> significa que el error viaja como valor y alguien lo abre (<code>desenvolver</code>). Un <code>throw</code> no vuelve paso a paso: salta al filtro global.</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="seccion">
+    <span class="eti">Índice</span>
+    <h2>Los archivos de este recorrido</h2>
+    <p>Todas las rutas parten de <code>src/apps/api/src/</code>. Copia la ruta, abre VS Code con <kbd>Ctrl</kbd>+<kbd>P</kbd>, pégala y agrega <code>:línea</code> para caer en el lugar exacto.</p>
+    <div class="panel tabla-env"><table id="tabla"></table></div>
+  </section>
+</div>
+
+<!-- ===== Código real, copiado de los archivos ===== -->
+<script type="text/plain" id="c-ctrl-31" data-archivo="modules/naves/api/instalacion-portuaria.controller.ts" data-desde="31">
+@ApiTags(EtiquetaApi.MANTENIMIENTOS)
+@ApiBearerAuth(ESQUEMA_DE_PORTADOR)
+@Controller('instalaciones-portuarias')
+export class InstalacionPortuariaController {
+  constructor(private readonly gestionar: GestionarInstalacionesPortuariasCasoUso) {}
+</script>
+<script type="text/plain" id="c-rutas" data-archivo="shared/api/rutas-api.ts" data-desde="4">
+export const PREFIJO_API = 'api';
+
+export const VERSION_API = '1';
+
+export const RAIZ_API = `/${PREFIJO_API}/v${VERSION_API}`;
+
+export function configurarRutas(aplicacion: INestApplication): void {
+  aplicacion.setGlobalPrefix(PREFIJO_API);
+  aplicacion.enableVersioning({ type: VersioningType.URI, defaultVersion: VERSION_API });
+}
+</script>
+<script type="text/plain" id="c-ctrl-84f" data-archivo="modules/naves/api/instalacion-portuaria.controller.ts" data-desde="84">
+  @Exige(PERMISO.INSTALACIONES_GESTIONAR)
+  @Patch(':id/horas-libres')
+  @MensajeRespuesta('Horas libres de almacenaje actualizadas')
+  @ApiOperation({
+    summary: 'Cambiar las horas libres de almacenaje del terminal',
+    description: 'Es lo único de la instalación que se edita en el TMS: el resto lo manda SAP.',
+  })
+  @ApiParam(IDENTIFICADOR_INSTALACION)
+  @RespuestaDocumentada({
+    descripcion: 'Horas libres de almacenaje actualizadas',
+    modelo: InstalacionPortuariaDto,
+  })
+  @ErroresDocumentados(
+    HttpStatus.BAD_REQUEST,
+    HttpStatus.NOT_FOUND,
+    HttpStatus.CONFLICT,
+    HttpStatus.INTERNAL_SERVER_ERROR,
+  )
+  @CabeceraDeUltimoCambio()
+</script>
+<script type="text/plain" id="c-ctrl-37f" data-archivo="modules/naves/api/instalacion-portuaria.controller.ts" data-desde="37">
+  @Exige(PERMISO.INSTALACIONES_VER)
+  @Get()
+  @MensajeRespuesta('Instalaciones portuarias obtenidas')
+  @ApiOperation({ summary: 'Listar instalaciones portuarias' })
+  @ApiQuery({
+    name: 'buscar',
+    required: false,
+    description: 'Texto que se busca en el código y en el nombre del terminal',
+    schema: { type: 'string' },
+  })
+  @ApiQuery({
+    name: 'estado',
+    required: false,
+    description: 'Deja solo las activas o solo las inactivas; sin el parámetro vienen las dos',
+    schema: { type: 'boolean' },
+  })
+  @ParametrosDePaginacion(LIMITE_LISTADO_MAESTRAS)
+  @RespuestaDocumentada({
+    descripcion: 'Instalaciones portuarias obtenidas',
+    modelo: InstalacionPortuariaDto,
+    forma: 'pagina',
+  })
+  @ErroresDocumentados(HttpStatus.INTERNAL_SERVER_ERROR)
+</script>
+<script type="text/plain" id="c-ctrl-67f" data-archivo="modules/naves/api/instalacion-portuaria.controller.ts" data-desde="67">
+  @Exige(PERMISO.INSTALACIONES_VER)
+  @Get('activas')
+  @MensajeRespuesta('Instalaciones portuarias activas obtenidas')
+  @ApiOperation({
+    summary: 'Listar instalaciones portuarias activas',
+    description: 'Devuelve los terminales activos sin paginar, para llenar los selectores de las pantallas.',
+  })
+  @RespuestaDocumentada({
+    descripcion: 'Instalaciones portuarias activas obtenidas',
+    modelo: InstalacionPortuariaDto,
+    forma: 'lista',
+  })
+  @ErroresDocumentados(HttpStatus.INTERNAL_SERVER_ERROR)
+</script>
+<script type="text/plain" id="c-ctrl-37" data-archivo="modules/naves/api/instalacion-portuaria.controller.ts" data-desde="37">
+  @Exige(PERMISO.INSTALACIONES_VER)
+  @Get()
+  @MensajeRespuesta('Instalaciones portuarias obtenidas')
+</script>
+<script type="text/plain" id="c-ctrl-60" data-archivo="modules/naves/api/instalacion-portuaria.controller.ts" data-desde="60">
+  async listar(@Query() consulta: Consulta): Promise<ResultadoPaginado<InstalacionPortuaria>> {
+    return this.gestionar.listar(pagina(consulta), limite(consulta, LIMITE_LISTADO_MAESTRAS), {
+      buscar: texto(consulta, 'buscar'),
+      estado: booleano(consulta, 'estado'),
+    });
+  }
+</script>
+<script type="text/plain" id="c-ctrl-67" data-archivo="modules/naves/api/instalacion-portuaria.controller.ts" data-desde="67">
+  @Exige(PERMISO.INSTALACIONES_VER)
+  @Get('activas')
+  @MensajeRespuesta('Instalaciones portuarias activas obtenidas')
+</script>
+<script type="text/plain" id="c-ctrl-80" data-archivo="modules/naves/api/instalacion-portuaria.controller.ts" data-desde="80">
+  async activas(): Promise<readonly InstalacionPortuaria[]> {
+    return this.gestionar.activos();
+  }
+</script>
+<script type="text/plain" id="c-ctrl-84" data-archivo="modules/naves/api/instalacion-portuaria.controller.ts" data-desde="84">
+  @Exige(PERMISO.INSTALACIONES_GESTIONAR)
+  @Patch(':id/horas-libres')
+  @MensajeRespuesta('Horas libres de almacenaje actualizadas')
+</script>
+<script type="text/plain" id="c-ctrl-103" data-archivo="modules/naves/api/instalacion-portuaria.controller.ts" data-desde="103">
+  async cambiarHorasLibres(
+    @Param('id', new ParseUUIDPipe()) id: string,
+    @Body() cuerpo: HorasLibresDto,
+    @Escribe() escritura: Escritura,
+  ): Promise<InstalacionPortuaria> {
+    return desenvolver(
+      await this.gestionar.cambiarHorasLibres(id, cuerpo.horasLibresDeAlmacenaje, escritura),
+    );
+  }
+</script>
+<script type="text/plain" id="c-ctrl-35" data-archivo="modules/naves/api/instalacion-portuaria.controller.ts" data-desde="35">
+  constructor(private readonly gestionar: GestionarInstalacionesPortuariasCasoUso) {}
+</script>
+<script type="text/plain" id="c-exige" data-archivo="shared/seguridad/exige.decorador.ts" data-desde="9">
+export function Exige(permiso: PermisoTms): CustomDecorator<string> {
+  return SetMetadata(CLAVE_PERMISO, permiso);
+}
+</script>
+<script type="text/plain" id="c-guard-43" data-archivo="shared/seguridad/guard-ums.ts" data-desde="43">
+    const exigido = this.permisoExigido(contexto);
+    const identidad = await this.identidadDe(peticion, exigido);
+
+    if (identidad === null) return this.decidir({ exigido, identidad: null, motivo: 'sin portador válido' });
+    if (restringidaSinSede(identidad)) return this.negarSinSede(exigido, identidad);
+    this.publicar(peticion, identidad);
+</script>
+<script type="text/plain" id="c-guard-54" data-archivo="shared/seguridad/guard-ums.ts" data-desde="54">
+    if (exigido === undefined) {
+      return this.decidir({ exigido, identidad, motivo: 'ruta sin permiso declarado' });
+    }
+    if (!tienePermiso(identidad, exigido)) {
+      return this.decidir({ exigido, identidad, motivo: 'el perfil no tiene ese permiso' });
+    }
+    return true;
+</script>
+<script type="text/plain" id="c-guard-156" data-archivo="shared/seguridad/guard-ums.ts" data-desde="156">
+    if (identidad === null) throw new UnauthorizedException('Autenticación requerida.');
+    throw new ForbiddenException('No tienes permiso para esta operación.');
+</script>
+<script type="text/plain" id="c-appmod-77" data-archivo="app.module.ts" data-desde="77">
+    { provide: APP_GUARD, useClass: ThrottlerGuard },
+    // Despues la identidad: si el guard corriera mas tarde, los interceptores habrian tocado datos
+    // que quien pide no tiene derecho a ver.
+    { provide: APP_GUARD, useClass: GuardUms },
+    // Y al final el segundo cubo del limite, el que cuenta por sujeto. Va aqui y no arriba porque
+    // necesita la identidad ya verificada: contar por un `sub` sin firmar seria dar un cubo nuevo a
+    // cada token inventado.
+    { provide: APP_GUARD, useClass: LimiteDeRitmoPorSujeto },
+</script>
+<script type="text/plain" id="c-appmod-92" data-archivo="app.module.ts" data-desde="92">
+    { provide: APP_INTERCEPTOR, useClass: TransformInterceptor },
+</script>
+<script type="text/plain" id="c-dto-52" data-archivo="modules/naves/api/dto/sap-naves.dto.ts" data-desde="52">
+export class HorasLibresDto {
+  @ApiProperty({
+    type: Number,
+    description: 'Horas libres de almacenaje que concede el terminal tras el término de descarga',
+    example: 48,
+  })
+  @IsInt({ message: 'horasLibresDeAlmacenaje debe ser un entero' })
+  @Min(0, { message: 'horasLibresDeAlmacenaje no puede ser negativo' })
+  @Max(32_767, { message: 'horasLibresDeAlmacenaje no puede pasar de 32767' })
+  horasLibresDeAlmacenaje!: number;
+}
+</script>
+<script type="text/plain" id="c-main-64" data-archivo="main.ts" data-desde="64">
+  aplicacion.useGlobalPipes(tuberiaDeValidacion());
+</script>
+<script type="text/plain" id="c-escribe-12" data-archivo="shared/api/escritura.decorador.ts" data-desde="12">
+function escrituraDeLaPeticion(contexto: ExecutionContext): Escritura {
+  return {
+    usuario: autorDeLaPeticion(contexto),
+    ultimoCambio: ultimoCambioEsperadoDe(contexto),
+  };
+}
+
+export const Escribe = createParamDecorator((_datos: unknown, contexto: ExecutionContext): Escritura =>
+  escrituraDeLaPeticion(contexto),
+);
+</script>
+<script type="text/plain" id="c-uc-26" data-archivo="shared/api/ultimo-cambio.decorador.ts" data-desde="26">
+export function ultimoCambioEsperadoDe(contexto: ExecutionContext): string | null {
+  const crudo = contexto.switchToHttp().getRequest<Request>().headers[CABECERA_ULTIMO_CAMBIO];
+  const cabecera = Array.isArray(crudo) ? crudo[0] : crudo;
+  if (cabecera === undefined || cabecera.trim() === '') return null;
+
+  const normalizado = ultimoCambioNormalizado(cabecera.replace(/^"|"$/g, ''));
+  if (normalizado === null) throw new BadRequestException(ULTIMO_CAMBIO_MAL_FORMADO);
+  return normalizado;
+}
+</script>
+<script type="text/plain" id="c-audit-16" data-archivo="shared/maestras/auditoria.ts" data-desde="16">
+export interface Escritura {
+  readonly usuario: string;
+  /** El `ultimoCambio` que leyó quien edita. Nulo mientras la web no lo mande: se escribe sin comparar. */
+  readonly ultimoCambio: string | null;
+}
+</script>
+<script type="text/plain" id="c-mod-52" data-archivo="modules/naves/naves.module.ts" data-desde="52">
+  providers: [
+    GestionarInstalacionesPortuariasCasoUso,
+</script>
+<script type="text/plain" id="c-mod-65" data-archivo="modules/naves/naves.module.ts" data-desde="65">
+    {
+      provide: REPOSITORIO_INSTALACIONES_PORTUARIAS,
+      useClass: RepositorioInstalacionesPortuariasTypeorm,
+    },
+</script>
+<script type="text/plain" id="c-caso-45" data-archivo="modules/naves/application/gestionar-naves.caso-uso.ts" data-desde="45">
+@Injectable()
+export class GestionarInstalacionesPortuariasCasoUso extends GestionarMaestraCasoUso<
+  InstalacionPortuaria,
+  DatosInstalacion
+> {
+  constructor(
+    @Inject(REPOSITORIO_INSTALACIONES_PORTUARIAS)
+    private readonly instalaciones: RepositorioInstalacionesPortuarias,
+  ) {
+    super(instalaciones, 'INSTALACION_PORTUARIA');
+  }
+
+  async cambiarHorasLibres(
+    id: string,
+    horas: number,
+    escritura: Escritura,
+  ): Promise<Result<InstalacionPortuaria, ErrorDominio>> {
+    const cambiada = await this.instalaciones.cambiarHorasLibres(id, horas, escritura);
+    return cambiada.mapErr(comoErrorDominio);
+  }
+</script>
+<script type="text/plain" id="c-caso-62" data-archivo="modules/naves/application/gestionar-naves.caso-uso.ts" data-desde="62">
+    const cambiada = await this.instalaciones.cambiarHorasLibres(id, horas, escritura);
+    return cambiada.mapErr(comoErrorDominio);
+</script>
+<script type="text/plain" id="c-gm-9" data-archivo="shared/maestras/gestionar-maestra.caso-uso.ts" data-desde="9">
+export abstract class GestionarMaestraCasoUso<TEntidad, TDatos> {
+  protected constructor(
+    private readonly repositorio: RepositorioMaestra<TEntidad, TDatos>,
+    private readonly maestra: Maestra,
+  ) {}
+</script>
+<script type="text/plain" id="c-gm-17" data-archivo="shared/maestras/gestionar-maestra.caso-uso.ts" data-desde="17">
+  async listar(
+    pagina: number,
+    limite: number,
+    filtros: FiltrosMaestra,
+  ): Promise<ResultadoPaginado<TEntidad>> {
+    return this.repositorio.listar(pagina, limite, filtros);
+  }
+
+  async activos(): Promise<readonly TEntidad[]> {
+    return this.repositorio.activos();
+  }
+</script>
+<script type="text/plain" id="c-puerto-13" data-archivo="modules/naves/domain/puertos/repositorio-naves.ts" data-desde="13">
+export const REPOSITORIO_INSTALACIONES_PORTUARIAS = Symbol('RepositorioInstalacionesPortuarias');
+</script>
+<script type="text/plain" id="c-puerto-21" data-archivo="modules/naves/domain/puertos/repositorio-naves.ts" data-desde="21">
+export interface RepositorioInstalacionesPortuarias extends RepositorioMaestra<
+  InstalacionPortuaria,
+  DatosInstalacion
+> {
+  cambiarHorasLibres(
+    id: string,
+    horas: number,
+    escritura: Escritura,
+  ): Promise<Result<InstalacionPortuaria, ErrorDeMaestra>>;
+}
+</script>
+<script type="text/plain" id="c-rmaestra-6" data-archivo="shared/maestras/repositorio-maestra.ts" data-desde="6">
+export interface RepositorioMaestra<TEntidad, TDatos> {
+  listar(pagina: number, limite: number, filtros: FiltrosMaestra): Promise<ResultadoPaginado<TEntidad>>;
+
+  activos(): Promise<readonly TEntidad[]>;
+</script>
+<script type="text/plain" id="c-adapt-108" data-archivo="modules/naves/infrastructure/persistence/repositorio-naves.typeorm.ts" data-desde="108">
+@Injectable()
+export class RepositorioInstalacionesPortuariasTypeorm
+  extends RepositorioMaestraTypeorm<InstalacionPortuaria, InstalacionPortuariaOrm>
+  implements RepositorioInstalacionesPortuarias
+{
+  constructor(@InjectDataSource() dataSource: DataSource) {
+    super(dataSource, InstalacionPortuariaOrm, 'INSTALACION_PORTUARIA');
+  }
+</script>
+<script type="text/plain" id="c-adapt-167" data-archivo="modules/naves/infrastructure/persistence/repositorio-naves.typeorm.ts" data-desde="167">
+  async cambiarHorasLibres(
+    id: string,
+    horas: number,
+    escritura: Escritura,
+  ): Promise<Result<InstalacionPortuaria, ErrorDeMaestra>> {
+    return this.escribir(id, escritura, { horasLibresDeAlmacenaje: horas });
+  }
+</script>
+<script type="text/plain" id="c-adapt-175" data-archivo="modules/naves/infrastructure/persistence/repositorio-naves.typeorm.ts" data-desde="175">
+  protected readonly lectura: LecturaDeMaestra<InstalacionPortuaria, InstalacionPortuaria> = {
+    alias: 'ip',
+    buscaEn: ['ip.codigo', 'ip.nombre'],
+    normalizar: normalizarBanderas,
+    consulta: (donde, parametros) => ({
+      seleccion: `ip.id,
+                  ip.codigo,
+                  ip.nombre,
+                  ip.horas_libres_almacenaje AS horasLibresDeAlmacenaje,
+                  ip.estado,
+                  ${AUDITORIA('ip')},
+                  ${EN_USO_INSTALACION}`,
+      desde: 'FROM dbo.instalacion_portuaria ip',
+      donde,
+      parametros,
+      orden: 'ip.codigo ASC, ip.id ASC',
+    }),
+  };
+</script>
+<script type="text/plain" id="c-base-10" data-archivo="shared/maestras/repositorio-maestra.typeorm.ts" data-desde="10">
+const TOPE_DE_ACTIVOS = 500;
+</script>
+<script type="text/plain" id="c-base-43" data-archivo="shared/maestras/repositorio-maestra.typeorm.ts" data-desde="43">
+  async listar(
+    pagina: number,
+    limite: number,
+    filtros: FiltrosMaestra,
+  ): Promise<ResultadoPaginado<TEntidad>> {
+    const parametros: unknown[] = [];
+    const donde = [
+      filtroDeTexto(this.lectura.buscaEn, filtros.buscar, parametros),
+      filtroDeEstado(`${this.lectura.alias}.estado`, filtros.estado, parametros),
+    ].filter((condicion): condicion is string => condicion !== null);
+
+    const { filas, total } = await this.leer(donde, parametros, { pagina, limite });
+    return ResultadoPaginado.desde(filas, total, pagina, limite);
+  }
+</script>
+<script type="text/plain" id="c-base-58" data-archivo="shared/maestras/repositorio-maestra.typeorm.ts" data-desde="58">
+  async activos(): Promise<readonly TEntidad[]> {
+    const { filas } = await this.leer([`${this.lectura.alias}.estado = 1`], [], {
+      pagina: 1,
+      limite: TOPE_DE_ACTIVOS,
+    });
+    return filas;
+  }
+</script>
+<script type="text/plain" id="c-base-66" data-archivo="shared/maestras/repositorio-maestra.typeorm.ts" data-desde="66">
+  async obtener(id: string): Promise<TEntidad | null> {
+    const { filas } = await this.leer([`${this.lectura.alias}.id = @0`], [id], { pagina: 1, limite: 1 });
+    return filas[0] ?? null;
+  }
+</script>
+<script type="text/plain" id="c-base-88" data-archivo="shared/maestras/repositorio-maestra.typeorm.ts" data-desde="88">
+  protected async escribir(
+    id: string,
+    escritura: Escritura,
+    columnas: QueryDeepPartialEntity<TOrm>,
+  ): Promise<Result<TEntidad, ErrorDeMaestra>> {
+    const escrita = await actualizarMaestra(this.dataSource, this.fila(id, escritura), {
+      ...columnas,
+      usuarioActualizador: escritura.usuario,
+      fechaActualizacion: () => 'SYSDATETIMEOFFSET()',
+    } as QueryDeepPartialEntity<TOrm>);
+    return escrita.isErr() ? err(escrita.error) : this.releer(id);
+  }
+</script>
+<script type="text/plain" id="c-base-101" data-archivo="shared/maestras/repositorio-maestra.typeorm.ts" data-desde="101">
+  private async leer(
+    donde: string[],
+    parametros: unknown[],
+    paginacion: Paginacion,
+  ): Promise<FilasLeidas<TEntidad>> {
+    const { filas, total } = await consultarPagina<TFila>(
+      this.dataSource,
+      this.lectura.consulta(donde, parametros),
+      paginacion,
+    );
+    return { filas: filas.map((fila) => this.lectura.normalizar(fila)), total };
+  }
+</script>
+<script type="text/plain" id="c-base-114" data-archivo="shared/maestras/repositorio-maestra.typeorm.ts" data-desde="114">
+  protected fila(id: string, escritura: Escritura): FilaDeMaestra<TOrm> {
+    return {
+      entidad: this.entidad,
+      maestra: this.maestra,
+      id,
+      ultimoCambio: escritura.ultimoCambio,
+    };
+  }
+</script>
+<script type="text/plain" id="c-base-123" data-archivo="shared/maestras/repositorio-maestra.typeorm.ts" data-desde="123">
+  protected async releer(id: string): Promise<Result<TEntidad, ErrorDeMaestra>> {
+    const entidad = await this.obtener(id);
+    return entidad === null ? err({ tipo: 'MAESTRA_NO_EXISTE', maestra: this.maestra }) : ok(entidad);
+  }
+</script>
+<script type="text/plain" id="c-upd-24" data-archivo="shared/maestras/escritura-de-maestra.ts" data-desde="24">
+function criterioDe(id: string, ultimoCambio: string | null): ObjectLiteral {
+  if (ultimoCambio === null) return { id };
+  return { id, ultimoCambio: Raw(() => `ultimo_cambio = ${ultimoCambio}`) };
+}
+
+export async function actualizarMaestra<T extends ObjectLiteral>(
+  dataSource: DataSource,
+  fila: FilaDeMaestra<T>,
+  datos: QueryDeepPartialEntity<T>,
+): Promise<Result<null, ErrorDeMaestra>> {
+  const repositorio = dataSource.getRepository(fila.entidad);
+  const afectadas = await repositorio.update(criterioDe(fila.id, fila.ultimoCambio) as never, datos);
+  if ((afectadas.affected ?? 0) > 0) return ok(null);
+  if (fila.ultimoCambio === null) return err(noExiste(fila.maestra));
+
+  // Ninguna fila cambió y la escritura traía testigo: o el identificador no existe, o alguien editó
+  // la fila entre la lectura y este UPDATE. Distinguirlo es lo que separa un 404 de un 409.
+  const sigue = await repositorio.findOne({ where: { id: fila.id } as never });
+  if (sigue === null) return err(noExiste(fila.maestra));
+  return err({ tipo: 'CAMBIO_CONCURRENTE', maestra: fila.maestra });
+}
+</script>
+<script type="text/plain" id="c-upd-36" data-archivo="shared/maestras/escritura-de-maestra.ts" data-desde="36">
+  if ((afectadas.affected ?? 0) > 0) return ok(null);
+  if (fila.ultimoCambio === null) return err(noExiste(fila.maestra));
+
+  // Ninguna fila cambió y la escritura traía testigo: o el identificador no existe, o alguien editó
+  // la fila entre la lectura y este UPDATE. Distinguirlo es lo que separa un 404 de un 409.
+  const sigue = await repositorio.findOne({ where: { id: fila.id } as never });
+  if (sigue === null) return err(noExiste(fila.maestra));
+  return err({ tipo: 'CAMBIO_CONCURRENTE', maestra: fila.maestra });
+</script>
+<script type="text/plain" id="c-orm" data-archivo="modules/naves/infrastructure/persistence/instalacion-portuaria.orm-entity.ts" data-desde="4">
+@Entity({ name: 'instalacion_portuaria' })
+export class InstalacionPortuariaOrm extends EntidadAuditableOrm {
+  @Column({ type: 'nvarchar', length: 20, name: 'codigo' })
+  codigo!: string;
+
+  @Column({ type: 'nvarchar', length: 150, name: 'nombre' })
+  nombre!: string;
+
+  @Column({ type: 'smallint', name: 'horas_libres_almacenaje', default: 48 })
+  horasLibresDeAlmacenaje!: number;
+
+  @Column({ type: 'bit', name: 'estado', default: true })
+  estado!: boolean;
+}
+</script>
+<script type="text/plain" id="c-audorm" data-archivo="shared/infrastructure/persistence/entidad-auditable.orm-entity.ts" data-desde="11">
+  @Column({ type: 'rowversion', name: 'ultimo_cambio', insert: false, update: false })
+  ultimoCambio!: Buffer;
+</script>
+<script type="text/plain" id="c-cm-20" data-archivo="shared/maestras/consulta-maestra.ts" data-desde="20">
+export async function consultarPagina<T>(
+  dataSource: DataSource,
+  consulta: ConsultaMaestra,
+  paginacion: Paginacion,
+): Promise<PaginaMaestra<T>> {
+  const { pagina, limite } = paginacion;
+  const donde = consulta.donde.length > 0 ? `WHERE ${consulta.donde.join(' AND ')}` : '';
+  const parametros = [...consulta.parametros];
+
+  const [conteo] = await dataSource.query<Array<{ total: number }>>(
+    `SELECT COUNT(*) AS total ${consulta.desde} ${donde}`,
+    parametros,
+  );
+
+  const filas = await dataSource.query<T[]>(
+    `SELECT ${consulta.seleccion} ${consulta.desde} ${donde}
+      ORDER BY ${consulta.orden}
+      OFFSET @${parametros.length} ROWS FETCH NEXT @${parametros.length + 1} ROWS ONLY`,
+    [...parametros, (pagina - 1) * limite, limite],
+  );
+
+  return { filas, total: conteo?.total ?? 0 };
+}
+</script>
+<script type="text/plain" id="c-cm-44" data-archivo="shared/maestras/consulta-maestra.ts" data-desde="44">
+export function filtroDeTexto(
+  columnas: readonly string[],
+  buscar: string | null,
+  parametros: unknown[],
+): string | null {
+  if (buscar === null) return null;
+  const marcador = `@${parametros.length}`;
+  parametros.push(patronDeBusqueda(buscar));
+  const comparaciones = columnas.map((columna) => `${columna} LIKE ${marcador} ${ESCAPE_LIKE}`).join(' OR ');
+  return `(${comparaciones})`;
+}
+
+export function filtroDeEstado(
+  columna: string,
+  estado: boolean | null,
+  parametros: unknown[],
+): string | null {
+  if (estado === null) return null;
+  const marcador = `@${parametros.length}`;
+  parametros.push(estado ? 1 : 0);
+  return `${columna} = ${marcador}`;
+}
+</script>
+<script type="text/plain" id="c-cm-109" data-archivo="shared/maestras/consulta-maestra.ts" data-desde="109">
+export function normalizarBanderas<T extends Auditoria & { estado: boolean; enUso: number }>(fila: T): T {
+  return {
+    ...fila,
+    estado: Boolean(fila.estado),
+    enUso: Number(fila.enUso),
+    ultimoCambio: ultimoCambioComoTexto(fila.ultimoCambio),
+  };
+}
+</script>
+<script type="text/plain" id="c-dominio-4" data-archivo="modules/naves/domain/instalacion-portuaria.ts" data-desde="4">
+export interface InstalacionPortuaria extends Auditoria {
+  readonly id: string;
+  readonly codigo: string;
+  readonly nombre: string;
+  readonly horasLibresDeAlmacenaje: number;
+  readonly estado: boolean;
+  readonly enUso: number;
+}
+</script>
+<script type="text/plain" id="c-rp-19" data-archivo="shared/domain/resultado-paginado.ts" data-desde="19">
+  static desde<T>(items: readonly T[], total: number, page: number, limit: number): ResultadoPaginado<T> {
+    const limiteSeguro = limit > 0 ? limit : 1;
+    return new ResultadoPaginado(items, {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limiteSeguro),
+    });
+  }
+</script>
+<script type="text/plain" id="c-cp-7" data-archivo="shared/api/consulta-paginada.ts" data-desde="7">
+export function pagina(consulta: Consulta): number {
+  const numero = Number(consulta['pagina']);
+  return Number.isInteger(numero) && numero >= 1 ? numero : 1;
+}
+
+export function limite(consulta: Consulta, porDefecto: number): number {
+  const numero = Number(consulta['limite']);
+  if (!Number.isInteger(numero) || numero < 1) return Math.min(porDefecto, LIMITE_MAXIMO);
+  return Math.min(numero, LIMITE_MAXIMO);
+}
+</script>
+<script type="text/plain" id="c-err-108" data-archivo="shared/maestras/errores.ts" data-desde="108">
+    case 'MAESTRA_NO_EXISTE':
+      return {
+        codigo: CodigoError.NOT_FOUND,
+        mensaje: `No existe ${NOMBRE_MAESTRA[error.maestra]} con ese identificador.`,
+</script>
+<script type="text/plain" id="c-err-148" data-archivo="shared/maestras/errores.ts" data-desde="148">
+    case 'CAMBIO_CONCURRENTE':
+      return {
+        codigo: CodigoError.CONFLICT,
+        mensaje:
+          `Otra persona ya guardó cambios en ${LA_MAESTRA[error.maestra]} desde que abriste el ` +
+          'formulario. Recarga la información y vuelve a guardar.',
+      };
+</script>
+<script type="text/plain" id="c-te-5" data-archivo="shared/api/traducir-error.ts" data-desde="5">
+const ESTADO_POR_CODIGO: Record<CodigoError, HttpStatus> = {
+  [CodigoError.VALIDATION_ERROR]: HttpStatus.BAD_REQUEST,
+  [CodigoError.BUSINESS_RULE_ERROR]: HttpStatus.BAD_REQUEST,
+  [CodigoError.UNAUTHORIZED]: HttpStatus.UNAUTHORIZED,
+  [CodigoError.FORBIDDEN]: HttpStatus.FORBIDDEN,
+  [CodigoError.NOT_FOUND]: HttpStatus.NOT_FOUND,
+  [CodigoError.CONFLICT]: HttpStatus.CONFLICT,
+</script>
+<script type="text/plain" id="c-te-18" data-archivo="shared/api/traducir-error.ts" data-desde="18">
+export function comoExcepcion(error: ErrorDominio): HttpException {
+  const estado = ESTADO_POR_CODIGO[error.codigo];
+  return new HttpException(
+    {
+      message: error.mensaje,
+      error: error.codigo,
+      ...(error.detalle === undefined ? {} : { detail: error.detalle }),
+    },
+    estado,
+  );
+}
+
+export function desenvolver<T>(resultado: Result<T, ErrorDominio>): T {
+  if (resultado.isErr()) throw comoExcepcion(resultado.error);
+  return resultado.value;
+}
+</script>
+<script type="text/plain" id="c-te-30" data-archivo="shared/api/traducir-error.ts" data-desde="30">
+export function desenvolver<T>(resultado: Result<T, ErrorDominio>): T {
+  if (resultado.isErr()) throw comoExcepcion(resultado.error);
+  return resultado.value;
+}
+</script>
+<script type="text/plain" id="c-tr-21" data-archivo="shared/api/transform.interceptor.ts" data-desde="21">
+    return siguiente.handle().pipe(
+      map((valor): RespuestaExitosa<unknown> => {
+        const statusCode = respuesta.statusCode;
+
+        if (valor instanceof ResultadoPaginado) {
+          return {
+            success: true,
+            statusCode,
+            message: mensaje,
+            data: valor.items,
+            meta: valor.meta,
+          };
+        }
+
+        return {
+          success: true,
+          statusCode,
+          message: mensaje,
+          data: valor ?? null,
+        };
+      }),
+    );
+</script>
+<script type="text/plain" id="c-filt-105" data-archivo="shared/api/http-exception.filter.ts" data-desde="105">
+@Catch()
+export class HttpExceptionFilter implements ExceptionFilter {
+  // Opcional a propósito: las pruebas que montan el filtro solo no tienen base de datos, y un
+  // filtro de excepciones que no se puede construir convierte cualquier error en un arranque roto.
+  constructor(@Optional() private readonly localizador?: FabricaDeLocalizador) {}
+
+  async catch(excepcion: unknown, host: ArgumentsHost): Promise<void> {
+</script>
+<script type="text/plain" id="c-filt-128" data-archivo="shared/api/http-exception.filter.ts" data-desde="128">
+    const cuerpoRespuesta: RespuestaError = {
+      success: false,
+      statusCode,
+      message: enEspanol(message),
+      error,
+      ...(detail !== undefined ? { detail } : {}),
+    };
+</script>
+
+<script type="text/plain" id="q-update" data-lang="sql" data-titulo="SQL aproximado que genera TypeORM">
+UPDATE dbo.instalacion_portuaria
+   SET horas_libres_almacenaje = @0,          -- 72
+       usuario_actualizador    = @1,          -- 'cjara'
+       fecha_actualizacion     = SYSDATETIMEOFFSET()
+ WHERE id = @2                                -- el :id de la URL
+   AND ultimo_cambio = 0x00000000000007D1;    -- el If-Match (solo si vino)
+</script>
+<script type="text/plain" id="q-select-id" data-lang="sql" data-titulo="SQL que arma consultarPagina (resumido)">
+SELECT ip.id, ip.codigo, ip.nombre,
+       ip.horas_libres_almacenaje AS horasLibresDeAlmacenaje,
+       ip.estado,
+       ip.usuario_creador AS usuarioCreador, ...,
+       ip.ultimo_cambio   AS ultimoCambio,
+       (SELECT COUNT(*) ...) + (SELECT COUNT(*) ...) AS enUso
+  FROM dbo.instalacion_portuaria ip
+ WHERE ip.id = @0
+ ORDER BY ip.codigo ASC, ip.id ASC
+ OFFSET @1 ROWS FETCH NEXT @2 ROWS ONLY;      -- 0 y 1: una sola fila
+</script>
+<script type="text/plain" id="q-listar" data-lang="sql" data-titulo="SQL que arma consultarPagina (resumido)">
+-- 1) el total, para la paginación
+SELECT COUNT(*) AS total
+  FROM dbo.instalacion_portuaria ip
+ WHERE (ip.codigo LIKE @0 ... OR ip.nombre LIKE @0 ...)
+   AND ip.estado = @1;
+
+-- 2) la página
+SELECT ip.id, ip.codigo, ip.nombre, ..., AS enUso
+  FROM dbo.instalacion_portuaria ip
+ WHERE (ip.codigo LIKE @0 ... OR ip.nombre LIKE @0 ...)
+   AND ip.estado = @1
+ ORDER BY ip.codigo ASC, ip.id ASC
+ OFFSET @2 ROWS FETCH NEXT @3 ROWS ONLY;
+-- @0 = patrón de 'dp' · @1 = 1 · @2 = 0 · @3 = 20
+</script>
+<script type="text/plain" id="q-activas" data-lang="sql" data-titulo="SQL que arma consultarPagina (resumido)">
+SELECT COUNT(*) AS total FROM dbo.instalacion_portuaria ip WHERE ip.estado = 1;
+
+SELECT ip.id, ip.codigo, ip.nombre, ..., AS enUso
+  FROM dbo.instalacion_portuaria ip
+ WHERE ip.estado = 1
+ ORDER BY ip.codigo ASC, ip.id ASC
+ OFFSET @0 ROWS FETCH NEXT @1 ROWS ONLY;      -- 0 y 500
+</script>
+<script type="text/plain" id="j-200" data-lang="json" data-titulo="Respuesta (ejemplo ilustrativo)">
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Horas libres de almacenaje actualizadas",
+  "data": {
+    "id": "0192f3a1-7c2e-7b10-9d4e-5a1f0c3b8e21",
+    "codigo": "DPW",
+    "nombre": "DP World Callao",
+    "horasLibresDeAlmacenaje": 72,
+    "estado": true,
+    "enUso": 14,
+    "usuarioActualizador": "cjara",
+    "fechaActualizacion": "2026-09-24T10:42:07.113-05:00",
+    "ultimoCambio": "0x00000000000007D2"
+  }
+}
+</script>
+<script type="text/plain" id="j-listar" data-lang="json" data-titulo="Respuesta (ejemplo ilustrativo)">
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Instalaciones portuarias obtenidas",
+  "data": [
+    { "id": "0192f3a1-...", "codigo": "DPW", "nombre": "DP World Callao",
+      "horasLibresDeAlmacenaje": 48, "estado": true, "enUso": 14,
+      "ultimoCambio": "0x00000000000007D1" }
+  ],
+  "meta": { "total": 1, "page": 1, "limit": 20, "totalPages": 1 }
+}
+</script>
+<script type="text/plain" id="j-activas" data-lang="json" data-titulo="Respuesta (ejemplo ilustrativo)">
+{
+  "success": true,
+  "statusCode": 200,
+  "message": "Instalaciones portuarias activas obtenidas",
+  "data": [
+    { "id": "0192f3a1-...", "codigo": "APMT", "nombre": "APM Terminals Callao", "estado": true },
+    { "id": "0192f3a1-...", "codigo": "DPW",  "nombre": "DP World Callao",      "estado": true }
+  ]
+}
+</script>
+<script type="text/plain" id="j-409" data-lang="json" data-titulo="Respuesta (ejemplo ilustrativo)">
+{
+  "success": false,
+  "statusCode": 409,
+  "message": "Otra persona ya guardó cambios en la instalación portuaria desde que abriste el formulario. Recarga la información y vuelve a guardar.",
+  "error": "CONFLICT"
+}
+</script>
+<script type="text/plain" id="j-404" data-lang="json" data-titulo="Respuesta (ejemplo ilustrativo)">
+{
+  "success": false,
+  "statusCode": 404,
+  "message": "No existe una instalación portuaria con ese identificador.",
+  "error": "NOT_FOUND"
+}
+</script>
+<script type="text/plain" id="j-400" data-lang="json" data-titulo="Respuesta (ejemplo ilustrativo)">
+{
+  "success": false,
+  "statusCode": 400,
+  "message": "If-Match debe traer el ultimoCambio que devolvió la lectura: 0x y 16 dígitos hexadecimales.",
+  "error": "Bad Request"
+}
+</script>
+<script type="text/plain" id="j-403" data-lang="json" data-titulo="Respuesta (ejemplo ilustrativo)">
+{
+  "success": false,
+  "statusCode": 403,
+  "message": "No tienes permiso para esta operación.",
+  "error": "Forbidden"
+}
+</script>
+
+<script>
+(function () {
+  var BASE = 'src/apps/api/src/';
+
+  var CAPAS = [
+    { id: 'cli', nombre: 'Cliente', color: 'var(--c-cli)' },
+    { id: 'nest', nombre: 'NestJS global', color: 'var(--c-nest)' },
+    { id: 'api', nombre: 'API', color: 'var(--c-api)' },
+    { id: 'app', nombre: 'Aplicación', color: 'var(--c-app)' },
+    { id: 'dom', nombre: 'Dominio', color: 'var(--c-dom)' },
+    { id: 'infra', nombre: 'Infraestructura', color: 'var(--c-infra)' },
+    { id: 'bd', nombre: 'SQL Server', color: 'var(--c-bd)' }
+  ];
+  var CAPA = {}; CAPAS.forEach(function (c, i) { c.i = i; CAPA[c.id] = c; });
+
+  var TIPOS = {
+    llamada:   { nombre: 'Llamada directa', trazo: '', vuelta: false },
+    interfaz:  { nombre: 'Llamada a una interfaz', trazo: '', vuelta: false },
+    inyeccion: { nombre: 'Inyección de dependencias', trazo: '2 4', vuelta: false },
+    herencia:  { nombre: 'Método heredado', trazo: '6 4', vuelta: false },
+    metadatos: { nombre: 'Decorador', trazo: '2 4', vuelta: false },
+    framework: { nombre: 'Lo hace el framework', trazo: '2 4', vuelta: false },
+    retorno:   { nombre: 'Retorno', trazo: '', vuelta: true },
+    excepcion: { nombre: 'Excepción (throw)', trazo: '', vuelta: true, error: true }
+  };
+
+  function guard(id, permiso, clave, bloqueCtrl, falla) {
+    return {
+      id: id, capa: 'nest', corto: 'GuardUms', titulo: falla ? 'El guard dice que no' : '¿Quién eres y tienes permiso?',
+      texto: '<p>Antes de tu método corren tres guards globales, en el orden de <code>app.module.ts:77-84</code>. El que decide aquí es <code>GuardUms</code>.</p>' +
+        '<p><code>@Exige(PERMISO.' + permiso + ')</code> no ejecuta nada: solo pega una etiqueta (metadato) al método con <code>SetMetadata</code>. El guard la lee con <code>Reflector</code> y la compara contra los permisos del token. Ahí está la conexión entre las dos piezas: nunca se llaman entre sí, se comunican por esa etiqueta.</p>' +
+        (falla ? '<p>En este escenario el perfil no tiene <code>' + clave + '</code>: se lanza <code>ForbiddenException</code> y tu controller nunca se entera de que hubo una petición.</p>'
+               : '<p>Si no hay token válido o falta el permiso, la petición muere aquí con 401 o 403.</p>'),
+      recibe: 'La petición + el metadato de @Exige → "' + clave + '"',
+      entrega: falla ? 'throw ForbiddenException' : 'true: la petición sigue',
+      bloques: falla ? ['c-guard-54', 'c-guard-156', 'c-exige', bloqueCtrl] : [bloqueCtrl, 'c-exige', 'c-guard-43', 'c-guard-54', 'c-appmod-77'],
+      sigue: falla
+        ? { tipo: 'excepcion', codigo: "throw new ForbiddenException('No tienes permiso para esta operación.')", texto: 'Una excepción no vuelve paso a paso: salta directo al filtro global de excepciones.' }
+        : { tipo: 'framework', codigo: 'NestJS arma los argumentos del método', texto: 'Con el permiso confirmado, NestJS prepara lo que tu método recibe: valida el cuerpo y ejecuta los decoradores de parámetro.' }
+    };
+  }
+
+  function filtro(id, estado) {
+    return {
+      id: id, capa: 'nest', corto: 'ExceptionFilter', titulo: 'El filtro global convierte la excepción en JSON',
+      texto: '<p><code>@Catch()</code> sin argumentos atrapa <b>cualquier</b> excepción que se escape de guards, pipes, decoradores o del controller. Está registrado en <code>app.module.ts:96-101</code> con <code>APP_FILTER</code>.</p><p>Arma el sobre de error del proyecto: <code>success: false</code>, el <code>statusCode</code> que traía la excepción (' + estado + '), el mensaje y el código. Si la excepción no fuera HTTP (un error de base, un bug), la convierte en 500 sin mostrar el stack.</p>',
+      recibe: 'La excepción lanzada (HttpException ' + estado + ')',
+      entrega: '{ success: false, statusCode: ' + estado + ', message, error }',
+      bloques: ['c-filt-105', 'c-filt-128'],
+      sigue: { tipo: 'retorno', codigo: 'response.status(' + estado + ').json(cuerpoRespuesta)', texto: 'El JSON de error sale al cliente.' }
+    };
+  }
+
+  function salida(id, estado, json, texto) {
+    return {
+      id: id, capa: 'cli', corto: 'Respuesta ' + estado, titulo: 'Lo que recibe la pantalla',
+      texto: texto, recibe: 'HTTP ' + estado, entrega: 'Fin del recorrido', bloques: [json]
+    };
+  }
+
+  function transformar(id, bloqueMensaje, paginado) {
+    return {
+      id: id, capa: 'nest', corto: 'Interceptor', titulo: 'El interceptor pone el sobre de la respuesta',
+      texto: '<p><code>TransformInterceptor</code> está registrado global (<code>app.module.ts:92</code>). Envuelve lo que devolvió tu método en el formato estándar del proyecto. El <code>message</code> sale de <code>@MensajeRespuesta</code>, otra vez un decorador que solo deja un metadato.</p>' +
+        (paginado ? '<p>Como lo que llegó es un <code>ResultadoPaginado</code>, separa <code>items</code> en <code>data</code> y agrega <code>meta</code>. Por eso los endpoints paginados devuelven esa clase y no un arreglo.</p>'
+                  : '<p>Lo que llegó no es un <code>ResultadoPaginado</code>: va entero en <code>data</code>, sin <code>meta</code>.</p>'),
+      recibe: paginado ? 'ResultadoPaginado { items, meta }' : 'El valor que devolvió el controller',
+      entrega: '{ success: true, statusCode: 200, message, data' + (paginado ? ', meta' : '') + ' }',
+      bloques: ['c-tr-21', bloqueMensaje, 'c-appmod-92'],
+      sigue: { tipo: 'retorno', codigo: 'Express serializa el objeto a JSON', texto: 'El sobre sale al cliente.' }
+    };
+  }
+
+  var S = {};
+  function def(p) { S[p.id] = p; return p; }
+  function variante(base, id, cambios) { var n = {}; Object.keys(S[base]).forEach(function (k) { n[k] = S[base][k]; }); Object.keys(cambios).forEach(function (k) { n[k] = cambios[k]; }); n.id = id; return def(n); }
+
+  /* ---------- PATCH :id/horas-libres ---------- */
+  def({
+    id: 'p-entrada', capa: 'cli', corto: 'Petición HTTP', titulo: 'La pantalla pide cambiar las horas libres',
+    texto: '<p>La web manda un <code>PATCH</code>. Para saber qué método lo atiende, NestJS arma la URL completa de cada método pegando <b>tres pedazos</b>, y busca cuál coincide con la que llegó.</p>' +
+      urlDesarmada([
+        ['/api', 'Prefijo global', 'rutas-api.ts:11', 'nest'],
+        ['/v1', 'Versión', 'rutas-api.ts:12', 'nest'],
+        ['/instalaciones-portuarias', 'Prefijo del controller', '@Controller · línea 33', 'api'],
+        ['/0192f3a1-…', 'Comodín :id', '@Patch · línea 85', 'app'],
+        ['/horas-libres', 'Texto fijo', '@Patch · línea 85', 'app']
+      ]) +
+      '<p><b>El prefijo</b> es lo que escribe <code>@Controller(\'instalaciones-portuarias\')</code>: todos los métodos de la clase empiezan con él. <b>El resto</b> es lo que escribe cada método en su decorador de verbo, aquí <code>@Patch(\':id/horas-libres\')</code>. Se pega después del prefijo. El <code>:id</code> con dos puntos es un comodín: acepta cualquier valor en esa posición y te lo entrega en <code>@Param(\'id\')</code>.</p>' +
+      '<p>Los tres métodos del controller comparten el prefijo y se diferencian por el verbo y el resto:</p>' +
+      '<div class="tabla-env"><table class="mini"><thead><tr><th>Verbo</th><th>Resto (en el método)</th><th>URL completa</th><th>Método</th></tr></thead><tbody>' +
+      '<tr><td>GET</td><td><code>@Get()</code> (vacío)</td><td class="ruta-archivo">/api/v1/instalaciones-portuarias</td><td>listar</td></tr>' +
+      '<tr><td>GET</td><td><code>@Get(\'activas\')</code></td><td class="ruta-archivo">/api/v1/instalaciones-portuarias/activas</td><td>activas</td></tr>' +
+      '<tr><td>PATCH</td><td><code>@Patch(\':id/horas-libres\')</code></td><td class="ruta-archivo">/api/v1/instalaciones-portuarias/{id}/horas-libres</td><td>cambiarHorasLibres</td></tr>' +
+      '</tbody></table></div>' +
+      '<p>Debajo de cada bloque de código está la explicación línea por línea. La etiqueta <span class="tag doc">solo Swagger</span> marca lo que solo sirve para la página de documentación (<code>/api/docs</code>) y no cambia lo que hace la API. La etiqueta <span class="tag efecto">cambia el comportamiento</span> marca lo que sí cambia qué pasa con la petición.</p>',
+    recibe: 'PATCH /api/v1/instalaciones-portuarias/{id}/horas-libres · Authorization: Bearer … · If-Match: "0x00000000000007D1" · { "horasLibresDeAlmacenaje": 72 }',
+    entrega: 'El método que atiende: InstalacionPortuariaController.cambiarHorasLibres',
+    bloques: ['c-ctrl-31', 'c-ctrl-84f', 'c-rutas'],
+    sigue: { tipo: 'framework', codigo: 'GuardUms.canActivate(contexto)', texto: 'Antes de tocar tu método, NestJS corre los guards globales. Tú no los llamas: los registra el módulo raíz.' }
+  });
+  def(guard('p-guard', 'INSTALACIONES_GESTIONAR', 'instalaciones_portuarias.manage', 'c-ctrl-84', false));
+  def(guard('p-guard-403', 'INSTALACIONES_GESTIONAR', 'instalaciones_portuarias.manage', 'c-ctrl-84', true));
+  def({
+    id: 'p-validacion', capa: 'nest', corto: 'Validación', titulo: 'El cuerpo se valida antes de entrar',
+    texto: '<p>La tubería de validación es global (<code>main.ts:64</code>). Mira el <b>tipo</b> del parámetro, <code>@Body() cuerpo: HorasLibresDto</code>, y aplica los decoradores de class-validator de esa clase: entero, mínimo 0, máximo 32767. <code>ParseUUIDPipe</code> hace lo mismo con el <code>:id</code>.</p><p>Si algo no cumple, responde 400 con la lista de errores en <code>detail</code>, y tu método no corre. Por eso el controller puede confiar en <code>cuerpo.horasLibresDeAlmacenaje</code> sin revisarlo.</p>',
+    recibe: '{ "horasLibresDeAlmacenaje": 72 } y el :id de la URL',
+    entrega: 'cuerpo: HorasLibresDto validado · id: string con forma de UUID',
+    bloques: ['c-ctrl-103', 'c-dto-52', 'c-main-64'],
+    sigue: { tipo: 'metadatos', codigo: '@Escribe() escritura: Escritura', texto: 'El tercer argumento no viene del cuerpo: lo fabrica un decorador de parámetro.' }
+  });
+  def({
+    id: 'p-escribe', capa: 'api', corto: '@Escribe', titulo: 'Quién firma y sobre qué versión',
+    texto: '<p><code>@Escribe()</code> es un <b>decorador de parámetro</b>: una función que NestJS ejecuta para producir el valor de ese argumento. Saca el usuario de la sesión que dejó el guard y el <code>ultimoCambio</code> de la cabecera <code>If-Match</code>.</p><p>Por eso el usuario nunca viaja en el cuerpo: el cliente no puede firmar por otro. Y el <code>ultimo_cambio</code> no puede colarse en el <code>SET</code> del UPDATE, porque no pasa por ningún DTO.</p>',
+    recibe: 'La petición: la sesión y la cabecera If-Match',
+    entrega: 'Escritura { usuario: "cjara", ultimoCambio: "0x00000000000007D1" } (o ultimoCambio: null si no vino la cabecera)',
+    bloques: ['c-escribe-12', 'c-uc-26', 'c-audit-16'],
+    sigue: { tipo: 'framework', codigo: 'cambiarHorasLibres(id, cuerpo, escritura)', texto: 'Con los tres argumentos listos, NestJS por fin llama a tu método.' }
+  });
+  variante('p-escribe', 'p-escribe-400', {
+    titulo: 'Un If-Match mal formado se corta aquí',
+    texto: '<p>La cabecera llegó como <code>If-Match: "abc"</code>. <code>ultimoCambioNormalizado</code> no reconoce la forma <code>0x</code> + 16 dígitos hexadecimales y devuelve <code>null</code>, así que se lanza <code>BadRequestException</code>.</p><p>Un testigo inválido es un 400, no un pase libre: si se ignorara, se escribiría sin comparar y se podría pisar el trabajo de otra persona.</p>',
+    recibe: 'If-Match: "abc"',
+    entrega: 'throw BadRequestException(ULTIMO_CAMBIO_MAL_FORMADO)',
+    bloques: ['c-uc-26', 'c-escribe-12'],
+    sigue: { tipo: 'excepcion', codigo: 'throw new BadRequestException(ULTIMO_CAMBIO_MAL_FORMADO)', texto: 'Salta directo al filtro global. El controller nunca se ejecuta.' }
+  });
+  def({
+    id: 'p-ctrl', capa: 'api', corto: 'Controller', titulo: 'El controller solo traduce HTTP ↔ caso de uso',
+    texto: '<p>Mira lo poco que hace: saca el número del DTO y llama al caso de uso. No sabe de SQL ni de reglas.</p><p><b>¿De dónde sale <code>this.gestionar</code>?</b> Del constructor (línea 35). NestJS ve el tipo <code>GestionarInstalacionesPortuariasCasoUso</code>, lo busca en los <code>providers</code> del módulo (<code>naves.module.ts:53</code>), crea una instancia y te la pasa. Eso es la inyección de dependencias: nadie escribe <code>new</code>.</p>',
+    recibe: 'id, cuerpo, escritura',
+    entrega: 'Llama al caso de uso y espera un Result',
+    bloques: ['c-ctrl-103', 'c-ctrl-35', 'c-mod-52'],
+    sigue: { tipo: 'llamada', codigo: 'this.gestionar.cambiarHorasLibres(id, cuerpo.horasLibresDeAlmacenaje, escritura)', texto: 'Llamada directa a un método de otra clase. F12 sobre cambiarHorasLibres te lleva al caso de uso.' }
+  });
+  def({
+    id: 'p-caso', capa: 'app', corto: 'Caso de uso', titulo: 'El caso de uso orquesta, pero no conoce la base',
+    texto: '<p>Recibe datos simples (<code>string</code>, <code>number</code>, <code>Escritura</code>) y le pide al repositorio que haga el cambio.</p><p>Lo importante está en el constructor: <code>this.instalaciones</code> tiene el tipo <code>RepositorioInstalacionesPortuarias</code>, que es una <b>interfaz</b>, no una clase. El caso de uso no sabe que existe TypeORM.</p><p><code>@Inject(REPOSITORIO_INSTALACIONES_PORTUARIAS)</code> le dice a NestJS qué llave buscar. Hace falta porque una interfaz de TypeScript desaparece al compilar y NestJS no la puede usar como llave.</p>',
+    recibe: 'id, horas: number, escritura',
+    entrega: 'Result<InstalacionPortuaria, ErrorDominio>',
+    bloques: ['c-caso-45'],
+    sigue: { tipo: 'interfaz', codigo: 'this.instalaciones.cambiarHorasLibres(id, horas, escritura)', texto: 'La llamada apunta a una interfaz. F12 te lleva al puerto (el contrato), no al código que corre. Para el código real usa Ctrl+F12, Ir a implementación.' }
+  });
+  def({
+    id: 'p-puerto', capa: 'dom', corto: 'Puerto', titulo: 'El puerto: un contrato sin código',
+    texto: '<p>Esto es lo que el caso de uso "ve". La interfaz dice qué métodos existen y qué devuelven; no ejecuta nada.</p><p>El <code>Symbol</code> es la llave. La unión entre la llave y la clase real está en el módulo: <code>provide: REPOSITORIO_INSTALACIONES_PORTUARIAS, useClass: RepositorioInstalacionesPortuariasTypeorm</code>.</p><p>Este es el eslabón que no se ve al leer de corrido. Si te pierdes entre una interfaz y su implementación, busca el Symbol en el <code>*.module.ts</code>.</p>',
+    recibe: 'Nada: es un tipo, no corre',
+    entrega: 'El contrato que la clase de infraestructura cumple con implements',
+    bloques: ['c-puerto-21', 'c-puerto-13', 'c-mod-65'],
+    sigue: { tipo: 'inyeccion', codigo: 'RepositorioInstalacionesPortuariasTypeorm.cambiarHorasLibres(...)', texto: 'Al ejecutar, la llamada cae en la clase que el módulo asoció a la llave.' }
+  });
+  def({
+    id: 'p-adapt', capa: 'infra', corto: 'Adaptador', titulo: 'El adaptador TypeORM: la clase que de verdad corre',
+    texto: '<p><code>implements RepositorioInstalacionesPortuarias</code> obliga a esta clase a tener <code>cambiarHorasLibres</code>. <code>extends RepositorioMaestraTypeorm</code> le da todo lo que las seis maestras hacen igual.</p><p>Por eso el método ocupa una línea: dice qué columna cambia y delega en <code>this.escribir</code>, que no está en esta clase sino en la clase padre.</p>',
+    recibe: 'id, horas, escritura',
+    entrega: 'Result<InstalacionPortuaria, ErrorDeMaestra>',
+    bloques: ['c-adapt-167', 'c-adapt-108'],
+    sigue: { tipo: 'herencia', codigo: 'this.escribir(id, escritura, { horasLibresDeAlmacenaje: horas })', texto: '"this" es el mismo objeto, pero el método vive en la clase padre. Si no lo encuentras en el archivo, búscalo en la clase que aparece después de extends.' }
+  });
+  def({
+    id: 'p-escribir', capa: 'infra', compartido: true, corto: 'escribir()', titulo: 'La clase padre agrega la firma de auditoría',
+    texto: '<p>Aquí se estampa quién editó y cuándo, en un solo lugar para que ninguna maestra lo olvide. La hora la pone SQL Server (<code>SYSDATETIMEOFFSET()</code>), no Node.</p><p><code>this.fila(id, escritura)</code> junta en un objeto qué tabla, qué id y qué versión se espera. Si el UPDATE sale bien, <code>releer</code> vuelve a leer la fila, porque el <code>ultimo_cambio</code> nuevo solo existe después de escribir.</p>',
+    recibe: 'id, escritura, { horasLibresDeAlmacenaje: 72 }',
+    entrega: 'Result: la fila releída, o el error',
+    bloques: ['c-base-88', 'c-base-114'],
+    sigue: { tipo: 'llamada', codigo: 'actualizarMaestra(this.dataSource, fila, columnas)', texto: 'Llamada a una función suelta (no a un método), importada de escritura-de-maestra.ts.' }
+  });
+  def({
+    id: 'p-update', capa: 'infra', compartido: true, corto: 'actualizarMaestra', titulo: 'Donde se decide 200, 404 o 409',
+    texto: '<p>Si vino If-Match, el <code>WHERE</code> exige el id <b>y</b> el <code>ultimo_cambio</code>. <code>repositorio.update</code> devuelve cuántas filas cambió:</p><p>1 fila → éxito. 0 filas → o el id no existe (404) o alguien editó antes (409). Para saber cuál, busca la fila solo por id.</p><p>TypeORM usa la entidad <code>InstalacionPortuariaOrm</code> para traducir la propiedad <code>horasLibresDeAlmacenaje</code> a la columna <code>horas_libres_almacenaje</code>. La columna <code>ultimo_cambio</code> está marcada <code>insert: false, update: false</code>: el código nunca la escribe.</p>',
+    recibe: 'fila { entidad, id, ultimoCambio } + columnas',
+    entrega: 'ok(null) · err(MAESTRA_NO_EXISTE) · err(CAMBIO_CONCURRENTE)',
+    bloques: ['c-upd-24', 'c-orm', 'c-audorm'],
+    sigue: { tipo: 'framework', codigo: 'repositorio.update(criterio, datos)', texto: 'TypeORM convierte el objeto en SQL y lo manda por el driver mssql.' }
+  });
+  def({
+    id: 'p-sql', capa: 'bd', corto: 'UPDATE', titulo: 'Lo que llega a SQL Server',
+    texto: '<p>Forma aproximada de la sentencia; el texto exacto lo arma TypeORM. <code>ROWVERSION</code> sube sola en cada UPDATE. Si otra persona guardó antes, la fila ya no tiene <code>0x…07D1</code> y este UPDATE no toca nada.</p>',
+    recibe: 'La sentencia con sus parámetros',
+    entrega: 'rowsAffected: 1',
+    bloques: ['q-update'],
+    sigue: { tipo: 'retorno', codigo: 'affected = 1 → return ok(null)', texto: 'Empieza la vuelta. Cada función devuelve su resultado a quien la llamó, en orden inverso.' }
+  });
+  variante('p-sql', 'p-sql-409', {
+    texto: '<p>Mientras tenías el formulario abierto, otra persona guardó. La fila ahora tiene <code>ultimo_cambio = 0x…07D2</code> y el <code>WHERE</code> pide <code>0x…07D1</code>: ninguna fila cumple.</p>',
+    entrega: 'rowsAffected: 0',
+    sigue: { tipo: 'retorno', codigo: 'affected = 0', texto: 'No cambió nada. Vuelve a actualizarMaestra, que tiene que averiguar por qué.' }
+  });
+  variante('p-sql', 'p-sql-404', {
+    texto: '<p>El <code>:id</code> tiene forma de UUID, pero no existe en la tabla. Ninguna fila cumple el <code>WHERE</code>.</p>',
+    entrega: 'rowsAffected: 0',
+    sigue: { tipo: 'retorno', codigo: 'affected = 0', texto: 'No cambió nada. Vuelve a actualizarMaestra, que tiene que averiguar por qué.' }
+  });
+  def({
+    id: 'p-releer', capa: 'infra', compartido: true, corto: 'releer()', titulo: 'Releer la fila para devolverla completa',
+    texto: '<p><code>escribir()</code> recibe <code>ok(null)</code> y llama a <code>releer(id)</code> → <code>obtener(id)</code> → <code>leer(...)</code> → <code>consultarPagina(...)</code>.</p><p>El SELECT no lo escribe la clase padre: lo aporta la hija en su propiedad <code>lectura</code>. Es el <b>patrón plantilla</b>: el padre tiene el algoritmo y la hija rellena lo que cambia (tabla, columnas, alias, dónde buscar).</p>',
+    recibe: 'ok(null) y el id',
+    entrega: 'Pide la fila a la base',
+    bloques: ['c-base-123', 'c-base-66', 'c-adapt-175'],
+    sigue: { tipo: 'framework', codigo: 'dataSource.query(SELECT …)', texto: 'consultarPagina manda el SELECT por el mismo DataSource.' }
+  });
+  def({
+    id: 'p-select', capa: 'bd', corto: 'SELECT', titulo: 'La lectura que trae la versión nueva',
+    texto: '<p>La misma consulta que usa el listado, filtrada por <code>id</code> y con límite 1. SQL Server devuelve la fila cruda: <code>estado</code> como 1/0 y <code>ultimo_cambio</code> como bytes.</p>',
+    recibe: 'WHERE ip.id = @0',
+    entrega: 'Una fila cruda',
+    bloques: ['q-select-id'],
+    sigue: { tipo: 'retorno', codigo: 'filas → leer()', texto: 'La fila vuelve a leer(), que la normaliza.' }
+  });
+  def({
+    id: 'p-normaliza', capa: 'infra', compartido: true, corto: 'normalizar', titulo: 'De fila de SQL a objeto del dominio',
+    texto: '<p><code>leer()</code> pasa cada fila por <code>this.lectura.normalizar</code>, que en esta maestra es <code>normalizarBanderas</code>: convierte el bit en boolean y el rowversion en el texto <code>"0x…"</code> que la web mandará en el siguiente If-Match.</p><p>Lo que sale ya tiene la forma de la interfaz <code>InstalacionPortuaria</code> del dominio. <code>releer</code> la envuelve en <code>ok(...)</code> y sube por <code>escribir</code> y el adaptador.</p>',
+    recibe: 'Fila cruda: estado 1, ultimo_cambio Buffer',
+    entrega: 'ok(InstalacionPortuaria) con ultimoCambio "0x00000000000007D2"',
+    bloques: ['c-base-101', 'c-cm-109', 'c-dominio-4'],
+    sigue: { tipo: 'retorno', codigo: 'return ok(instalacion)', texto: 'Sube por escribir() y por el adaptador hasta el caso de uso.' }
+  });
+  def({
+    id: 'p-caso-vuelta', capa: 'app', corto: 'mapErr', titulo: 'El caso de uso deja pasar el éxito',
+    texto: '<p><code>.mapErr(comoErrorDominio)</code> no toca un <code>ok</code>: lo deja pasar tal cual. Solo actúa si hay error, y lo convierte del lenguaje de la persistencia a un <code>ErrorDominio</code> con código y mensaje en español.</p>',
+    recibe: 'ok(InstalacionPortuaria)',
+    entrega: 'ok(InstalacionPortuaria)',
+    bloques: ['c-caso-62'],
+    sigue: { tipo: 'retorno', codigo: 'return Result<InstalacionPortuaria, ErrorDominio>', texto: 'El Result vuelve al controller.' }
+  });
+  def({
+    id: 'p-desenvolver', capa: 'api', compartido: true, corto: 'desenvolver', titulo: 'desenvolver: de Result a valor',
+    texto: '<p>El controller no quiere <code>if</code>. <code>desenvolver</code> abre el Result: si es ok devuelve el valor; si es err lanza una <code>HttpException</code> con el código HTTP que le corresponde.</p><p>Aquí es ok, así que el controller simplemente retorna la instalación.</p>',
+    recibe: 'ok(InstalacionPortuaria)',
+    entrega: 'InstalacionPortuaria (el valor suelto)',
+    bloques: ['c-te-30', 'c-ctrl-103'],
+    sigue: { tipo: 'retorno', codigo: 'return instalacion', texto: 'El valor sale del controller y lo recibe el interceptor global.' }
+  });
+  def(transformar('p-transform', 'c-ctrl-84', false));
+  def(salida('p-salida', 200, 'j-200', '<p>El JSON que recibe la web. Fíjate en <code>ultimoCambio</code>: es el valor nuevo, el que tiene que mandar en el If-Match si vuelve a editar.</p>'));
+
+  function cero(id, tipoError, conflicto) {
+    return {
+      id: id, capa: 'infra', compartido: true, corto: conflicto ? 'CAMBIO_CONCURRENTE' : 'MAESTRA_NO_EXISTE',
+      titulo: conflicto ? 'Existe, pero alguien la cambió' : 'La fila no existe',
+      texto: conflicto
+        ? '<p>Con testigo y 0 filas, busca la fila solo por id. La encuentra, así que alguien la editó después de que la leíste: <code>CAMBIO_CONCURRENTE</code>.</p><p>El error viaja como <b>valor</b>, no como excepción. <code>escribir()</code> ve el <code>err</code> y no relee: lo devuelve hacia arriba.</p>'
+        : '<p>Con testigo y 0 filas, busca la fila solo por id y no la encuentra: <code>MAESTRA_NO_EXISTE</code>. Sin If-Match ni siquiera busca: 0 filas ya significa que no existe (línea 37).</p><p>El error viaja como <b>valor</b>. <code>escribir()</code> ve el <code>err</code> y lo devuelve hacia arriba.</p>',
+      recibe: 'affected = 0',
+      entrega: "err({ tipo: '" + tipoError + "', maestra: 'INSTALACION_PORTUARIA' })",
+      bloques: ['c-upd-36'],
+      sigue: { tipo: 'retorno', codigo: 'return err(...)', texto: 'Sube por escribir() y el adaptador hasta el caso de uso.' }
+    };
+  }
+  def(cero('p-cero-409', 'CAMBIO_CONCURRENTE', true));
+  def(cero('p-cero-404', 'MAESTRA_NO_EXISTE', false));
+
+  function casoError(id, bloque, codigo, mensaje) {
+    return {
+      id: id, capa: 'app', corto: 'mapErr', titulo: 'El caso de uso traduce el error',
+      texto: '<p>Ahora sí actúa <code>.mapErr(comoErrorDominio)</code>: toma el error de maestra y lo convierte en un <code>ErrorDominio</code> con <code>codigo: ' + codigo + '</code> y un mensaje en español para la persona usuaria.</p><p>El caso de uso no decide el código HTTP: dice qué pasó en términos del negocio. El número lo pone la capa API.</p>',
+      recibe: 'err(ErrorDeMaestra)',
+      entrega: 'err({ codigo: ' + codigo + ', mensaje: "' + mensaje + '" })',
+      bloques: ['c-caso-62', bloque],
+      sigue: { tipo: 'retorno', codigo: 'return err(errorDominio)', texto: 'El Result con error vuelve al controller.' }
+    };
+  }
+  def(casoError('p-caso-409', 'c-err-148', 'CONFLICT', 'Otra persona ya guardó cambios…'));
+  def(casoError('p-caso-404', 'c-err-108', 'NOT_FOUND', 'No existe una instalación portuaria…'));
+
+  function lanza(id, codigo, estado) {
+    return {
+      id: id, capa: 'api', compartido: true, corto: 'desenvolver', titulo: 'desenvolver lanza la excepción',
+      texto: '<p>El Result trae error, así que <code>desenvolver</code> hace <code>throw comoExcepcion(error)</code>. La tabla <code>ESTADO_POR_CODIGO</code> traduce el código del dominio al HTTP: <code>' + codigo + '</code> → <b>' + estado + '</b>.</p><p>Hasta aquí el error viajó como valor. Desde aquí es una excepción.</p>',
+      recibe: 'err({ codigo: ' + codigo + ' })',
+      entrega: 'throw HttpException(' + estado + ')',
+      bloques: ['c-te-18', 'c-te-5'],
+      sigue: { tipo: 'excepcion', codigo: 'throw comoExcepcion(resultado.error)', texto: 'Una excepción no vuelve paso a paso: salta directo al filtro global.' }
+    };
+  }
+  def(lanza('p-lanza-409', 'CONFLICT', 409));
+  def(lanza('p-lanza-404', 'NOT_FOUND', 404));
+  def(filtro('x-filtro-409', 409));
+  def(filtro('x-filtro-404', 404));
+  def(filtro('x-filtro-400', 400));
+  def(filtro('x-filtro-403', 403));
+  def(salida('p-salida-409', 409, 'j-409', '<p>La web muestra el mensaje y recarga la fila para que la persona vea lo que guardó la otra.</p>'));
+  def(salida('p-salida-404', 404, 'j-404', '<p>El id no corresponde a ninguna instalación.</p>'));
+  def(salida('p-salida-400', 400, 'j-400', '<p>El error sale antes de tocar el controller, el caso de uso o la base.</p>'));
+  def(salida('p-salida-403', 403, 'j-403', '<p>Ni el controller ni la base se enteraron. La petición murió en el guard.</p>'));
+
+  /* ---------- GET / (listar) ---------- */
+  def({
+    id: 'l-entrada', capa: 'cli', corto: 'Petición HTTP', titulo: 'La pantalla pide la lista paginada',
+    texto: '<p>La tabla del mantenimiento pide una página, con búsqueda y filtro de estado.</p>' +
+      urlDesarmada([
+        ['/api/v1', 'Prefijo global + versión', 'rutas-api.ts:11-12', 'nest'],
+        ['/instalaciones-portuarias', 'Prefijo del controller', '@Controller · línea 33', 'api'],
+        ['(nada)', 'Resto vacío', '@Get() · línea 38', 'app'],
+        ['?buscar=dp&estado=true&pagina=1&limite=20', 'Query string', '@Query() · línea 60', 'dom']
+      ]) +
+      '<p><code>@Get()</code> va sin texto: su resto está vacío, así que la ruta es solo el prefijo del controller. Lo que va después del <code>?</code> no forma parte de la ruta: NestJS no lo usa para elegir el método, solo lo entrega en <code>@Query()</code>.</p>',
+    recibe: 'GET /api/v1/instalaciones-portuarias?buscar=dp&estado=true&pagina=1&limite=20',
+    entrega: 'El método que atiende: listar()',
+    bloques: ['c-ctrl-31', 'c-ctrl-37f', 'c-rutas'],
+    sigue: { tipo: 'framework', codigo: 'GuardUms.canActivate(contexto)', texto: 'Primero los guards globales.' }
+  });
+  def(guard('l-guard', 'INSTALACIONES_VER', 'instalaciones_portuarias.view', 'c-ctrl-37', false));
+  def({
+    id: 'l-ctrl', capa: 'api', corto: 'Controller', titulo: 'La consulta llega cruda y se sanea a mano',
+    texto: '<p>Este endpoint no tiene DTO: <code>@Query() consulta</code> es un diccionario de textos. Las funciones <code>pagina</code>, <code>limite</code>, <code>texto</code> y <code>booleano</code> convierten cada parámetro y corrigen lo inválido en vez de fallar: página 0 pasa a 1, un límite sobre 100 se corta en 100.</p><p><code>this.gestionar</code> llega por el constructor, igual que en la escritura.</p>',
+    recibe: '{ buscar: "dp", estado: "true", pagina: "1", limite: "20" } (todo texto)',
+    entrega: 'pagina = 1, limite = 20, filtros { buscar: "dp", estado: true }',
+    bloques: ['c-ctrl-60', 'c-cp-7', 'c-ctrl-35'],
+    sigue: { tipo: 'herencia', codigo: 'this.gestionar.listar(pagina, limite, filtros)', texto: 'F12 en listar te lleva a GestionarMaestraCasoUso, no a la clase de instalaciones: el método es heredado.' }
+  });
+  def({
+    id: 'l-caso', capa: 'app', compartido: true, corto: 'Caso (heredado)', titulo: 'Un método que no está en la clase',
+    texto: '<p>Si abres <code>gestionar-naves.caso-uso.ts</code> no encuentras <code>listar</code>. La clase dice <code>extends GestionarMaestraCasoUso</code>, y ahí está.</p><p>En su constructor, la hija le pasa su repositorio al padre con <code>super(instalaciones, ...)</code>. Por eso el padre puede usar <code>this.repositorio</code>: es el mismo objeto con otro nombre.</p><p>Las lecturas no devuelven Result. Si la base falla, sale una excepción y termina en 500.</p>',
+    recibe: 'pagina, limite, filtros',
+    entrega: 'Promise<ResultadoPaginado<InstalacionPortuaria>>',
+    bloques: ['c-gm-17', 'c-gm-9', 'c-caso-45'],
+    sigue: { tipo: 'interfaz', codigo: 'this.repositorio.listar(pagina, limite, filtros)', texto: 'this.repositorio es de tipo RepositorioMaestra: otra interfaz.' }
+  });
+  def({
+    id: 'l-puerto', capa: 'dom', corto: 'Puerto', titulo: 'El contrato genérico de las maestras',
+    texto: '<p><code>RepositorioInstalacionesPortuarias</code> extiende <code>RepositorioMaestra</code>: hereda <code>listar</code>, <code>activos</code>, <code>obtener</code>… y agrega <code>cambiarHorasLibres</code>.</p><p>Misma llave y misma clase real que en la escritura: el módulo las une una sola vez para todo el módulo.</p>',
+    recibe: 'Nada: es un tipo',
+    entrega: 'El contrato',
+    bloques: ['c-rmaestra-6', 'c-puerto-21', 'c-mod-65'],
+    sigue: { tipo: 'inyeccion', codigo: 'RepositorioInstalacionesPortuariasTypeorm (instancia)', texto: 'La llamada cae en el adaptador que NestJS inyectó por la llave.' }
+  });
+  def({
+    id: 'l-base', capa: 'infra', compartido: true, corto: 'listar() padre', titulo: 'La clase padre arma los filtros',
+    texto: '<p>Otra vez herencia: el adaptador de instalaciones no define <code>listar</code>; lo hereda de <code>RepositorioMaestraTypeorm</code>.</p><p>Aquí se arman las condiciones del <code>WHERE</code> y la lista de parámetros (<code>@0</code>, <code>@1</code>…). Lo que cambia por tabla, qué columnas buscar y el alias, lo lee de <code>this.lectura</code>, que vive en la hija.</p>',
+    recibe: 'pagina, limite, { buscar: "dp", estado: true }',
+    entrega: "donde: ['(ip.codigo LIKE @0 … OR ip.nombre LIKE @0 …)', 'ip.estado = @1']",
+    bloques: ['c-base-43', 'c-cm-44'],
+    sigue: { tipo: 'herencia', codigo: 'this.lectura.buscaEn · this.lectura.consulta(donde, parametros)', texto: 'El padre usa una propiedad que define la hija. Es la misma instancia leyendo su propio "hueco".' }
+  });
+  def({
+    id: 'l-lectura', capa: 'infra', corto: 'lectura (hija)', titulo: 'Lo único que la hija aporta a la lectura',
+    texto: '<p>Alias <code>ip</code>, busca en código y nombre, la proyección con los alias camelCase y el cálculo de <code>enUso</code> (cuántas filas de otras tablas la usan).</p><p>El padre no sabe nada de instalaciones: ejecuta lo que la hija le describe. Por eso agregar una maestra nueva es casi solo escribir este bloque.</p>',
+    recibe: 'donde[], parametros[]',
+    entrega: 'ConsultaMaestra { seleccion, desde, donde, parametros, orden }',
+    bloques: ['c-adapt-175'],
+    sigue: { tipo: 'llamada', codigo: 'consultarPagina(dataSource, consulta, { pagina, limite })', texto: 'leer() pasa la consulta descrita a la función que la ejecuta.' }
+  });
+  def({
+    id: 'l-consulta', capa: 'infra', compartido: true, corto: 'consultarPagina', titulo: 'Dos consultas: contar y traer la página',
+    texto: '<p>Primero un <code>COUNT</code> para el total, después el <code>SELECT</code> con <code>OFFSET … FETCH</code> para la página. Los valores viajan como parámetros <code>@0</code>, <code>@1</code>…, nunca pegados al texto.</p>',
+    recibe: 'ConsultaMaestra + { pagina, limite }',
+    entrega: '{ filas, total }',
+    bloques: ['c-cm-20', 'c-base-101'],
+    sigue: { tipo: 'framework', codigo: 'dataSource.query(sql, parametros)', texto: 'TypeORM manda el SQL tal cual por el driver mssql.' }
+  });
+  def({
+    id: 'l-sql', capa: 'bd', corto: 'COUNT + SELECT', titulo: 'Lo que llega a SQL Server',
+    texto: '<p>Resumen de lo que arma <code>consultarPagina</code>. Las proyecciones completas están en la <code>lectura</code> de la hija.</p>',
+    recibe: 'Dos sentencias parametrizadas',
+    entrega: 'total + filas crudas',
+    bloques: ['q-listar'],
+    sigue: { tipo: 'retorno', codigo: 'filas, total', texto: 'Empieza la vuelta.' }
+  });
+  def({
+    id: 'l-normaliza', capa: 'infra', compartido: true, corto: 'normalizar', titulo: 'Filas del dominio y metadatos de página',
+    texto: '<p><code>leer()</code> normaliza cada fila con <code>normalizarBanderas</code> (bit → boolean, rowversion → texto). Luego <code>listar()</code> arma un <code>ResultadoPaginado</code> con los items y los números de la página.</p>',
+    recibe: '{ filas crudas, total }',
+    entrega: 'ResultadoPaginado { items: InstalacionPortuaria[], meta }',
+    bloques: ['c-base-101', 'c-cm-109', 'c-rp-19'],
+    sigue: { tipo: 'retorno', codigo: 'return ResultadoPaginado.desde(...)', texto: 'Sube hasta el caso de uso.' }
+  });
+  def({
+    id: 'l-caso-vuelta', capa: 'app', compartido: true, corto: 'return', titulo: 'Sube sin cambios',
+    texto: '<p>El caso de uso devuelve lo mismo que le dio el repositorio. En una lectura no hay error de negocio que traducir.</p>',
+    recibe: 'El resultado del repositorio', entrega: 'El mismo valor',
+    bloques: ['c-gm-17'],
+    sigue: { tipo: 'retorno', codigo: 'return this.repositorio.listar(...)', texto: 'Vuelve al controller.' }
+  });
+  def({
+    id: 'l-ctrl-vuelta', capa: 'api', corto: 'return', titulo: 'El controller retorna directo',
+    texto: '<p>Sin <code>desenvolver</code>: no hay Result que abrir. Lo que retorna el método lo recibe el interceptor global.</p>',
+    recibe: 'ResultadoPaginado', entrega: 'ResultadoPaginado',
+    bloques: ['c-ctrl-60'],
+    sigue: { tipo: 'retorno', codigo: 'return …', texto: 'Al interceptor.' }
+  });
+  def(transformar('l-transform', 'c-ctrl-37', true));
+  def(salida('l-salida', 200, 'j-listar', '<p><code>data</code> trae las filas y <code>meta</code> los números de la paginación, que la tabla usa para dibujar el paginador.</p>'));
+
+  /* ---------- GET /activas ---------- */
+  variante('l-entrada', 'a-entrada', {
+    titulo: 'Un selector pide los terminales activos',
+    texto: '<p>Una pantalla que necesita llenar un selector pide solo las activas, sin paginar.</p>' +
+      urlDesarmada([
+        ['/api/v1', 'Prefijo global + versión', 'rutas-api.ts:11-12', 'nest'],
+        ['/instalaciones-portuarias', 'Prefijo del controller', '@Controller · línea 33', 'api'],
+        ['/activas', 'Resto fijo', '@Get(\'activas\') · línea 68', 'app']
+      ]) +
+      '<p>Aquí el resto es un texto fijo, <code>\'activas\'</code>. No choca con el PATCH porque el verbo es otro (GET) y porque el PATCH exige además <code>/horas-libres</code> al final.</p>',
+    recibe: 'GET /api/v1/instalaciones-portuarias/activas',
+    entrega: 'El método que atiende: activas()',
+    bloques: ['c-ctrl-31', 'c-ctrl-67f']
+  });
+  def(guard('a-guard', 'INSTALACIONES_VER', 'instalaciones_portuarias.view', 'c-ctrl-67', false));
+  def({
+    id: 'a-ctrl', capa: 'api', corto: 'Controller', titulo: 'Sin parámetros, sin paginación',
+    texto: '<p>Una línea: le pide al caso de uso las activas. No hay nada que validar.</p>',
+    recibe: 'Nada', entrega: 'Llama al caso de uso',
+    bloques: ['c-ctrl-80', 'c-ctrl-35'],
+    sigue: { tipo: 'herencia', codigo: 'this.gestionar.activos()', texto: 'También heredado de GestionarMaestraCasoUso.' }
+  });
+  variante('l-caso', 'a-caso', {
+    texto: '<p><code>activos()</code> vive en la clase padre <code>GestionarMaestraCasoUso</code>, igual que <code>listar()</code>. La hija no lo define.</p>',
+    recibe: 'Nada', entrega: 'Promise<readonly InstalacionPortuaria[]>',
+    bloques: ['c-gm-17', 'c-gm-9'],
+    sigue: { tipo: 'interfaz', codigo: 'this.repositorio.activos()', texto: 'Llamada a la interfaz RepositorioMaestra.' }
+  });
+  def({
+    id: 'a-base', capa: 'infra', compartido: true, corto: 'activos() padre', titulo: 'Solo estado = 1, hasta 500',
+    texto: '<p>Reusa el mismo <code>leer()</code> que el listado, con una sola condición fija y una página de 500. Es un tope de seguridad: un selector con más de 500 opciones ya sería otro problema.</p>',
+    recibe: 'Nada', entrega: "donde: ['ip.estado = 1'], limite 500",
+    bloques: ['c-base-58', 'c-base-10'],
+    sigue: { tipo: 'herencia', codigo: 'this.leer(…) → this.lectura.consulta(…)', texto: 'Otra vez el padre usando la lectura que describe la hija.' }
+  });
+  variante('l-sql', 'a-sql', { bloques: ['q-activas'], recibe: 'WHERE ip.estado = 1' });
+  variante('l-normaliza', 'a-normaliza', {
+    titulo: 'Filas del dominio, sin metadatos',
+    texto: '<p><code>leer()</code> normaliza cada fila. <code>activos()</code> se queda solo con <code>filas</code> y descarta el total: no hay página que dibujar.</p>',
+    entrega: 'readonly InstalacionPortuaria[]',
+    bloques: ['c-base-58', 'c-cm-109'],
+    sigue: { tipo: 'retorno', codigo: 'return filas', texto: 'Sube hasta el caso de uso.' }
+  });
+  variante('l-ctrl-vuelta', 'a-ctrl-vuelta', { recibe: 'InstalacionPortuaria[]', entrega: 'InstalacionPortuaria[]', bloques: ['c-ctrl-80'] });
+  def(transformar('a-transform', 'c-ctrl-67', false));
+  def(salida('a-salida', 200, 'j-activas', '<p>Un arreglo simple en <code>data</code>, sin <code>meta</code>.</p>'));
+
+  var IDA_PATCH = ['p-entrada', 'p-guard', 'p-validacion', 'p-escribe', 'p-ctrl', 'p-caso', 'p-puerto', 'p-adapt', 'p-escribir', 'p-update'];
+  var ENDPOINTS = [
+    {
+      id: 'patch', verbo: 'PATCH', ruta: '/:id/horas-libres', resumen: 'La única escritura. Recorre todas las capas',
+      escenarios: [
+        { id: 'ok', nombre: '200 · Guardado', pasos: IDA_PATCH.concat(['p-sql', 'p-releer', 'p-select', 'p-normaliza', 'p-caso-vuelta', 'p-desenvolver', 'p-transform', 'p-salida']) },
+        { id: '409', nombre: '409 · Otra persona guardó antes', error: true, pasos: IDA_PATCH.concat(['p-sql-409', 'p-cero-409', 'p-caso-409', 'p-lanza-409', 'x-filtro-409', 'p-salida-409']) },
+        { id: '404', nombre: '404 · El id no existe', error: true, pasos: IDA_PATCH.concat(['p-sql-404', 'p-cero-404', 'p-caso-404', 'p-lanza-404', 'x-filtro-404', 'p-salida-404']) },
+        { id: '400', nombre: '400 · If-Match mal formado', error: true, pasos: ['p-entrada', 'p-guard', 'p-validacion', 'p-escribe-400', 'x-filtro-400', 'p-salida-400'] },
+        { id: '403', nombre: '403 · Sin permiso', error: true, pasos: ['p-entrada', 'p-guard-403', 'x-filtro-403', 'p-salida-403'] }
+      ]
+    },
+    {
+      id: 'listar', verbo: 'GET', ruta: '/', resumen: 'Listado paginado. Casi todo es heredado',
+      escenarios: [{ id: 'ok', nombre: '200 · Página', pasos: ['l-entrada', 'l-guard', 'l-ctrl', 'l-caso', 'l-puerto', 'l-base', 'l-lectura', 'l-consulta', 'l-sql', 'l-normaliza', 'l-caso-vuelta', 'l-ctrl-vuelta', 'l-transform', 'l-salida'] }]
+    },
+    {
+      id: 'activas', verbo: 'GET', ruta: '/activas', resumen: 'Para selectores. Sin paginar',
+      escenarios: [{ id: 'ok', nombre: '200 · Lista', pasos: ['a-entrada', 'a-guard', 'a-ctrl', 'a-caso', 'l-puerto', 'a-base', 'l-lectura', 'l-consulta', 'a-sql', 'a-normaliza', 'l-caso-vuelta', 'a-ctrl-vuelta', 'a-transform', 'a-salida'] }]
+    }
+  ];
+
+  var estado = { ep: ENDPOINTS[0], esc: ENDPOINTS[0].escenarios[0], i: 0 };
+
+  var D = 'doc', F = 'efecto';
+  var NOTAS = {
+    'c-rutas': [
+      ['4', '', 'La palabra que va delante de toda la API: "api".'],
+      ['6', '', 'El número de versión: "1".'],
+      ['8', '', 'Los dos juntos: /api/v1. Toda URL del TMS empieza así.'],
+      ['10', '', 'La llama main.ts:60 al arrancar, una sola vez, antes de atender peticiones.'],
+      ['11', F, 'setGlobalPrefix antepone /api a TODAS las rutas de TODOS los controllers. Por eso no lo ves escrito en ningún @Controller.'],
+      ['12', F, 'enableVersioning de tipo URI agrega /v1 después de /api. Si mañana hubiera una v2, convivirían /api/v1/… y /api/v2/….']
+    ],
+    'c-ctrl-31': [
+      ['31', D, '@ApiTags agrupa este controller en la sección «Mantenimientos» de Swagger, la página de documentación en /api/docs. No cambia cómo responde la API: solo ordena la documentación. EtiquetaApi.MANTENIMIENTOS vale "Mantenimientos" (documentacion-openapi.ts:47).'],
+      ['32', D, '@ApiBearerAuth(\'ums\') le dice a Swagger que estas rutas piden token (Authorization: Bearer …), para que su botón «Authorize» lo mande al probar. Sin esta línea, todo «Try it out» daría 401. Ojo: quien de verdad exige el token es GuardUms, no esta línea.'],
+      ['33', F, '@Controller(\'instalaciones-portuarias\') fija el prefijo del controller: todas las rutas de la clase empiezan con /instalaciones-portuarias. La clase funciona porque además está listada en controllers: [...] de naves.module.ts:45.'],
+      ['34', '', 'La clase. export permite que naves.module.ts la importe.'],
+      ['35', F, 'El constructor pide el caso de uso. private readonly hace dos cosas: declara la propiedad this.gestionar y la llena con lo que NestJS le pase. Nadie escribe new: NestJS lo inyecta.']
+    ],
+    'c-ctrl-35': [
+      ['35', F, 'NestJS lee el tipo del parámetro (GestionarInstalacionesPortuariasCasoUso), busca esa clase en providers del módulo, la fabrica una vez y la pasa aquí. private readonly la deja guardada como this.gestionar.']
+    ],
+    'c-ctrl-84': [
+      ['84', F, '@Exige guarda el permiso "instalaciones_portuarias.manage" como etiqueta del método. GuardUms la lee antes de ejecutar nada.'],
+      ['85', F, '@Patch(\':id/horas-libres\'): el verbo HTTP y el resto de la ruta, que se pega después del prefijo del controller. :id es un comodín.'],
+      ['86', F, '@MensajeRespuesta pone el texto que irá en "message" de la respuesta. Lo lee TransformInterceptor al final.']
+    ],
+    'c-ctrl-84f': [
+      ['84', F, '@Exige: el permiso que hace falta, "instalaciones_portuarias.manage". Es una etiqueta que lee GuardUms; si el perfil no lo tiene, 403.'],
+      ['85', F, '@Patch: el método solo atiende el verbo PATCH. \':id/horas-libres\' es el resto de la ruta: comodín :id y texto fijo /horas-libres.'],
+      ['86', F, '@MensajeRespuesta: el texto de "message" en la respuesta exitosa. Lo lee TransformInterceptor.'],
+      ['87-90', D, '@ApiOperation: título (summary) y descripción de la operación en Swagger. Aquí se aprovecha para dejar escrita una regla: las horas libres son lo único que se edita en el TMS; lo demás viene de SAP.'],
+      ['91', D, '@ApiParam: documenta el :id. IDENTIFICADOR_INSTALACION (líneas 25-29) dice su nombre, descripción y formato uuid. Quien de verdad valida el formato es ParseUUIDPipe (línea 104).'],
+      ['92-95', D, '@RespuestaDocumentada: muestra en Swagger la forma de la respuesta 200, con InstalacionPortuariaDto como modelo. Ese DTO de respuesta solo documenta: no transforma lo que sale.'],
+      ['96-101', D, '@ErroresDocumentados: lista los códigos de error posibles. Para leer código es un regalo: te anticipa 400, 404, 409 y 500, que son justo los escenarios de arriba (menos 403, que puede dar cualquier ruta).'],
+      ['102', D, '@CabeceraDeUltimoCambio: documenta la cabecera If-Match en Swagger (usa ApiHeader). No la lee: quien la lee es @Escribe en la línea 106.']
+    ],
+    'c-ctrl-37': [
+      ['37', F, 'Permiso "instalaciones_portuarias.view": basta con poder ver.'],
+      ['38', F, '@Get() sin texto: el resto está vacío y la ruta es solo el prefijo del controller.'],
+      ['39', F, 'Texto de "message" de la respuesta.']
+    ],
+    'c-ctrl-37f': [
+      ['37', F, '@Exige: permiso "instalaciones_portuarias.view". Para leer basta con ver; para escribir hace falta "manage".'],
+      ['38', F, '@Get(): solo GET, y sin texto. Resto vacío: GET /api/v1/instalaciones-portuarias.'],
+      ['39', F, '@MensajeRespuesta: el "message" de la respuesta.'],
+      ['40', D, '@ApiOperation: el título en Swagger.'],
+      ['41-46', D, '@ApiQuery: documenta el parámetro opcional ?buscar. No lo lee ni lo valida: lo lee la línea 62.'],
+      ['47-52', D, '@ApiQuery: documenta ?estado (true / false). Lo lee la línea 63.'],
+      ['53', D, '@ParametrosDePaginacion: documenta ?pagina y ?limite. LIMITE_LISTADO_MAESTRAS vale 50 (shared/maestras/listado.ts:1): es el límite por defecto que se anuncia.'],
+      ['54-58', D, '@RespuestaDocumentada con forma \'pagina\': Swagger muestra data como arreglo más el bloque meta.'],
+      ['59', D, '@ErroresDocumentados: solo 500. Un listado no tiene 404 ni 409.']
+    ],
+    'c-ctrl-67': [
+      ['67', F, 'Permiso de lectura.'],
+      ['68', F, '@Get(\'activas\'): resto fijo "activas".'],
+      ['69', F, 'Texto de "message".']
+    ],
+    'c-ctrl-67f': [
+      ['67', F, '@Exige: permiso de lectura, "instalaciones_portuarias.view".'],
+      ['68', F, '@Get(\'activas\'): resto fijo. URL completa: /api/v1/instalaciones-portuarias/activas.'],
+      ['69', F, '@MensajeRespuesta: el "message".'],
+      ['70-73', D, '@ApiOperation: título y descripción en Swagger. La descripción cuenta para qué existe: llenar selectores.'],
+      ['74-78', D, '@RespuestaDocumentada con forma \'lista\': un arreglo en data, sin meta.'],
+      ['79', D, 'Solo 500 posible.']
+    ],
+    'c-ctrl-60': [
+      ['60', F, '@Query() consulta: entrega todos los ?clave=valor como un objeto de textos. El tipo Consulta es Record<string, string | undefined>: no es una clase DTO, así que el ValidationPipe no valida nada aquí. Promise<ResultadoPaginado<…>> dice qué devuelve.'],
+      ['61', '', 'pagina() y limite() convierten texto en número con valores seguros. Si no mandas limite, vienen 50 (LIMITE_LISTADO_MAESTRAS).'],
+      ['62', '', 'texto(): recorta espacios; vacío pasa a null, que significa «sin filtro».'],
+      ['63', '', 'booleano(): solo "true" y "false" cuentan; cualquier otra cosa es null y vienen activas e inactivas.']
+    ],
+    'c-ctrl-80': [
+      ['80', '', 'Sin parámetros. readonly InstalacionPortuaria[]: un arreglo que quien lo recibe no debe modificar.'],
+      ['81', '', 'Delega en el caso de uso. activos() no está en la clase del caso de uso: es heredado.']
+    ],
+    'c-ctrl-103': [
+      ['103', '', 'async: el método espera (await) algo que tarda, la base de datos. Siempre devuelve una Promise.'],
+      ['104', F, '@Param(\'id\', new ParseUUIDPipe()): toma el :id de la URL y exige forma de UUID. Si no la tiene, 400 antes de entrar al método.'],
+      ['105', F, '@Body() cuerpo: HorasLibresDto: el JSON del cuerpo. Que el tipo sea una clase DTO es lo que activa la validación global.'],
+      ['106', F, '@Escribe(): el tercer argumento lo fabrica un decorador: usuario de la sesión más el If-Match.'],
+      ['107', '', 'Promise<InstalacionPortuaria>: devuelve la instalación ya actualizada. No devuelve un Result: el Result se abre en la línea 108.'],
+      ['108-110', '', 'this.gestionar.cambiarHorasLibres(...) devuelve un Result. desenvolver lo abre: el valor si salió bien, o lanza una excepción HTTP si no.']
+    ],
+    'c-exige': [
+      ['9', '', 'Recibe el permiso, un texto como "instalaciones_portuarias.manage" (permisos-tms.ts:18-19).'],
+      ['10', F, 'SetMetadata(clave, valor) de NestJS pega el valor al método bajo la clave "unimar.permiso". No verifica nada: solo deja la etiqueta para que otro la lea.']
+    ],
+    'c-guard-43': [
+      ['43', '', 'Lee la etiqueta que dejó @Exige. Por dentro usa Reflector con CLAVE_PERMISO (línea 95).'],
+      ['44', '', 'Verifica el token de la cabecera Authorization y obtiene quién eres y qué permisos tienes.'],
+      ['46', '', 'Sin token válido: decidir() termina lanzando 401.'],
+      ['47', '', 'Usuario sin sede asignada: 403.'],
+      ['48', F, 'Guarda la identidad dentro de la petición. De ahí la saca después @Escribe para saber quién firma.']
+    ],
+    'c-guard-54': [
+      ['54-56', '', 'Una ruta sin @Exige se niega. Es a propósito: olvidarse del permiso no puede dejar la ruta abierta.'],
+      ['57-59', '', 'El perfil no tiene el permiso: 403.'],
+      ['60', '', 'true: NestJS sigue hacia el método.']
+    ],
+    'c-guard-156': [
+      ['156', '', 'Sin identidad: 401 Unauthorized, «no sé quién eres».'],
+      ['157', '', 'Con identidad pero sin permiso: 403 Forbidden, «sé quién eres, pero no puedes».']
+    ],
+    'c-appmod-77': [
+      ['77', F, 'Primero el límite de ritmo: frena a quien manda demasiadas peticiones, antes de gastar en verificar el token.'],
+      ['78-79', '', 'Comentario del propio código: explica por qué la identidad va antes que los interceptores.'],
+      ['80', F, 'Después GuardUms: identidad y permiso.'],
+      ['84', F, 'Al final, el límite por usuario. Va después porque necesita saber quién eres.']
+    ],
+    'c-appmod-92': [
+      ['92', F, 'APP_INTERCEPTOR registra TransformInterceptor para todas las rutas de la API. Ningún controller lo llama: NestJS lo pone alrededor de cada uno.']
+    ],
+    'c-dto-52': [
+      ['52', '', 'Una clase simple. Sus decoradores son las reglas.'],
+      ['53-57', D, '@ApiProperty: tipo, descripción y ejemplo del campo en Swagger.'],
+      ['58', F, '@IsInt: tiene que ser entero; si no, 400 con este mensaje.'],
+      ['59', F, '@Min(0): no negativo.'],
+      ['60', F, '@Max(32767): el tope de la columna SMALLINT en SQL Server. Si pasara, la base fallaría; así el error sale antes y en español.'],
+      ['61', '', 'El ! le dice a TypeScript que el valor llegará aunque la clase no lo inicialice: lo llena NestJS con el cuerpo.']
+    ],
+    'c-main-64': [
+      ['64', F, 'Registra la tubería de validación para toda la app: todo @Body cuyo tipo sea una clase DTO se valida con sus decoradores.']
+    ],
+    'c-escribe-12': [
+      ['12', '', 'Función que arma la Escritura a partir de la petición.'],
+      ['14', '', 'autorDeLaPeticion: lee la identidad que dejó GuardUms (línea 48 del guard). Si no hay, 401.'],
+      ['15', '', 'ultimoCambioEsperadoDe: lee If-Match (el bloque de abajo).'],
+      ['19', F, 'createParamDecorator convierte la función en decorador de parámetro. NestJS la ejecuta al preparar los argumentos del método.']
+    ],
+    'c-uc-26': [
+      ['26', '', 'Devuelve el testigo limpio o null.'],
+      ['27', '', 'Lee la cabecera if-match. Express guarda las cabeceras en minúsculas.'],
+      ['28', '', 'Si llegó repetida, toma la primera.'],
+      ['29', '', 'Sin cabecera: null. Se escribe sin comparar (paso A del ADR-TMS-015).'],
+      ['31', '', 'Quita las comillas y valida la forma 0x + 16 hexadecimales; la devuelve en mayúsculas (shared/domain/ultimo-cambio.ts:22).'],
+      ['32', F, 'Forma inválida: 400.'],
+      ['33', '', 'Valor limpio, listo para el WHERE.']
+    ],
+    'c-audit-16': [
+      ['17', '', 'Quién firma: el usuario de la sesión, nunca el del cuerpo.'],
+      ['18-19', '', 'La versión que la persona leyó. null si la web no la mandó.']
+    ],
+    'c-mod-52': [
+      ['52', '', 'providers: las clases que NestJS sabe fabricar e inyectar dentro de este módulo.'],
+      ['53', F, 'El caso de uso registrado. Por eso el controller lo puede pedir en su constructor. Si lo quitas de aquí, NestJS no arranca: no sabría con qué llenar ese parámetro.']
+    ],
+    'c-mod-65': [
+      ['66', F, 'provide: la llave (el Symbol).'],
+      ['67', F, 'useClass: la clase que NestJS entrega cuando alguien pide esa llave. Cambiar esta línea cambia la implementación sin tocar el caso de uso: esa es la gracia de la arquitectura hexagonal.']
+    ],
+    'c-caso-45': [
+      ['45', F, '@Injectable(): permite que NestJS fabrique la clase e inyecte lo que pide su constructor.'],
+      ['46', '', 'extends GestionarMaestraCasoUso<…>: hereda listar, activos, obtener, crear, actualizar y cambiarEstado.'],
+      ['47-48', '', 'Los tipos genéricos: con qué entidad (InstalacionPortuaria) y qué datos de entrada (DatosInstalacion) trabaja el padre.'],
+      ['51', F, '@Inject(REPOSITORIO_INSTALACIONES_PORTUARIAS): «dame lo que esté registrado con esta llave». Sin esto NestJS no sabría qué inyectar, porque el tipo es una interfaz.'],
+      ['52', '', 'El tipo es la interfaz. La propiedad queda como this.instalaciones.'],
+      ['54', '', 'super(...) llama al constructor del padre: le pasa el mismo repositorio y el nombre de la maestra, que usa en mensajes de error.'],
+      ['57-61', '', 'La firma: recibe datos simples y promete un Result.'],
+      ['62', '', 'Llama al repositorio a través de la interfaz.'],
+      ['63', '', 'mapErr: si hay error, lo traduce a ErrorDominio; si no, deja pasar el éxito.']
+    ],
+    'c-caso-62': [
+      ['62', '', 'Llama al repositorio a través de la interfaz y espera su Result.'],
+      ['63', '', 'mapErr solo toca el error; el éxito pasa sin cambios.']
+    ],
+    'c-gm-9': [
+      ['9', '', 'abstract: no se usa sola, solo como padre de las seis maestras.'],
+      ['10', '', 'protected constructor: solo lo llaman las hijas con super(...).'],
+      ['11', '', 'Aquí queda el repositorio que pasó la hija: this.repositorio. Es el mismo objeto que la hija llama this.instalaciones.'],
+      ['12', '', 'El nombre de la maestra, para mensajes y trazas.']
+    ],
+    'c-gm-17': [
+      ['17-21', '', 'listar: recibe página, límite y filtros.'],
+      ['22', '', 'Delega sin agregar nada. Las lecturas no tienen reglas de negocio.'],
+      ['25-27', '', 'activos: igual, delega.']
+    ],
+    'c-puerto-13': [
+      ['13', F, 'Symbol crea un valor único en todo el programa. Sirve de llave para la inyección porque las interfaces de TypeScript no existen al ejecutar.']
+    ],
+    'c-puerto-21': [
+      ['21-24', '', 'La interfaz extiende la genérica de maestras: hereda sus métodos.'],
+      ['25-29', '', 'Agrega la única operación propia de instalaciones. Devuelve Result con ErrorDeMaestra: el error viaja como valor, no como excepción.']
+    ],
+    'c-rmaestra-6': [
+      ['6', '', 'La interfaz genérica que cumplen los repositorios de las seis maestras.'],
+      ['7', '', 'listar: página más filtros.'],
+      ['9', '', 'activos: todas las activas.']
+    ],
+    'c-adapt-108': [
+      ['108', F, '@Injectable: NestJS la puede fabricar.'],
+      ['110', '', 'extends: hereda listar, activos, obtener, escribir, releer…'],
+      ['111', '', 'implements: TypeScript comprueba que tenga todos los métodos del puerto. Si falta uno, no compila.'],
+      ['113', F, '@InjectDataSource(): NestJS le entrega la conexión de TypeORM a SQL Server.'],
+      ['114', '', 'super: le pasa al padre la conexión, la entidad ORM (qué tabla) y el nombre de la maestra.']
+    ],
+    'c-adapt-167': [
+      ['167-171', '', 'La misma firma que el puerto. Si no coincidiera, implements daría error de compilación.'],
+      ['172', '', 'Solo dice qué columna cambia. Lo demás lo hace escribir() del padre.']
+    ],
+    'c-adapt-175': [
+      ['175', '', 'protected readonly lectura: la receta de lectura que el padre ejecuta.'],
+      ['176', '', 'alias ip: el nombre corto de la tabla dentro del SQL.'],
+      ['177', '', 'Columnas donde se busca el texto de ?buscar.'],
+      ['178', '', 'La función que limpia cada fila leída.'],
+      ['179', '', 'La función que arma la consulta con las condiciones que le pase el padre.'],
+      ['180-184', '', 'Columnas del SELECT. AS horasLibresDeAlmacenaje le pone el nombre camelCase que espera el dominio.'],
+      ['185', '', 'Agrega las 5 columnas de auditoría (AUDITORIA, consulta-maestra.ts:102).'],
+      ['186', '', 'enUso: cuántas relaciones detalladas y programaciones usan este terminal (líneas 32-36 del archivo).'],
+      ['190', '', 'Orden estable, código y luego id, para que la paginación no repita ni se salte filas.']
+    ],
+    'c-base-10': [
+      ['10', '', 'Tope para selectores: más de 500 opciones ya no caben en un selector.']
+    ],
+    'c-base-43': [
+      ['48', '', 'Los valores que irán como @0, @1… Cada filtro agrega el suyo.'],
+      ['49-52', '', 'Arma las condiciones. Las que no aplican vuelven null y filter las descarta.'],
+      ['50', '', 'Filtro de texto sobre las columnas que declaró la hija.'],
+      ['51', '', 'Filtro por estado sobre ip.estado.'],
+      ['54', '', 'leer ejecuta la consulta y normaliza las filas.'],
+      ['55', '', 'Arma el resultado paginado con total y metadatos.']
+    ],
+    'c-base-58': [
+      ['59', '', 'Condición fija: estado = 1.'],
+      ['60-61', '', 'Una sola página de hasta 500.'],
+      ['63', '', 'Devuelve solo las filas; el total se descarta.']
+    ],
+    'c-base-66': [
+      ['67', '', 'Condición id = @0, con el id como parámetro, límite 1.'],
+      ['68', '', 'La primera fila, o null si no existe.']
+    ],
+    'c-base-88': [
+      ['88', '', 'protected: solo la usan las clases hijas.'],
+      ['91', '', 'columnas: lo que la hija quiere cambiar.'],
+      ['93', '', 'Llama a la función que hace el UPDATE. this.fila arma el objeto de la fila.'],
+      ['94', '', '...columnas copia lo que mandó la hija.'],
+      ['95', '', 'Quién edita.'],
+      ['96', '', 'Una función que devuelve texto: TypeORM pega ese texto tal cual en el SQL. Así la hora la pone SQL Server y no Node.'],
+      ['98', '', 'Si hubo error, lo devuelve. Si no, relee la fila.']
+    ],
+    'c-base-101': [
+      ['101', '', 'private: solo la usa esta clase.'],
+      ['106-110', '', 'Pide a consultarPagina que ejecute la consulta que describió la hija.'],
+      ['111', '', 'Pasa cada fila por la función de limpieza de la hija.']
+    ],
+    'c-base-114': [
+      ['114-121', '', 'Junta lo que identifica la fila a escribir: la entidad (qué tabla), la maestra, el id y la versión esperada (el If-Match).']
+    ],
+    'c-base-123': [
+      ['124', '', 'Vuelve a leer por id.'],
+      ['125', '', 'null: no existe. Si existe: ok(entidad).']
+    ],
+    'c-upd-24': [
+      ['24-27', '', 'Arma el WHERE. Sin testigo: solo id. Con testigo: id y ultimo_cambio = 0x…. Raw pega el literal; es seguro porque su forma ya se validó.'],
+      ['29-33', '', 'Genérica: sirve para cualquier maestra.'],
+      ['34', '', 'Pide a TypeORM el repositorio de la entidad, es decir, de la tabla.'],
+      ['35', F, 'Ejecuta el UPDATE … WHERE …. afectadas.affected dice cuántas filas cambió.'],
+      ['36', '', 'Cambió al menos una: éxito.'],
+      ['37', '', 'Sin testigo y 0 filas: no existe.'],
+      ['41', '', 'Con testigo y 0 filas: busca la fila solo por id.'],
+      ['42', '', 'No está: 404.'],
+      ['43', '', 'Está: alguien la cambió, 409.']
+    ],
+    'c-upd-36': [
+      ['36', '', 'Cambió al menos una fila: éxito.'],
+      ['37', '', 'Sin testigo y 0 filas: no existe.'],
+      ['41', '', 'Con testigo y 0 filas: busca la fila solo por id.'],
+      ['42', '', 'No está: 404.'],
+      ['43', '', 'Está: alguien la cambió, 409.']
+    ],
+    'c-orm': [
+      ['4', F, '@Entity: esta clase representa la tabla instalacion_portuaria.'],
+      ['5', '', 'Hereda las columnas id, de auditoría y ultimo_cambio.'],
+      ['6-7', '', 'Propiedad codigo ↔ columna codigo, NVARCHAR(20).'],
+      ['9-10', '', 'nombre, NVARCHAR(150).'],
+      ['12-13', F, 'La propiedad se llama horasLibresDeAlmacenaje y la columna horas_libres_almacenaje: name hace el puente entre los dos nombres.'],
+      ['15-16', '', 'BIT en SQL, boolean en TypeScript.']
+    ],
+    'c-audorm': [
+      ['11', F, 'insert: false y update: false: TypeORM nunca la escribe. SQL Server la incrementa solo en cada UPDATE.'],
+      ['12', '', 'Llega como Buffer (bytes). normalizarBanderas la convierte en texto.']
+    ],
+    'c-cm-20': [
+      ['25', '', 'Saca página y límite.'],
+      ['26', '', 'Une las condiciones con AND. Si no hay, va sin WHERE.'],
+      ['27', '', 'Copia los parámetros para no tocar los originales.'],
+      ['29-32', '', 'Consulta 1: el total.'],
+      ['34-39', '', 'Consulta 2: la página. OFFSET se salta (pagina - 1) × limite filas y FETCH NEXT trae limite filas.'],
+      ['38', '', 'Los dos últimos parámetros son el salto y el tamaño.'],
+      ['41', '', 'Devuelve filas y total.']
+    ],
+    'c-cm-44': [
+      ['49', '', 'Sin texto, sin filtro.'],
+      ['50', '', 'El número del siguiente parámetro: @0, @1….'],
+      ['51', '', 'Agrega el patrón de búsqueda a la lista de parámetros.'],
+      ['52', '', 'columna LIKE @n por cada columna, unidas con OR.'],
+      ['60-63', '', 'Lo mismo para estado: 1 o 0.']
+    ],
+    'c-cm-109': [
+      ['109', '', 'Genérica: sirve para cualquier maestra con estado y enUso.'],
+      ['111', '', 'Copia todo lo demás tal cual.'],
+      ['112', '', 'BIT 1/0 → true/false.'],
+      ['113', '', 'Asegura que sea número.'],
+      ['114', '', 'Bytes → "0x…".']
+    ],
+    'c-dominio-4': [
+      ['4', '', 'extends Auditoria: suma usuarioCreador, las fechas y ultimoCambio.'],
+      ['5-9', '', 'Los campos que el resto del sistema conoce. Aquí no hay nada de SQL ni de TypeORM.'],
+      ['10', '', 'enUso: calculado en la lectura, no es una columna.']
+    ],
+    'c-rp-19': [
+      ['19', '', 'static: se llama sobre la clase, ResultadoPaginado.desde(...).'],
+      ['20', '', 'Evita dividir entre cero.'],
+      ['21-26', '', 'Guarda los items y los metadatos que irán en "meta".']
+    ],
+    'c-cp-7': [
+      ['7-10', '', 'Si pagina no es un entero mayor o igual a 1, usa 1.'],
+      ['12-16', '', 'Si limite no es válido, usa el valor por defecto (50). Nunca más de 100.']
+    ],
+    'c-err-108': [
+      ['108-111', '', 'El error «no existe» pasa a código NOT_FOUND con un mensaje en español.']
+    ],
+    'c-err-148': [
+      ['148-154', '', 'El error «cambio concurrente» pasa a CONFLICT con el mensaje que ve la persona.']
+    ],
+    'c-te-5': [
+      ['5', '', 'Tabla de traducción: código del dominio → estado HTTP.'],
+      ['10', '', 'NOT_FOUND → 404.'],
+      ['11', '', 'CONFLICT → 409.']
+    ],
+    'c-te-18': [
+      ['18-28', '', 'comoExcepcion arma una HttpException con el mensaje, el código y el detalle.'],
+      ['19', '', 'Busca el número HTTP en la tabla.'],
+      ['30', '', 'Genérica: sirve para cualquier Result.'],
+      ['31', F, 'Error: lanza la excepción.'],
+      ['32', '', 'Éxito: devuelve el valor.']
+    ],
+    'c-te-30': [
+      ['31', F, 'Error: lanza la excepción, que termina en el filtro global.'],
+      ['32', '', 'Éxito: devuelve el valor suelto.']
+    ],
+    'c-tr-21': [
+      ['21', '', 'handle() ejecuta el controller. pipe(map(...)) transforma lo que devuelva.'],
+      ['23', '', 'El código HTTP que ya tiene la respuesta (200).'],
+      ['25', '', 'Si lo devuelto es paginado…'],
+      ['30-31', '', '…items va a data y meta aparte.'],
+      ['35-39', '', 'Si no, todo va a data.']
+    ],
+    'c-filt-105': [
+      ['105', F, '@Catch() sin argumentos: atrapa cualquier error.'],
+      ['109', '', 'La fábrica del código de incidencia (TX-…). Es opcional para que el filtro funcione aunque no haya base.'],
+      ['111', '', 'NestJS llama a catch cuando algo lanza.']
+    ],
+    'c-filt-128': [
+      ['128-134', '', 'El sobre de error del proyecto. enEspanol traduce los mensajes del framework que vengan en inglés.']
+    ]
+  };
+
+  function rango(clave) {
+    var p = clave.split('-').map(Number);
+    return { desde: p[0], hasta: p[1] || p[0] };
+  }
+
+  function urlDesarmada(partes) {
+    return '<div class="url">' + partes.map(function (p) {
+      return '<div class="seg" style="--c:var(--c-' + p[3] + ')"><span class="txt">' + esc(p[0]) + '</span><span class="nom">' + esc(p[1]) + '</span><span class="ori">' + esc(p[2]) + '</span></div>';
+    }).join('') + '</div>';
+  }
+
+  function esc(t) { return String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+  var KW_TS = /^(export|class|async|await|return|const|if|function|private|readonly|protected|extends|implements|new|throw|interface|type|import|from|abstract|static|case|null|true|false|undefined|this)$/;
+  var KW_SQL = /^(SELECT|UPDATE|SET|WHERE|AND|OR|FROM|ORDER|BY|OFFSET|ROWS|FETCH|NEXT|ONLY|AS|COUNT|ASC|LIKE)$/;
+  function resaltar(linea, lang) {
+    var re = lang === 'sql'
+      ? /(--.*$)|('(?:[^']*)')|(\b[A-Z]+\b)|(@\d+)/g
+      : /(\/\/.*$|\/\*\*.*\*\/)|('(?:[^'\\]|\\.)*'|`[^`]*`?|"(?:[^"\\]|\\.)*")|(\b[a-zA-Z_]+\b)|(@\w+)/g;
+    var out = '', ultimo = 0, m;
+    while ((m = re.exec(linea)) !== null) {
+      out += esc(linea.slice(ultimo, m.index));
+      if (m[1]) out += '<span class="c">' + esc(m[1]) + '</span>';
+      else if (m[2]) out += '<span class="s">' + esc(m[2]) + '</span>';
+      else if (m[3]) out += ((lang === 'sql' ? KW_SQL : KW_TS).test(m[3]) && lang !== 'json') ? '<span class="k">' + esc(m[3]) + '</span>' : esc(m[3]);
+      else if (m[4]) out += '<span class="d">' + esc(m[4]) + '</span>';
+      ultimo = re.lastIndex;
+      if (m[0] === '') re.lastIndex++;
+    }
+    return out + esc(linea.slice(ultimo));
+  }
+
+  function leerBloque(id) {
+    var el = document.getElementById(id);
+    if (!el) return null;
+    var texto = el.textContent.replace(/^\n/, '').replace(/\s+$/, '');
+    return {
+      archivo: el.getAttribute('data-archivo'),
+      desde: Number(el.getAttribute('data-desde') || 1),
+      lang: el.getAttribute('data-lang') || 'ts',
+      titulo: el.getAttribute('data-titulo'),
+      lineas: texto.split('\n')
+    };
+  }
+
+  function htmlBloque(id) {
+    var b = leerBloque(id);
+    if (!b) return '';
+    var cab, conNumeros = !!b.archivo;
+    if (b.archivo) {
+      var hasta = b.desde + b.lineas.length - 1;
+      var ref = BASE + b.archivo + ':' + b.desde;
+      cab = '<span class="ruta-archivo">' + esc(b.archivo) + ' <b>:' + b.desde + (hasta > b.desde ? '-' + hasta : '') + '</b></span>' +
+        '<button class="copiar" type="button" data-copiar="' + esc(ref) + '">Copiar ruta</button>';
+    } else {
+      cab = '<span class="eti">' + esc(b.titulo || '') + '</span>';
+    }
+    var notas = NOTAS[id] || [];
+    var explicadas = {};
+    notas.forEach(function (n) { var r = rango(n[0]); for (var k = r.desde; k <= r.hasta; k++) explicadas[k] = true; });
+    var cuerpo = b.lineas.map(function (l, k) {
+      var num = b.desde + k;
+      return '<span class="l' + (explicadas[num] ? ' con-nota' : '') + '" data-l="' + num + '">' + (conNumeros ? '<span class="n">' + num + '</span>' : '<span class="n"></span>') + resaltar(l, b.lang) + '</span>';
+    }).join('');
+    var lista = notas.length === 0 ? '' : '<ol class="notas">' + notas.map(function (n) {
+      var r = rango(n[0]);
+      var etiqueta = n[1] === 'doc' ? '<span class="tag doc">solo Swagger</span>' : (n[1] === 'efecto' ? '<span class="tag efecto">cambia el comportamiento</span>' : '');
+      return '<li tabindex="0" data-desde="' + r.desde + '" data-hasta="' + r.hasta + '"><span class="nl">' + esc(n[0]) + '</span><span class="nt">' + etiqueta + esc(n[2]) + '</span></li>';
+    }).join('') + '</ol>';
+    return '<div class="bloque"><div class="bloque-cab">' + cab + '</div><pre class="codigo">' + cuerpo + '</pre>' + lista + '</div>';
+  }
+
+  function marcarLineas(li, encender) {
+    var bloque = li.closest('.bloque');
+    var desde = Number(li.getAttribute('data-desde')), hasta = Number(li.getAttribute('data-hasta'));
+    bloque.querySelectorAll('.l').forEach(function (l) {
+      var n = Number(l.getAttribute('data-l'));
+      l.classList.toggle('marca', encender && n >= desde && n <= hasta);
+    });
+  }
+  ['mouseover', 'focusin'].forEach(function (ev) {
+    document.addEventListener(ev, function (e) { var li = e.target.closest && e.target.closest('.notas li'); if (li) marcarLineas(li, true); });
+  });
+  ['mouseout', 'focusout'].forEach(function (ev) {
+    document.addEventListener(ev, function (e) { var li = e.target.closest && e.target.closest('.notas li'); if (li) marcarLineas(li, false); });
+  });
+
+  function copiar(boton) {
+    var texto = boton.getAttribute('data-copiar');
+    var original = boton.getAttribute('data-texto') || boton.textContent;
+    boton.setAttribute('data-texto', original);
+    function listo(msg) { boton.textContent = msg; setTimeout(function () { boton.textContent = original; }, 1400); }
+    function respaldo() {
+      var span = boton.previousElementSibling || boton.closest('tr').querySelector('.ruta-archivo span');
+      if (!span) { listo('No se pudo copiar'); return; }
+      var r = document.createRange(); r.selectNodeContents(span);
+      var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+      listo('Selecciona y copia');
+    }
+    try {
+      navigator.clipboard.writeText(texto).then(function () { listo('Copiada'); }, respaldo);
+    } catch (e) { respaldo(); }
+  }
+  document.addEventListener('click', function (e) {
+    var b = e.target.closest('[data-copiar]');
+    if (b) copiar(b);
+  });
+
+  function pintarSelector() {
+    var s = document.getElementById('selector');
+    s.innerHTML = ENDPOINTS.map(function (ep) {
+      return '<button class="endpoint" type="button" id="ep-' + ep.id + '" data-ep="' + ep.id + '" aria-pressed="' + (ep === estado.ep) + '">' +
+        '<span class="verbo ' + ep.verbo + '">' + ep.verbo + '</span><span><span class="r">' + esc(ep.ruta) + '</span><span class="s">' + esc(ep.resumen) + '</span></span></button>';
+    }).join('');
+    s.querySelectorAll('[data-ep]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        estado.ep = ENDPOINTS.filter(function (x) { return x.id === b.getAttribute('data-ep'); })[0];
+        estado.esc = estado.ep.escenarios[0]; estado.i = 0; todo();
+      });
+    });
+    var e = document.getElementById('escenarios');
+    if (estado.ep.escenarios.length < 2) { e.innerHTML = '<span class="aviso">Un solo escenario: la lectura no tiene caminos de error propios; si la base falla, sale un 500 por el filtro global.</span>'; return; }
+    e.innerHTML = '<span class="eti" style="margin-right:4px">Escenario</span>' + estado.ep.escenarios.map(function (x) {
+      return '<button type="button" id="esc-' + x.id + '" class="esc' + (x.error ? ' err' : '') + '" data-esc="' + x.id + '" aria-pressed="' + (x === estado.esc) + '">' + esc(x.nombre) + '</button>';
+    }).join('');
+    e.querySelectorAll('[data-esc]').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var anterior = estado.esc.pasos[estado.i];
+        estado.esc = estado.ep.escenarios.filter(function (x) { return x.id === b.getAttribute('data-esc'); })[0];
+        var j = estado.esc.pasos.indexOf(anterior);
+        estado.i = j >= 0 ? j : 0; todo();
+      });
+    });
+  }
+
+  function pasosActuales() { return estado.esc.pasos.map(function (id) { return S[id]; }); }
+
+  function pintarDiagrama() {
+    var pasos = pasosActuales();
+    var colW = 118, izq = 34, top = 58, filaH = 50, nodoH = 30;
+    var W = izq + colW * CAPAS.length + 8, H = top + filaH * pasos.length + 10;
+    var x = function (capa) { return izq + CAPA[capa].i * colW + colW / 2; };
+    var y = function (i) { return top + i * filaH + filaH / 2; };
+    var primeraVuelta = -1;
+    pasos.forEach(function (p, i) { if (primeraVuelta < 0 && p.sigue && TIPOS[p.sigue.tipo].vuelta) primeraVuelta = i + 1; });
+
+    var svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="Diagrama de secuencia por capas">';
+    svg += '<defs>' + ['ida', 'vuelta', 'error'].map(function (k) {
+      return '<marker id="m-' + k + '" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--' + k + ')"/></marker>';
+    }).join('') + '</defs>';
+    CAPAS.forEach(function (c) {
+      var cx = izq + c.i * colW;
+      svg += '<rect x="' + (cx + 3) + '" y="' + (top - 6) + '" width="' + (colW - 6) + '" height="' + (H - top) + '" rx="6" fill="' + c.color + '" fill-opacity="0.05"/>';
+      svg += '<rect x="' + (cx + 3) + '" y="8" width="' + (colW - 6) + '" height="4" rx="2" fill="' + c.color + '"/>';
+      svg += '<text x="' + (cx + colW / 2) + '" y="32" text-anchor="middle" font-family="IBM Plex Sans Condensed, Arial Narrow, sans-serif" font-size="12.5" font-weight="600" fill="' + c.color + '">' + esc(c.nombre) + '</text>';
+    });
+    if (primeraVuelta > 0 && primeraVuelta < pasos.length) {
+      var yv = top + primeraVuelta * filaH;
+      svg += '<rect x="0" y="' + (yv - 4) + '" width="' + W + '" height="' + (H - yv) + '" fill="var(--vuelta-band)"/>';
+      svg += '<text x="12" y="' + (yv + 10) + '" font-family="IBM Plex Sans Condensed, sans-serif" font-size="11" font-weight="600" fill="var(--vuelta)" transform="rotate(-90 12 ' + (yv + 10) + ')" text-anchor="end" letter-spacing="1.5">VUELTA</text>';
+    }
+    svg += '<text x="12" y="' + (top + 4) + '" font-family="IBM Plex Sans Condensed, sans-serif" font-size="11" font-weight="600" fill="var(--muted)" transform="rotate(-90 12 ' + (top + 4) + ')" text-anchor="end" letter-spacing="1.5">IDA</text>';
+
+    pasos.forEach(function (p, i) {
+      if (i === pasos.length - 1 || !p.sigue) return;
+      var q = pasos[i + 1], t = TIPOS[p.sigue.tipo];
+      var color = t.error ? 'error' : (t.vuelta ? 'vuelta' : 'ida');
+      var x1 = x(p.capa), y1 = y(i) + nodoH / 2, x2 = x(q.capa), y2 = y(i + 1) - nodoH / 2 - 1, ym = (y1 + y2) / 2;
+      var d = x1 === x2 ? 'M' + x1 + ',' + y1 + ' V' + y2 : 'M' + x1 + ',' + y1 + ' V' + ym + ' H' + x2 + ' V' + y2;
+      svg += '<path d="' + d + '" fill="none" stroke="var(--' + color + ')" stroke-width="1.8"' + (t.trazo ? ' stroke-dasharray="' + t.trazo + '"' : '') + ' marker-end="url(#m-' + color + ')"/>';
+    });
+
+    pasos.forEach(function (p, i) {
+      var c = CAPA[p.capa], sel = i === estado.i, w = colW - 14;
+      var nx = x(p.capa) - w / 2, ny = y(i) - nodoH / 2;
+      svg += '<g class="nodo" tabindex="0" role="button" data-i="' + i + '" aria-label="Paso ' + (i + 1) + ': ' + esc(p.titulo) + '">';
+      svg += '<rect class="caja" x="' + nx + '" y="' + ny + '" width="' + w + '" height="' + nodoH + '" rx="5" fill="' + (sel ? c.color : 'var(--surface)') + '" stroke="' + c.color + '" stroke-width="' + (sel ? 2.5 : 1.4) + '"/>';
+      svg += '<text x="' + (nx + 7) + '" y="' + (ny + 19.5) + '" font-family="IBM Plex Mono, monospace" font-size="10" fill="' + (sel ? '#fff' : 'var(--muted)') + '">' + (i + 1) + '</text>';
+      svg += '<text x="' + (nx + w / 2 + 6) + '" y="' + (ny + 19.5) + '" text-anchor="middle" font-family="IBM Plex Sans Condensed, Arial Narrow, sans-serif" font-size="12" font-weight="600" fill="' + (sel ? '#fff' : 'var(--ink)') + '">' + esc(p.corto) + '</text>';
+      svg += '</g>';
+    });
+    svg += '</svg>';
+    var lienzo = document.getElementById('lienzo');
+    lienzo.innerHTML = svg;
+    lienzo.querySelectorAll('.nodo').forEach(function (g) {
+      function ir() { estado.i = Number(g.getAttribute('data-i')); pintarDiagrama(); pintarDetalle(); }
+      g.addEventListener('click', ir);
+      g.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); ir(); } });
+    });
+  }
+
+  function pintarDetalle() {
+    var pasos = pasosActuales(), p = pasos[estado.i], c = CAPA[p.capa];
+    var h = '<div class="det-cab"><div class="chips"><span class="chip" style="background:' + c.color + '">' + esc(c.nombre) + '</span>' +
+      (p.compartido ? '<span class="chip contorno">código compartido · shared/</span>' : '') +
+      '<span class="chip contorno">paso ' + (estado.i + 1) + ' de ' + pasos.length + '</span></div>' +
+      '<h2>' + esc(p.titulo) + '</h2></div>';
+    h += '<div class="det-texto">' + p.texto + '</div>';
+    h += '<div class="io"><div><span class="eti">Recibe</span><span>' + esc(p.recibe) + '</span></div><div><span class="eti">Entrega</span><span>' + esc(p.entrega) + '</span></div></div>';
+    h += p.bloques.map(htmlBloque).join('');
+    if (p.sigue && estado.i < pasos.length - 1) {
+      var t = TIPOS[p.sigue.tipo], q = pasos[estado.i + 1];
+      var col = t.error ? 'var(--error)' : (t.vuelta ? 'var(--vuelta)' : CAPA[q.capa].color);
+      h += '<div class="sigue" style="border-left-color:' + col + '"><span class="eti">Cómo llega al paso ' + (estado.i + 2) + ' · ' + esc(t.nombre) + '</span><code>' + esc(p.sigue.codigo) + '</code><p style="font-size:14px">' + esc(p.sigue.texto) + '</p></div>';
+    }
+    h += '<div class="navega"><button class="btn" type="button" id="btn-ant"' + (estado.i === 0 ? ' disabled' : '') + '>← Anterior</button>' +
+      '<button class="btn primario" type="button" id="btn-sig"' + (estado.i === pasos.length - 1 ? ' disabled' : '') + '>Siguiente →</button></div>';
+    var d = document.getElementById('detalle');
+    d.innerHTML = h;
+    d.scrollTop = 0;
+    document.getElementById('btn-ant').addEventListener('click', function () { mover(-1); });
+    document.getElementById('btn-sig').addEventListener('click', function () { mover(1); });
+  }
+
+  function mover(delta) {
+    var n = estado.esc.pasos.length, j = estado.i + delta;
+    if (j < 0 || j >= n) return;
+    estado.i = j; pintarDiagrama(); pintarDetalle();
+  }
+  document.addEventListener('keydown', function (e) {
+    if (e.target.closest('input,textarea')) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); mover(1); }
+    if (e.key === 'ArrowUp') { e.preventDefault(); mover(-1); }
+  });
+
+  function irA(ep, esc, id) {
+    estado.ep = ENDPOINTS.filter(function (x) { return x.id === ep; })[0];
+    estado.esc = estado.ep.escenarios.filter(function (x) { return x.id === esc; })[0];
+    estado.i = Math.max(0, estado.esc.pasos.indexOf(id));
+    todo();
+    document.getElementById('lienzo').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  var FICHAS = [
+    { tipo: 'llamada', color: 'var(--c-api)', titulo: 'Llamada directa',
+      p: 'Un objeto llama a un método de otro objeto cuyo tipo es una clase concreta.',
+      code: 'this.gestionar.cambiarHorasLibres(id, horas, escritura)',
+      vs: 'F12 sobre el método: caes en la clase que lo define.', ir: ['patch', 'ok', 'p-ctrl'] },
+    { tipo: 'interfaz', color: 'var(--c-dom)', titulo: 'Llamada a una interfaz (puerto)',
+      p: 'El tipo de la variable es una interfaz. En el código no está escrito qué clase va a correr.',
+      code: 'private readonly instalaciones: RepositorioInstalacionesPortuarias',
+      vs: 'F12 te lleva al contrato. Ctrl+F12 (Ir a implementación) te lleva a la clase que corre.', ir: ['patch', 'ok', 'p-caso'] },
+    { tipo: 'inyeccion', color: 'var(--c-nest)', titulo: 'Inyección de dependencias',
+      p: 'Nadie hace new. NestJS lee el constructor, busca en los providers del módulo y entrega la instancia. Con una interfaz, la llave es un Symbol.',
+      code: '{ provide: REPOSITORIO_INSTALACIONES_PORTUARIAS,\n  useClass: RepositorioInstalacionesPortuariasTypeorm }',
+      vs: 'Busca el Symbol con Ctrl+Shift+F y filtra por *.module.ts.', ir: ['patch', 'ok', 'p-puerto'] },
+    { tipo: 'herencia', color: 'var(--c-infra)', titulo: 'Método heredado',
+      p: 'Llamas this.algo() y ese método no está en el archivo. Vive en la clase que aparece después de extends.',
+      code: 'extends RepositorioMaestraTypeorm<…>\n…\nreturn this.escribir(id, escritura, {…})',
+      vs: 'F12 sobre escribir lleva al padre. Si la hija define una propiedad que el padre usa (lectura), es el patrón plantilla.', ir: ['listar', 'ok', 'l-base'] },
+    { tipo: 'metadatos', color: 'var(--c-app)', titulo: 'Decorador',
+      p: 'Dos sabores. @Exige y @MensajeRespuesta solo pegan una etiqueta que otra pieza lee después. @Escribe y @Body construyen el valor de un argumento antes de que corra tu método.',
+      code: '@Exige(PERMISO.INSTALACIONES_GESTIONAR)   // etiqueta\n@Escribe() escritura: Escritura           // fabrica el argumento',
+      vs: 'Busca quién lee la etiqueta: Ctrl+Shift+F por CLAVE_PERMISO lleva a GuardUms.', ir: ['patch', 'ok', 'p-escribe'] },
+    { tipo: 'framework', color: 'var(--c-bd)', titulo: 'Lo hace el framework',
+      p: 'Guards, pipes, interceptores y filtros globales corren en cada petición y ningún archivo de tu módulo los llama. Están registrados en app.module.ts y main.ts.',
+      code: '{ provide: APP_GUARD, useClass: GuardUms }\n{ provide: APP_INTERCEPTOR, useClass: TransformInterceptor }',
+      vs: 'Abre app.module.ts:74-101: ese es el orden en que envuelven a todo controller.', ir: ['patch', 'ok', 'p-guard'] }
+  ];
+  function pintarFichas() {
+    var t = document.getElementById('tipos');
+    t.innerHTML = FICHAS.map(function (f, k) {
+      return '<div class="panel tipo"><div class="cab"><svg width="34" height="10" aria-hidden="true"><line x1="0" y1="5" x2="34" y2="5" stroke="' + f.color + '" stroke-width="2.5"' + (TIPOS[f.tipo].trazo ? ' stroke-dasharray="' + TIPOS[f.tipo].trazo + '"' : '') + '/></svg><h3>' + esc(f.titulo) + '</h3></div>' +
+        '<p>' + esc(f.p) + '</p><pre>' + esc(f.code) + '</pre><p class="vs">' + esc(f.vs) + '</p>' +
+        '<button class="ir" type="button" id="ficha-' + k + '" data-k="' + k + '">Ver el ejemplo en el recorrido</button></div>';
+    }).join('');
+    t.querySelectorAll('[data-k]').forEach(function (b) {
+      b.addEventListener('click', function () { var f = FICHAS[Number(b.getAttribute('data-k'))]; irA(f.ir[0], f.ir[1], f.ir[2]); });
+    });
+  }
+
+  var ARCHIVOS = [
+    ['api', 'modules/naves/api/instalacion-portuaria.controller.ts', 'Rutas, permisos, parámetros. Llama al caso de uso.'],
+    ['api', 'modules/naves/api/dto/sap-naves.dto.ts', 'HorasLibresDto: lo que se valida del cuerpo.'],
+    ['api', 'shared/api/escritura.decorador.ts', '@Escribe: usuario + If-Match en un argumento.'],
+    ['api', 'shared/api/ultimo-cambio.decorador.ts', 'Lee y valida If-Match; 400 si viene mal.'],
+    ['api', 'shared/api/traducir-error.ts', 'desenvolver: Result → valor o HttpException.'],
+    ['api', 'shared/api/consulta-paginada.ts', 'pagina, limite, texto, booleano desde la query.'],
+    ['nest', 'app.module.ts', 'Registra guards, interceptores y filtro globales.'],
+    ['nest', 'main.ts', 'ValidationPipe global (línea 64).'],
+    ['nest', 'shared/seguridad/exige.decorador.ts', '@Exige: pega el permiso como metadato.'],
+    ['nest', 'shared/seguridad/guard-ums.ts', 'Lee el permiso y lo compara con el token.'],
+    ['nest', 'shared/api/transform.interceptor.ts', 'Sobre de éxito { success, data, meta }.'],
+    ['nest', 'shared/api/http-exception.filter.ts', 'Sobre de error { success: false, … }.'],
+    ['app', 'modules/naves/application/gestionar-naves.caso-uso.ts', 'Caso de uso de instalaciones: cambiarHorasLibres.'],
+    ['app', 'shared/maestras/gestionar-maestra.caso-uso.ts', 'Padre de los casos de uso: listar, activos, crear…'],
+    ['app', 'shared/maestras/errores.ts', 'comoErrorDominio: de error de maestra a mensaje en español.'],
+    ['dom', 'modules/naves/domain/instalacion-portuaria.ts', 'La forma de una instalación en el dominio.'],
+    ['dom', 'modules/naves/domain/puertos/repositorio-naves.ts', 'Puerto: interfaz + Symbol del repositorio.'],
+    ['dom', 'shared/maestras/repositorio-maestra.ts', 'Contrato genérico de repositorio de maestra.'],
+    ['nest', 'modules/naves/naves.module.ts', 'Une cada Symbol con su clase TypeORM.'],
+    ['infra', 'modules/naves/infrastructure/persistence/repositorio-naves.typeorm.ts', 'Adaptador: cambiarHorasLibres y la lectura de la tabla.'],
+    ['infra', 'shared/maestras/repositorio-maestra.typeorm.ts', 'Padre de los adaptadores: listar, escribir, releer.'],
+    ['infra', 'shared/maestras/escritura-de-maestra.ts', 'El UPDATE con testigo; decide 404 o 409.'],
+    ['infra', 'shared/maestras/consulta-maestra.ts', 'consultarPagina, filtros y normalizarBanderas.'],
+    ['infra', 'modules/naves/infrastructure/persistence/instalacion-portuaria.orm-entity.ts', 'Mapea propiedades a columnas de la tabla.'],
+    ['infra', 'shared/infrastructure/persistence/entidad-auditable.orm-entity.ts', 'Columnas de auditoría y ultimo_cambio.']
+  ];
+  function pintarTabla() {
+    var orden = { nest: 0, api: 1, app: 2, dom: 3, infra: 4 };
+    var filas = ARCHIVOS.slice().sort(function (a, b) { return orden[a[0]] - orden[b[0]]; });
+    document.getElementById('tabla').innerHTML = '<thead><tr><th>Capa</th><th>Archivo</th><th>Qué pone en el recorrido</th><th></th></tr></thead><tbody>' +
+      filas.map(function (f) {
+        var c = CAPA[f[0]];
+        return '<tr><td style="white-space:nowrap"><span class="punto" style="background:' + c.color + '"></span>' + esc(c.nombre) + '</td><td class="ruta-archivo"><span>' + esc(f[1]) + '</span></td><td>' + esc(f[2]) + '</td><td style="text-align:right"><button class="copiar" type="button" data-copiar="' + esc(BASE + f[1]) + '">Copiar</button></td></tr>';
+      }).join('') + '</tbody>';
+  }
+
+  function todo() { pintarSelector(); pintarDiagrama(); pintarDetalle(); }
+  todo(); pintarFichas(); pintarTabla();
+})();
+</script>
+
+</body></html>
