@@ -1,6 +1,6 @@
 ---
 name: candado-sap-maestras
-description: Maestras del TMS solo las escribe SAP por API; la web no crea ni edita salvo usuario_ums y horas libres; la data maestra actual es de prueba y se borrará
+description: Maestras del TMS solo las escribe SAP por API; la web no crea ni edita salvo usuario_ums (y TB/TD del viaje); horas libres fijas en 48; la data maestra actual es de prueba y se borrará
 metadata: 
   node_type: memory
   type: project
@@ -11,7 +11,8 @@ metadata:
 Decidido por Christian el 2026-09-18 al revisar la brecha de [[contrato-api-maestras-sap]] (§9) y US-TMS-043:
 
 - Candado fuerte: nave, nave_viaje, instalación portuaria, transportista, vehículo y conductor solo los crea/edita SAP vía XMS-MDM → TMS API. Se quitan los botones de crear/editar de la web.
-- Excepción: la web sigue editando solo `conductor.usuario_ums` y `instalacion_portuaria.horas_libres_almacenaje` (SAP no los manda).
+- Excepción: la web sigue editando solo `conductor.usuario_ums` (SAP no lo manda).
+- 2026-10-05: Christian retiró las horas libres por terminal (nadie las iba a mantener): el plazo de importación usa 48 h fijas, la columna `horas_libres_almacenaje` se borra (migración 1794355200000) y la pantalla de instalaciones queda solo de lectura. No volver a proponerlas parametrizables.
 - Sin adopción por clave natural (§2 regla 10 fuera): clave natural repetida = 409 siempre.
 - La data maestra actual es de prueba; se borra cuando lleguen los maestros de SAP. No planear conciliación.
 - Ingesta Excel de RD: ya no crea nave ni nave_viaje. Busca por los datos planos; si encuentra, pone el id; si no, id en NULL y se sigue mostrando el texto que vino.

@@ -1,0 +1,1698 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Vitrina de Productos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --fondo: #E4EAE4;
+  --app: #F5F7F3;
+  --superficie: #FFFFFF;
+  --tinta: #14201A;
+  --tenue: #5A6861;
+  --linea: #DCE3DB;
+  --linea-fuerte: #B9C6BD;
+  --acento: #1D6A4F;
+  --acento-tinta: #FFFFFF;
+  --acento-suave: #DCEDE3;
+  --peligro: #B3372A;
+  --peligro-tinta: #FFFFFF;
+  --sombra: rgba(20, 44, 32, 0.16);
+  --velo: rgba(8, 18, 13, 0.45);
+  --sobre-foto: rgba(12, 22, 17, 0.62);
+  --sobre-foto-tinta: #FFFFFF;
+  --display: "Bricolage Grotesque", "Segoe UI", system-ui, sans-serif;
+  --texto: "Figtree", "Segoe UI", system-ui, sans-serif;
+  --radio: 18px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #080C0A;
+    --app: #101613;
+    --superficie: #18211C;
+    --tinta: #E5EDE8;
+    --tenue: #93A39A;
+    --linea: #25302A;
+    --linea-fuerte: #3A4A41;
+    --acento: #63C79D;
+    --acento-tinta: #08170F;
+    --acento-suave: #1A3529;
+    --peligro: #F08A7D;
+    --peligro-tinta: #2A0E0A;
+    --sombra: rgba(0, 0, 0, 0.5);
+    --velo: rgba(0, 0, 0, 0.6);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fondo: #080C0A;
+  --app: #101613;
+  --superficie: #18211C;
+  --tinta: #E5EDE8;
+  --tenue: #93A39A;
+  --linea: #25302A;
+  --linea-fuerte: #3A4A41;
+  --acento: #63C79D;
+  --acento-tinta: #08170F;
+  --acento-suave: #1A3529;
+  --peligro: #F08A7D;
+  --peligro-tinta: #2A0E0A;
+  --sombra: rgba(0, 0, 0, 0.5);
+  --velo: rgba(0, 0, 0, 0.6);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { height: 100%; }
+body {
+  height: 100%;
+  margin: 0;
+  background: var(--fondo);
+  color: var(--tinta);
+  font-family: var(--texto);
+  font-size: 15px;
+  line-height: 1.4;
+  display: flex;
+  justify-content: center;
+  -webkit-tap-highlight-color: transparent;
+}
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+.app {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 100%;
+  background: var(--app);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+@media (min-width: 560px) {
+  body { padding-block: 24px; align-items: center; }
+  .app {
+    height: min(880px, 100%);
+    border-radius: 36px;
+    border: 1px solid var(--linea);
+    box-shadow: 0 40px 90px -40px var(--sombra);
+  }
+}
+.pantalla {
+  flex: 1;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+}
+.pantalla.con-fab { padding-bottom: 112px; }
+.barra {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--app);
+  padding: 22px 16px 14px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 12px;
+}
+.ceja {
+  margin: 0 0 4px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--acento);
+}
+h1 {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 30px;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+.conteo {
+  font-size: 13px;
+  color: var(--tenue);
+  font-variant-numeric: tabular-nums;
+  padding-bottom: 4px;
+  white-space: nowrap;
+}
+body.modo-web { padding: 0; }
+body.modo-web .app {
+  max-width: none;
+  height: 100%;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+}
+.secciones {
+  margin: 0 16px 14px;
+  padding: 4px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 4px;
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: 14px;
+}
+.secciones button {
+  height: 38px;
+  border: 0;
+  border-radius: 10px;
+  background: transparent;
+  color: var(--tenue);
+  padding: 0 4px;
+  font-weight: 600;
+  font-size: 13px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  cursor: pointer;
+}
+.secciones button:hover { color: var(--tinta); }
+.web-marco { width: 100%; max-width: 1200px; margin: 0 auto; padding: 0 16px; }
+.web-cabecera {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  background: var(--app);
+  border-bottom: 1px solid var(--linea);
+}
+.web-cabecera-fila {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 14px 24px;
+  padding-top: 22px;
+  padding-bottom: 16px;
+}
+.web-cabecera h1 { font-size: clamp(30px, 4vw, 44px); }
+.web-cabecera .secciones { margin: 0; width: 100%; max-width: 440px; }
+.web-herramientas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 0 16px;
+}
+.web-herramientas .buscador { margin: 0; flex: 1 1 260px; max-width: 420px; }
+.rejilla-web {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding-bottom: 48px;
+}
+.tarjeta-web {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: var(--superficie);
+  border-radius: var(--radio);
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--linea), 0 10px 22px -16px var(--sombra);
+}
+.resumen {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--tenue);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+@media (min-width: 720px) {
+  .web-marco { padding: 0 32px; }
+  .rejilla-web { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .tarjeta-web .tarjeta-texto { padding: 14px 16px 18px; gap: 6px; }
+  .tarjeta-web .tarjeta-texto h2 { font-size: 16px; }
+  .tarjeta-web .precio { font-size: 20px; }
+}
+@media (min-width: 1024px) {
+  .rejilla-web { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+}
+.secciones button[aria-pressed="true"] { background: var(--acento); color: var(--acento-tinta); }
+.barra-sub {
+  display: grid;
+  grid-template-columns: 96px 1fr 96px;
+  align-items: center;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--linea);
+}
+.barra-sub .titulo-barra {
+  text-align: center;
+  font-weight: 600;
+  font-size: 16px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.barra-sub > :last-child { justify-self: end; }
+.icono {
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+}
+.icono:hover { background: var(--acento-suave); }
+.texto-boton {
+  height: 44px;
+  padding: 0 10px;
+  border: 0;
+  border-radius: 12px;
+  background: transparent;
+  color: var(--acento);
+  font-weight: 600;
+  cursor: pointer;
+}
+.texto-boton:hover { background: var(--acento-suave); }
+.texto-boton.texto-peligro { color: var(--peligro); }
+.aviso-local {
+  margin: 0 16px 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  background: var(--acento-suave);
+  font-size: 13px;
+  line-height: 1.45;
+}
+.buscador {
+  margin: 0 16px 16px;
+  height: 46px;
+  padding: 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--superficie);
+  border: 1px solid var(--linea);
+  border-radius: 14px;
+  color: var(--tenue);
+}
+.buscador:focus-within { border-color: var(--acento); box-shadow: 0 0 0 3px var(--acento-suave); }
+.buscador input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--tinta);
+  font: inherit;
+  font-size: 16px;
+}
+.rejilla {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+  padding: 0 16px;
+}
+.tarjeta {
+  appearance: none;
+  padding: 0;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  background: var(--superficie);
+  border-radius: var(--radio);
+  overflow: hidden;
+  box-shadow: 0 0 0 1px var(--linea), 0 10px 22px -16px var(--sombra);
+  transition: transform 0.15s ease;
+}
+.tarjeta:active { transform: scale(0.97); }
+.foto-caja {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  max-width: 100%;
+  background: var(--acento-suave);
+}
+.foto-caja img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.sin-foto { width: 100%; height: 100%; display: grid; place-items: center; color: var(--acento); }
+.chip {
+  position: absolute;
+  padding: 3px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  background: var(--sobre-foto);
+  color: var(--sobre-foto-tinta);
+  backdrop-filter: blur(6px);
+  font-variant-numeric: tabular-nums;
+}
+.chip-fotos { right: 8px; bottom: 8px; display: inline-flex; align-items: center; gap: 4px; }
+.chip-ejemplo { left: 8px; top: 8px; background: var(--superficie); color: var(--tenue); }
+.tarjeta-texto { padding: 10px 12px 13px; display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.tarjeta-texto h2 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.precio {
+  margin: 0;
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 18px;
+  letter-spacing: -0.01em;
+  font-variant-numeric: tabular-nums;
+}
+.moneda { font-size: 0.68em; color: var(--tenue); margin-right: 3px; letter-spacing: 0; }
+.esqueleto { aspect-ratio: 3 / 4; border-radius: var(--radio); background: var(--superficie); box-shadow: 0 0 0 1px var(--linea); animation: latido 1.4s ease-in-out infinite; }
+.esqueleto.fila-esqueleto { aspect-ratio: auto; height: 80px; border-radius: 16px; }
+@keyframes latido { 50% { opacity: 0.55; } }
+.filas { display: flex; flex-direction: column; gap: 10px; padding: 0 16px; }
+.fila {
+  appearance: none;
+  width: 100%;
+  padding: 12px;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 56px minmax(0, 1fr);
+  gap: 12px;
+  align-items: center;
+  background: var(--superficie);
+  border-radius: 16px;
+  box-shadow: 0 0 0 1px var(--linea), 0 10px 22px -18px var(--sombra);
+  transition: transform 0.15s ease;
+}
+.fila:active { transform: scale(0.98); }
+.logo-mini {
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
+  overflow: hidden;
+  display: grid;
+  place-items: center;
+  background: var(--acento-suave);
+  color: var(--acento);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 20px;
+}
+.logo-mini img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.fila-texto { min-width: 0; }
+.fila-texto h2 {
+  margin: 0 0 2px;
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.fila-texto p {
+  margin: 0;
+  font-size: 13px;
+  color: var(--tenue);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.vacio {
+  padding: 40px 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  color: var(--tenue);
+}
+.vacio-icono { width: 72px; height: 72px; border-radius: 22px; display: grid; place-items: center; background: var(--acento-suave); color: var(--acento); }
+.vacio h2 { margin: 6px 0 0; font-family: var(--display); font-size: 22px; color: var(--tinta); }
+.vacio p { margin: 0; max-width: 28ch; line-height: 1.5; }
+.vacio .boton { flex: none; padding: 0 22px; margin-top: 8px; }
+.fab {
+  position: absolute;
+  right: 16px;
+  bottom: 22px;
+  z-index: 10;
+  height: 56px;
+  padding: 0 22px 0 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  border: 0;
+  border-radius: 18px;
+  background: var(--acento);
+  color: var(--acento-tinta);
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  box-shadow: 0 14px 30px -12px var(--sombra);
+  transition: transform 0.15s ease;
+}
+.fab:active { transform: scale(0.96); }
+.carrusel {
+  margin: 16px 16px 0;
+  aspect-ratio: 1 / 1;
+  max-width: 100%;
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  border-radius: 24px;
+  background: var(--acento-suave);
+}
+.carrusel::-webkit-scrollbar { display: none; }
+.carrusel img, .carrusel .sin-foto { flex: 0 0 100%; width: 100%; height: 100%; object-fit: cover; scroll-snap-align: start; }
+.puntos { display: flex; justify-content: center; gap: 6px; padding: 12px 0 4px; min-height: 30px; }
+.punto { width: 7px; height: 7px; border-radius: 4px; background: var(--linea-fuerte); transition: width 0.2s ease, background 0.2s ease; }
+.punto.activo { width: 20px; background: var(--acento); }
+.ficha { padding: 6px 16px 0; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.ficha h1 { font-size: 27px; overflow-wrap: anywhere; }
+.precio-grande { font-size: 30px; color: var(--acento); }
+.precio-grande .moneda { color: var(--acento); opacity: 0.75; }
+.etiqueta { margin: 16px 0 2px; font-size: 12px; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: var(--tenue); }
+.descripcion { margin: 0; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; max-width: 65ch; }
+.descripcion.vacia { color: var(--tenue); font-style: italic; }
+.meta { margin: 14px 0 0; font-size: 13px; color: var(--tenue); }
+.acciones { display: flex; gap: 10px; padding: 24px 16px; }
+.boton {
+  flex: 1;
+  height: 50px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid var(--linea);
+  border-radius: 14px;
+  background: var(--superficie);
+  color: var(--tinta);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+}
+.boton.primario { background: var(--acento); border-color: var(--acento); color: var(--acento-tinta); }
+.boton.borrar { color: var(--peligro); }
+.boton.peligro { background: var(--peligro); border-color: var(--peligro); color: var(--peligro-tinta); }
+.boton:disabled { opacity: 0.6; cursor: progress; }
+.formulario { padding: 18px 16px 0; display: flex; flex-direction: column; gap: 20px; }
+fieldset { margin: 0; padding: 0; border: 0; min-width: 0; }
+.leyenda { display: flex; justify-content: space-between; align-items: baseline; width: 100%; padding: 0; font-weight: 600; font-size: 14px; }
+.leyenda span { font-weight: 500; font-size: 13px; color: var(--tenue); font-variant-numeric: tabular-nums; }
+.ranuras { margin-top: 10px; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+.ranura { position: relative; aspect-ratio: 1 / 1; max-width: 100%; border-radius: 16px; overflow: hidden; }
+.ranura.vacia {
+  border: 1.5px dashed var(--linea-fuerte);
+  background: var(--superficie);
+  color: var(--tenue);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.ranura.vacia:hover { border-color: var(--acento); color: var(--acento); }
+.ranura-foto { display: block; width: 100%; height: 100%; padding: 0; border: 0; background: var(--acento-suave); cursor: pointer; }
+.ranura-foto img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.chip-portada { left: 6px; bottom: 6px; }
+.quitar {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: var(--sobre-foto);
+  color: var(--sobre-foto-tinta);
+  cursor: pointer;
+}
+.logo-campo { margin-top: 10px; display: flex; align-items: center; gap: 14px; min-width: 0; }
+.logo-grande {
+  flex: none;
+  width: 104px;
+  height: 104px;
+  padding: 0;
+  border: 0;
+  border-radius: 24px;
+  overflow: hidden;
+  background: var(--acento-suave);
+}
+.logo-grande img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.logo-grande.vacia {
+  border: 1.5px dashed var(--linea-fuerte);
+  background: var(--superficie);
+  color: var(--tenue);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.logo-grande.vacia:hover { border-color: var(--acento); color: var(--acento); }
+.logo-acciones { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
+.logo-acciones .ayuda { margin: 0; }
+.ayuda { margin: 8px 0 0; font-size: 13px; color: var(--tenue); line-height: 1.45; }
+.campo { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.campo label { font-weight: 600; font-size: 14px; }
+.campo .opcional { font-weight: 500; color: var(--tenue); }
+.control {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--linea);
+  border-radius: 14px;
+  background: var(--superficie);
+  color: var(--tinta);
+  font: inherit;
+  font-size: 16px;
+}
+textarea.control { resize: vertical; min-height: 120px; line-height: 1.5; }
+textarea.control.corto { min-height: 76px; }
+.control:focus, .con-prefijo:focus-within { outline: none; border-color: var(--acento); box-shadow: 0 0 0 3px var(--acento-suave); }
+.con-prefijo { display: flex; align-items: center; gap: 8px; padding: 0 14px; }
+.con-prefijo span { font-family: var(--display); font-weight: 700; color: var(--tenue); }
+.con-prefijo input {
+  flex: 1;
+  min-width: 0;
+  height: 50px;
+  border: 0;
+  outline: none;
+  background: transparent;
+  color: var(--tinta);
+  font-family: var(--display);
+  font-weight: 700;
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+[aria-invalid="true"], .con-prefijo:has([aria-invalid="true"]) { border-color: var(--peligro); }
+.error { margin: 0; font-size: 13px; color: var(--peligro); }
+.contador { align-self: flex-end; font-size: 12px; color: var(--tenue); font-variant-numeric: tabular-nums; }
+.zona-borrar { padding-top: 4px; }
+.zona-borrar .boton { width: 100%; }
+.pie-form {
+  position: sticky;
+  bottom: 0;
+  margin-top: 8px;
+  padding: 18px 16px 18px;
+  background: linear-gradient(to bottom, transparent, var(--app) 35%);
+  display: flex;
+}
+.velo { position: absolute; inset: 0; z-index: 20; background: var(--velo); animation: aparecer 0.2s ease; }
+.hoja {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 21;
+  padding: 10px 16px 22px;
+  background: var(--superficie);
+  border-radius: 26px 26px 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  animation: subir 0.25s cubic-bezier(0.2, 0.9, 0.3, 1);
+}
+.asa { width: 40px; height: 5px; margin: 0 auto 8px; border-radius: 3px; background: var(--linea-fuerte); }
+.hoja h2 { margin: 0; font-family: var(--display); font-size: 21px; }
+.hoja p { margin: 0 0 10px; color: var(--tenue); line-height: 1.5; }
+.hoja-botones { display: flex; gap: 10px; }
+.aviso {
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 96px;
+  z-index: 30;
+  padding: 13px 16px;
+  border-radius: 14px;
+  background: var(--tinta);
+  color: var(--app);
+  font-weight: 500;
+  box-shadow: 0 14px 30px -12px var(--sombra);
+  animation: subir 0.25s ease;
+}
+@keyframes aparecer { from { opacity: 0; } }
+@keyframes subir { from { transform: translateY(24px); opacity: 0; } }
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; }
+}
+</style>
+
+<div class="app" id="app">
+  <div class="pantalla" id="pantalla"></div>
+  <div id="capa"></div>
+  <div id="aviso-vivo" aria-live="polite"></div>
+  <input type="file" id="selector-imagenes" accept="image/jpeg,image/png,image/webp,image/gif" multiple hidden>
+  <input type="file" id="selector-logo" accept="image/jpeg,image/png,image/webp,image/gif" hidden>
+</div>
+
+<script>
+const MAX_FOTOS = 3;
+const MAX_NOMBRE = 80;
+const MAX_DESCRIPCION = 500;
+const MAX_DIRECCION = 160;
+const MAX_TELEFONO = 20;
+const CLAVE_SECCION = 'vitrina-seccion';
+const pantalla = document.getElementById('pantalla');
+const capa = document.getElementById('capa');
+const avisoVivo = document.getElementById('aviso-vivo');
+const selector = document.getElementById('selector-imagenes');
+const selectorLogo = document.getElementById('selector-logo');
+const formatoMonto = new Intl.NumberFormat('es-PE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+const formatoFecha = new Intl.DateTimeFormat('es-PE', { day: 'numeric', month: 'long', year: 'numeric' });
+
+const ICONOS = {
+  atras: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>',
+  mas: '<svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg>',
+  lupa: '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>',
+  camara: '<svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',
+  fotos: '<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linejoin="round"><rect x="3" y="5" width="14" height="14" rx="2"/><path d="M7 2h14v14"/></svg>',
+  cerrar: '<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>',
+  caja: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M3 7l9-4 9 4-9 4z"/><path d="M3 7v10l9 4 9-4V7"/><path d="M12 11v10"/></svg>',
+  tienda: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><path d="M4 9l1.5-5h13L20 9"/><path d="M4 9h16v2a3 3 0 0 1-5.3 2 3 3 0 0 1-5.4 0A3 3 0 0 1 4 11z"/><path d="M5 13v7h14v-7"/><path d="M10 20v-4h4v4"/></svg>',
+  imagen: '<svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></svg>'
+};
+
+const ILUSTRACIONES = {
+  'taza-1': ['taza', '#E8D9C6', '#2C5C87', '#F3ECE2'],
+  'taza-2': ['taza', '#CFE0D6', '#B5532F', '#F6EFE6'],
+  'cafe-1': ['cafe', '#E9DFCF', '#2E4A3B', '#F2E6CF'],
+  'chompa-1': ['chompa', '#DCE3EA', '#9DA7AE', '#EEF1F3'],
+  'chompa-2': ['chompa', '#EADFD5', '#7B5B4A', '#E9D8C8'],
+  'chompa-3': ['chompa', '#D9E4DC', '#3E5F55', '#CFE0D7']
+};
+
+function ilustracion(clave) {
+  const [forma, fondo, principal, detalle] = ILUSTRACIONES[clave] || ['taza', '#DDE5DF', '#5B6962', '#EEF1EC'];
+  const figuras = {
+    taza: `<ellipse cx="200" cy="300" rx="132" ry="24" fill="${detalle}"/><path d="M118 150h152v108a42 42 0 0 1-42 42h-68a42 42 0 0 1-42-42z" fill="${principal}"/><path d="M270 178a38 38 0 0 1 0 76" fill="none" stroke="${principal}" stroke-width="18"/><ellipse cx="194" cy="150" rx="76" ry="13" fill="${detalle}"/><circle cx="152" cy="214" r="9" fill="${detalle}"/><circle cx="194" cy="232" r="9" fill="${detalle}"/><circle cx="236" cy="214" r="9" fill="${detalle}"/>`,
+    cafe: `<path d="M138 112h124l22 208H116z" fill="${principal}"/><rect x="146" y="96" width="108" height="24" rx="5" fill="${principal}" opacity=".75"/><rect x="152" y="178" width="96" height="74" rx="10" fill="${detalle}"/><ellipse cx="200" cy="215" rx="16" ry="22" fill="#5A3622"/><path d="M200 196q-6 19 0 38" stroke="${detalle}" stroke-width="3" fill="none"/><ellipse cx="300" cy="300" rx="14" ry="19" fill="#5A3622" transform="rotate(30 300 300)"/><ellipse cx="96" cy="310" rx="14" ry="19" fill="#5A3622" transform="rotate(-25 96 310)"/>`,
+    chompa: `<path d="M152 104l-66 40 26 78 30-14v130h116V208l30 14 26-78-66-40q-48 30-96 0z" fill="${principal}"/><rect x="142" y="246" width="116" height="12" fill="${detalle}"/><rect x="142" y="270" width="116" height="12" fill="${detalle}"/><path d="M168 108q32 22 64 0" fill="none" stroke="${detalle}" stroke-width="6"/>`
+  };
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 400"><rect width="400" height="400" fill="${fondo}"/>${figuras[forma]}</svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+
+const EJEMPLOS_LOCALES = [
+  { id: 'ejemplo-chompa', nombre: 'Chompa de baby alpaca', descripcion: 'Tejida en Arequipa con hilo 100 % baby alpaca.\nTallas S a L, color gris perla.', precio: 189.9, imagenes: ['ejemplo:chompa-1', 'ejemplo:chompa-2', 'ejemplo:chompa-3'], ejemplo: true, creado: '2026-10-04T15:20:00.000Z' },
+  { id: 'ejemplo-cafe', nombre: 'Café de altura Villa Rica 250 g', descripcion: 'Grano de tueste medio con notas de chocolate y panela. Se entrega entero o molido, a pedido.', precio: 32.5, imagenes: ['ejemplo:cafe-1'], ejemplo: true, creado: '2026-10-03T12:05:00.000Z' },
+  { id: 'ejemplo-taza', nombre: 'Taza de cerámica de Chulucanas', descripcion: 'Pintada a mano por artesanos de Piura. Capacidad de 350 ml, apta para lavavajillas.', precio: 38, imagenes: ['ejemplo:taza-1', 'ejemplo:taza-2'], ejemplo: true, creado: '2026-10-02T09:40:00.000Z' }
+];
+
+const VISTA_DE_SECCION = { tienda: 'lista', catalogo: 'catalogo', admin: 'negocios' };
+
+function seccionGuardada() {
+  try {
+    const guardada = localStorage.getItem(CLAVE_SECCION);
+    return VISTA_DE_SECCION[guardada] ? guardada : 'tienda';
+  } catch { return 'tienda'; }
+}
+
+const estado = {
+  productos: [],
+  cargando: true,
+  negocios: [],
+  cargandoNegocios: true,
+  modo: null,
+  puedeEditar: true,
+  vista: { nombre: VISTA_DE_SECCION[seccionGuardada()] },
+  busqueda: '',
+  busquedaNegocios: '',
+  form: null,
+  formNegocio: null,
+  hoja: null,
+  ocupado: false
+};
+let almacenes = null;
+let activos = null;
+let temporizadorAviso = null;
+
+function esc(texto) {
+  return String(texto ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+}
+
+function precioHtml(monto) {
+  return `<span class="moneda">S/</span>${formatoMonto.format(Number(monto) || 0)}`;
+}
+
+function fuente(ref) {
+  if (ref.startsWith('data:') || ref.startsWith('blob:')) return ref;
+  if (ref.startsWith('ejemplo:')) return ilustracion(ref.slice(8));
+  return '/_blob/' + ref;
+}
+
+function productoPorId(id) {
+  return estado.productos.find(p => p.id === id) || null;
+}
+
+function negocioPorId(id) {
+  return estado.negocios.find(n => n.id === id) || null;
+}
+
+function aviso(mensaje) {
+  clearTimeout(temporizadorAviso);
+  avisoVivo.innerHTML = `<div class="aviso" role="status">${esc(mensaje)}</div>`;
+  temporizadorAviso = setTimeout(() => { avisoVivo.innerHTML = ''; }, 2800);
+}
+
+function htmlSecciones(actual) {
+  return `<nav class="secciones" aria-label="Sección">
+    <button type="button" data-accion="seccion" data-seccion="tienda" aria-pressed="${actual === 'tienda'}">Tienda</button>
+    <button type="button" data-accion="seccion" data-seccion="catalogo" aria-pressed="${actual === 'catalogo'}">Catálogo web</button>
+    <button type="button" data-accion="seccion" data-seccion="admin" aria-pressed="${actual === 'admin'}">Administración</button>
+  </nav>`;
+}
+
+function htmlAvisoLocal() {
+  return estado.modo === 'local' ? '<p class="aviso-local">Estás en modo local: los datos se guardan solo en este navegador.</p>' : '';
+}
+
+function fotoPortada(producto) {
+  const ref = producto.imagenes?.[0];
+  if (!ref) return `<div class="sin-foto">${ICONOS.imagen}</div>`;
+  return `<img src="${esc(fuente(ref))}" alt="${esc(producto.nombre)}" loading="lazy" onerror="this.replaceWith(Object.assign(document.createElement('div'),{className:'sin-foto',innerHTML:ICONOS.imagen}))">`;
+}
+
+function htmlTarjeta(p) {
+  const total = p.imagenes?.length || 0;
+  return `<button class="tarjeta" data-accion="ver" data-id="${esc(p.id)}">
+    <div class="foto-caja">
+      ${fotoPortada(p)}
+      ${p.ejemplo ? '<span class="chip chip-ejemplo">Ejemplo</span>' : ''}
+      ${total > 1 ? `<span class="chip chip-fotos">${ICONOS.fotos}${total}</span>` : ''}
+    </div>
+    <div class="tarjeta-texto">
+      <h2>${esc(p.nombre)}</h2>
+      <p class="precio">${precioHtml(p.precio)}</p>
+    </div>
+  </button>`;
+}
+
+function htmlRejilla() {
+  if (estado.cargando) {
+    return `<div class="rejilla" aria-label="Cargando productos">${'<div class="esqueleto"></div>'.repeat(4)}</div>`;
+  }
+  if (!estado.productos.length) {
+    return `<div class="vacio">
+      <div class="vacio-icono">${ICONOS.caja}</div>
+      <h2>Tu vitrina está vacía</h2>
+      <p>Registra tu primer producto con fotos, descripción y precio.</p>
+      ${estado.puedeEditar ? `<button class="boton primario" data-accion="nuevo">${ICONOS.mas}Registrar producto</button>` : ''}
+    </div>`;
+  }
+  const termino = estado.busqueda.trim().toLowerCase();
+  const visibles = termino ? estado.productos.filter(p => p.nombre.toLowerCase().includes(termino)) : estado.productos;
+  if (!visibles.length) {
+    return `<div class="vacio"><p>Ningún producto se llama parecido a «${esc(estado.busqueda.trim())}».</p></div>`;
+  }
+  return `<div class="rejilla">${visibles.map(htmlTarjeta).join('')}</div>`;
+}
+
+function textoConteo() {
+  if (estado.cargando) return 'Cargando…';
+  const n = estado.productos.length;
+  return n === 1 ? '1 producto' : `${n} productos`;
+}
+
+function renderLista() {
+  pantalla.className = 'pantalla' + (estado.puedeEditar ? ' con-fab' : '');
+  pantalla.innerHTML = `
+    <header class="barra">
+      <div><p class="ceja">Vitrina</p><h1>Mis productos</h1></div>
+      <span class="conteo" id="conteo">${textoConteo()}</span>
+    </header>
+    ${htmlSecciones('tienda')}
+    ${htmlAvisoLocal()}
+    <label class="buscador" for="buscar">${ICONOS.lupa}<input id="buscar" type="search" placeholder="Buscar por nombre" autocomplete="off" value="${esc(estado.busqueda)}"></label>
+    <main id="rejilla">${htmlRejilla()}</main>
+    ${estado.puedeEditar ? `<button class="fab" data-accion="nuevo">${ICONOS.mas}Nuevo producto</button>` : ''}
+  `;
+}
+
+function refrescarRejilla() {
+  const rejilla = document.getElementById('rejilla');
+  const conteo = document.getElementById('conteo');
+  if (rejilla) rejilla.innerHTML = htmlRejilla();
+  if (conteo) conteo.textContent = textoConteo();
+}
+
+function htmlTarjetaWeb(p) {
+  const total = p.imagenes?.length || 0;
+  return `<article class="tarjeta-web">
+    <div class="foto-caja">
+      ${fotoPortada(p)}
+      ${p.ejemplo ? '<span class="chip chip-ejemplo">Ejemplo</span>' : ''}
+      ${total > 1 ? `<span class="chip chip-fotos">${ICONOS.fotos}${total}</span>` : ''}
+    </div>
+    <div class="tarjeta-texto">
+      <h2>${esc(p.nombre)}</h2>
+      ${p.descripcion ? `<p class="resumen">${esc(p.descripcion)}</p>` : ''}
+      <p class="precio">${precioHtml(p.precio)}</p>
+    </div>
+  </article>`;
+}
+
+function htmlRejillaWeb() {
+  if (estado.cargando) {
+    return `<div class="rejilla-web" aria-label="Cargando productos">${'<div class="esqueleto"></div>'.repeat(8)}</div>`;
+  }
+  if (!estado.productos.length) {
+    return `<div class="vacio">
+      <div class="vacio-icono">${ICONOS.caja}</div>
+      <h2>Pronto tendremos productos</h2>
+      <p>Todavía no hay productos publicados en este catálogo.</p>
+    </div>`;
+  }
+  const termino = estado.busqueda.trim().toLowerCase();
+  const visibles = termino ? estado.productos.filter(p => p.nombre.toLowerCase().includes(termino)) : estado.productos;
+  if (!visibles.length) {
+    return `<div class="vacio"><p>Ningún producto se llama parecido a «${esc(estado.busqueda.trim())}».</p></div>`;
+  }
+  return `<div class="rejilla-web">${visibles.map(htmlTarjetaWeb).join('')}</div>`;
+}
+
+function renderCatalogo() {
+  pantalla.className = 'pantalla';
+  pantalla.innerHTML = `
+    <header class="web-cabecera">
+      <div class="web-marco web-cabecera-fila">
+        <div><p class="ceja">Catálogo</p><h1>Nuestros productos</h1></div>
+        ${htmlSecciones('catalogo')}
+      </div>
+    </header>
+    <div class="web-marco">
+      <div class="web-herramientas">
+        <label class="buscador" for="buscar-web">${ICONOS.lupa}<input id="buscar-web" type="search" placeholder="Buscar por nombre" autocomplete="off" value="${esc(estado.busqueda)}"></label>
+        <span class="conteo" id="conteo-web">${textoConteo()}</span>
+      </div>
+      <main id="rejilla-web">${htmlRejillaWeb()}</main>
+    </div>
+  `;
+}
+
+function refrescarCatalogo() {
+  const rejilla = document.getElementById('rejilla-web');
+  const conteo = document.getElementById('conteo-web');
+  if (rejilla) rejilla.innerHTML = htmlRejillaWeb();
+  if (conteo) conteo.textContent = textoConteo();
+}
+
+function iniciales(nombre) {
+  const palabras = String(nombre || '').trim().split(/\s+/).filter(Boolean);
+  return ((palabras[0]?.[0] || '') + (palabras[1]?.[0] || '')).toUpperCase() || '·';
+}
+
+function htmlLogoMini(n) {
+  if (!n.logo) return `<span class="logo-mini" aria-hidden="true">${esc(iniciales(n.nombre))}</span>`;
+  return `<span class="logo-mini"><img src="${esc(fuente(n.logo))}" alt="" loading="lazy" onerror="this.replaceWith(document.createTextNode(${esc(JSON.stringify(iniciales(n.nombre)))}))"></span>`;
+}
+
+function htmlFilaNegocio(n) {
+  return `<button class="fila" data-accion="editar-negocio" data-id="${esc(n.id)}" aria-label="Editar ${esc(n.nombre)}">
+    ${htmlLogoMini(n)}
+    <span class="fila-texto">
+      <h2>${esc(n.nombre)}</h2>
+      <p>${esc(n.responsable)} · ${esc(n.telefono)}</p>
+      <p>${esc(n.direccion)}</p>
+    </span>
+  </button>`;
+}
+
+function htmlListaNegocios() {
+  if (estado.cargandoNegocios) {
+    return `<div class="filas" aria-label="Cargando negocios">${'<div class="esqueleto fila-esqueleto"></div>'.repeat(3)}</div>`;
+  }
+  if (!estado.negocios.length) {
+    return `<div class="vacio">
+      <div class="vacio-icono">${ICONOS.tienda}</div>
+      <h2>Aún no hay negocios</h2>
+      <p>Registra el primero con su logo, dirección, contacto y responsable.</p>
+      ${estado.puedeEditar ? `<button class="boton primario" data-accion="nuevo-negocio">${ICONOS.mas}Registrar negocio</button>` : ''}
+    </div>`;
+  }
+  const termino = estado.busquedaNegocios.trim().toLowerCase();
+  const visibles = termino
+    ? estado.negocios.filter(n => n.nombre.toLowerCase().includes(termino) || (n.responsable || '').toLowerCase().includes(termino))
+    : estado.negocios;
+  if (!visibles.length) {
+    return `<div class="vacio"><p>Ningún negocio ni responsable coincide con «${esc(estado.busquedaNegocios.trim())}».</p></div>`;
+  }
+  return `<div class="filas">${visibles.map(htmlFilaNegocio).join('')}</div>`;
+}
+
+function textoConteoNegocios() {
+  if (estado.cargandoNegocios) return 'Cargando…';
+  const n = estado.negocios.length;
+  return n === 1 ? '1 negocio' : `${n} negocios`;
+}
+
+function renderNegocios() {
+  pantalla.className = 'pantalla' + (estado.puedeEditar ? ' con-fab' : '');
+  pantalla.innerHTML = `
+    <header class="barra">
+      <div><p class="ceja">Administración</p><h1>Negocios</h1></div>
+      <span class="conteo" id="conteo-negocios">${textoConteoNegocios()}</span>
+    </header>
+    ${htmlSecciones('admin')}
+    ${htmlAvisoLocal()}
+    <label class="buscador" for="buscar-negocio">${ICONOS.lupa}<input id="buscar-negocio" type="search" placeholder="Buscar por negocio o responsable" autocomplete="off" value="${esc(estado.busquedaNegocios)}"></label>
+    <main id="lista-negocios">${htmlListaNegocios()}</main>
+    ${estado.puedeEditar ? `<button class="fab" data-accion="nuevo-negocio">${ICONOS.mas}Nuevo negocio</button>` : ''}
+  `;
+}
+
+function refrescarNegocios() {
+  const lista = document.getElementById('lista-negocios');
+  const conteo = document.getElementById('conteo-negocios');
+  if (lista) lista.innerHTML = htmlListaNegocios();
+  if (conteo) conteo.textContent = textoConteoNegocios();
+}
+
+function renderDetalle() {
+  const p = productoPorId(estado.vista.id);
+  if (!p) { ir({ nombre: 'lista' }); return; }
+  const imagenes = p.imagenes || [];
+  const fecha = p.creado ? formatoFecha.format(new Date(p.creado)) : '';
+  pantalla.className = 'pantalla';
+  pantalla.innerHTML = `
+    <header class="barra barra-sub">
+      <button class="icono" data-accion="volver" aria-label="Volver a mis productos">${ICONOS.atras}</button>
+      <span class="titulo-barra">Producto</span>
+      ${estado.puedeEditar ? '<button class="texto-boton" data-accion="editar">Editar</button>' : '<span></span>'}
+    </header>
+    <div class="carrusel" id="carrusel" aria-label="Fotos del producto">
+      ${imagenes.length
+        ? imagenes.map((ref, i) => `<img src="${esc(fuente(ref))}" alt="${esc(p.nombre)}, foto ${i + 1} de ${imagenes.length}">`).join('')
+        : `<div class="sin-foto">${ICONOS.imagen}</div>`}
+    </div>
+    <div class="puntos" id="puntos">${imagenes.length > 1 ? imagenes.map((_, i) => `<span class="punto${i === 0 ? ' activo' : ''}"></span>`).join('') : ''}</div>
+    <section class="ficha">
+      ${p.ejemplo ? '<p class="ceja">Producto de ejemplo</p>' : ''}
+      <h1>${esc(p.nombre)}</h1>
+      <p class="precio precio-grande">${precioHtml(p.precio)}</p>
+      <h2 class="etiqueta">Descripción</h2>
+      <p class="descripcion${p.descripcion ? '' : ' vacia'}">${p.descripcion ? esc(p.descripcion) : 'Sin descripción.'}</p>
+      ${fecha ? `<p class="meta">Registrado el ${esc(fecha)}${p.actualizado ? ` · editado el ${esc(formatoFecha.format(new Date(p.actualizado)))}` : ''}</p>` : ''}
+    </section>
+    ${estado.puedeEditar ? `<div class="acciones">
+      <button class="boton borrar" data-accion="pedir-eliminar">Eliminar</button>
+      <button class="boton primario" data-accion="editar">Editar producto</button>
+    </div>` : ''}
+  `;
+  const carrusel = document.getElementById('carrusel');
+  carrusel.addEventListener('scroll', () => {
+    const indice = Math.round(carrusel.scrollLeft / carrusel.clientWidth);
+    document.querySelectorAll('#puntos .punto').forEach((punto, i) => punto.classList.toggle('activo', i === indice));
+  }, { passive: true });
+}
+
+function htmlRanuras() {
+  const f = estado.form;
+  let html = f.imagenes.map((img, i) => `
+    <div class="ranura">
+      <button type="button" class="ranura-foto" data-accion="portada" data-indice="${i}" aria-label="${i === 0 ? 'Foto de portada' : `Usar la foto ${i + 1} como portada`}">
+        <img src="${esc(img.tipo === 'nueva' ? img.url : fuente(img.ref))}" alt="">
+      </button>
+      ${i === 0 ? '<span class="chip chip-portada">Portada</span>' : ''}
+      <button type="button" class="quitar" data-accion="quitar-foto" data-indice="${i}" aria-label="Quitar foto ${i + 1}">${ICONOS.cerrar}</button>
+    </div>`).join('');
+  for (let i = f.imagenes.length; i < MAX_FOTOS; i++) {
+    html += `<button type="button" class="ranura vacia" data-accion="agregar-foto">${ICONOS.camara}<span>Agregar</span></button>`;
+  }
+  return html;
+}
+
+function htmlError(errores, campo, prefijo = '') {
+  const mensaje = errores[campo];
+  return mensaje ? `<p class="error" id="error-${prefijo}${campo}">${esc(mensaje)}</p>` : '';
+}
+
+function atributosInvalido(errores, campo, prefijo = '') {
+  return errores[campo] ? `aria-invalid="true" aria-describedby="error-${prefijo}${campo}"` : '';
+}
+
+function renderFormulario() {
+  const f = estado.form;
+  const invalido = campo => atributosInvalido(f.errores, campo);
+  pantalla.className = 'pantalla';
+  pantalla.innerHTML = `
+    <header class="barra barra-sub">
+      <button class="texto-boton" data-accion="cancelar">Cancelar</button>
+      <span class="titulo-barra">${f.id ? 'Editar producto' : 'Nuevo producto'}</span>
+      <span></span>
+    </header>
+    <form id="formulario" novalidate>
+      <div class="formulario">
+        <fieldset>
+          <legend class="leyenda">Fotos <span id="conteo-fotos">${f.imagenes.length} de ${MAX_FOTOS}</span></legend>
+          <div class="ranuras" id="ranuras">${htmlRanuras()}</div>
+          <p class="ayuda">La primera foto es la portada del listado. Toca otra foto para ponerla primero.</p>
+        </fieldset>
+        <div class="campo">
+          <label for="campo-nombre">Nombre del producto</label>
+          <input class="control" id="campo-nombre" maxlength="${MAX_NOMBRE}" autocomplete="off" placeholder="Ej.: Polo de algodón pima" value="${esc(f.nombre)}" ${invalido('nombre')}>
+          ${htmlError(f.errores, 'nombre')}
+        </div>
+        <div class="campo">
+          <label for="campo-descripcion">Descripción <span class="opcional">(opcional)</span></label>
+          <textarea class="control" id="campo-descripcion" maxlength="${MAX_DESCRIPCION}" rows="5" placeholder="Material, medidas, tallas, colores…">${esc(f.descripcion)}</textarea>
+          <span class="contador" id="contador-descripcion">${f.descripcion.length}/${MAX_DESCRIPCION}</span>
+        </div>
+        <div class="campo">
+          <label for="campo-precio">Precio</label>
+          <div class="control con-prefijo"><span>S/</span><input id="campo-precio" inputmode="decimal" autocomplete="off" placeholder="0.00" value="${esc(f.precio)}" ${invalido('precio')}></div>
+          ${htmlError(f.errores, 'precio')}
+        </div>
+      </div>
+      <div class="pie-form">
+        <button type="submit" class="boton primario" id="boton-guardar" ${estado.ocupado ? 'disabled' : ''}>${estado.ocupado ? 'Guardando…' : (f.id ? 'Guardar cambios' : 'Registrar producto')}</button>
+      </div>
+    </form>
+  `;
+}
+
+function refrescarRanuras() {
+  document.getElementById('ranuras').innerHTML = htmlRanuras();
+  document.getElementById('conteo-fotos').textContent = `${estado.form.imagenes.length} de ${MAX_FOTOS}`;
+}
+
+function htmlCampoLogo() {
+  const logo = estado.formNegocio.logo;
+  if (!logo) {
+    return `<button type="button" class="logo-grande vacia" data-accion="elegir-logo">${ICONOS.camara}<span>Agregar</span></button>
+      <div class="logo-acciones"><p class="ayuda">Mejor si es cuadrado. Se muestra junto al nombre en el listado.</p></div>`;
+  }
+  const src = logo.tipo === 'nueva' ? logo.url : fuente(logo.ref);
+  return `<button type="button" class="logo-grande" data-accion="elegir-logo" aria-label="Cambiar logo"><img src="${esc(src)}" alt="Logo del negocio"></button>
+    <div class="logo-acciones">
+      <button type="button" class="texto-boton" data-accion="elegir-logo">Cambiar logo</button>
+      <button type="button" class="texto-boton texto-peligro" data-accion="quitar-logo">Quitar logo</button>
+    </div>`;
+}
+
+function refrescarLogo() {
+  const campo = document.getElementById('logo-campo');
+  if (campo) campo.innerHTML = htmlCampoLogo();
+}
+
+function renderFormNegocio() {
+  const f = estado.formNegocio;
+  const invalido = campo => atributosInvalido(f.errores, campo, 'neg-');
+  const error = campo => htmlError(f.errores, campo, 'neg-');
+  pantalla.className = 'pantalla';
+  pantalla.innerHTML = `
+    <header class="barra barra-sub">
+      <button class="texto-boton" data-accion="cancelar-negocio">Cancelar</button>
+      <span class="titulo-barra">${f.id ? 'Editar negocio' : 'Nuevo negocio'}</span>
+      <span></span>
+    </header>
+    <form id="formulario-negocio" novalidate>
+      <div class="formulario">
+        <fieldset>
+          <legend class="leyenda">Logo del negocio <span>opcional</span></legend>
+          <div class="logo-campo" id="logo-campo">${htmlCampoLogo()}</div>
+        </fieldset>
+        <div class="campo">
+          <label for="neg-nombre">Nombre del negocio</label>
+          <input class="control" id="neg-nombre" maxlength="${MAX_NOMBRE}" autocomplete="organization" placeholder="Ej.: Bodega Santa Rosa" value="${esc(f.nombre)}" ${invalido('nombre')}>
+          ${error('nombre')}
+        </div>
+        <div class="campo">
+          <label for="neg-direccion">Dirección</label>
+          <textarea class="control corto" id="neg-direccion" maxlength="${MAX_DIRECCION}" rows="2" autocomplete="street-address" placeholder="Ej.: Av. Arequipa 1240, Lince, Lima" ${invalido('direccion')}>${esc(f.direccion)}</textarea>
+          ${error('direccion')}
+        </div>
+        <div class="campo">
+          <label for="neg-telefono">Número de contacto</label>
+          <input class="control" id="neg-telefono" type="tel" inputmode="tel" maxlength="${MAX_TELEFONO}" autocomplete="tel" placeholder="Ej.: 987 654 321" value="${esc(f.telefono)}" ${invalido('telefono')}>
+          ${error('telefono')}
+        </div>
+        <div class="campo">
+          <label for="neg-responsable">Nombre del responsable</label>
+          <input class="control" id="neg-responsable" maxlength="${MAX_NOMBRE}" autocomplete="name" placeholder="Ej.: Rosa Quispe" value="${esc(f.responsable)}" ${invalido('responsable')}>
+          ${error('responsable')}
+        </div>
+        ${f.id ? '<div class="zona-borrar"><button type="button" class="boton borrar" data-accion="pedir-eliminar-negocio">Eliminar negocio</button></div>' : ''}
+      </div>
+      <div class="pie-form">
+        <button type="submit" class="boton primario" ${estado.ocupado ? 'disabled' : ''}>${estado.ocupado ? 'Guardando…' : (f.id ? 'Guardar cambios' : 'Registrar negocio')}</button>
+      </div>
+    </form>
+  `;
+}
+
+function renderHoja() {
+  const h = estado.hoja;
+  if (!h) { capa.innerHTML = ''; return; }
+  capa.innerHTML = `
+    <div class="velo" data-accion="cerrar-hoja"></div>
+    <div class="hoja" role="dialog" aria-modal="true" aria-labelledby="hoja-titulo">
+      <div class="asa"></div>
+      <h2 id="hoja-titulo">${esc(h.titulo)}</h2>
+      <p>${esc(h.texto)}</p>
+      <div class="hoja-botones">
+        <button class="boton" data-accion="cerrar-hoja">${esc(h.cancelar)}</button>
+        <button class="boton peligro" data-accion="${h.accion}" ${estado.ocupado ? 'disabled' : ''}>${esc(estado.ocupado ? 'Eliminando…' : h.confirmar)}</button>
+      </div>
+    </div>`;
+  capa.querySelector('.hoja .boton').focus();
+}
+
+function render() {
+  const nombre = estado.vista.nombre;
+  document.body.classList.toggle('modo-web', nombre === 'catalogo');
+  if (nombre === 'lista') renderLista();
+  else if (nombre === 'catalogo') renderCatalogo();
+  else if (nombre === 'detalle') renderDetalle();
+  else if (nombre === 'formulario') renderFormulario();
+  else if (nombre === 'negocios') renderNegocios();
+  else renderFormNegocio();
+  renderHoja();
+}
+
+function ir(vista) {
+  estado.vista = vista;
+  estado.hoja = null;
+  render();
+  pantalla.scrollTop = 0;
+}
+
+function cambiarSeccion(seccion) {
+  try { localStorage.setItem(CLAVE_SECCION, seccion); } catch {}
+  ir({ nombre: VISTA_DE_SECCION[seccion] || 'lista' });
+}
+
+function abrirFormulario(producto) {
+  estado.form = {
+    id: producto?.id || null,
+    original: producto || null,
+    nombre: producto?.nombre || '',
+    descripcion: producto?.descripcion || '',
+    precio: producto ? formatoMonto.format(producto.precio).replace(/,/g, '') : '',
+    imagenes: (producto?.imagenes || []).map(ref => ({ tipo: 'guardada', ref })),
+    errores: {},
+    cambiado: false
+  };
+  ir({ nombre: 'formulario' });
+  if (!producto) setTimeout(() => document.getElementById('campo-nombre')?.focus(), 50);
+}
+
+function liberarFormulario() {
+  estado.form?.imagenes.forEach(img => { if (img.tipo === 'nueva') URL.revokeObjectURL(img.url); });
+  estado.form = null;
+}
+
+function salirFormulario() {
+  const destino = estado.form?.id ? { nombre: 'detalle', id: estado.form.id } : { nombre: 'lista' };
+  liberarFormulario();
+  ir(destino);
+}
+
+function abrirFormNegocio(negocio) {
+  estado.formNegocio = {
+    id: negocio?.id || null,
+    original: negocio || null,
+    nombre: negocio?.nombre || '',
+    direccion: negocio?.direccion || '',
+    telefono: negocio?.telefono || '',
+    responsable: negocio?.responsable || '',
+    logo: negocio?.logo ? { tipo: 'guardada', ref: negocio.logo } : null,
+    errores: {},
+    cambiado: false
+  };
+  ir({ nombre: 'negocio-form' });
+  if (!negocio) setTimeout(() => document.getElementById('neg-nombre')?.focus(), 50);
+}
+
+function liberarFormNegocio() {
+  const logo = estado.formNegocio?.logo;
+  if (logo?.tipo === 'nueva') URL.revokeObjectURL(logo.url);
+  estado.formNegocio = null;
+}
+
+function salirFormNegocio() {
+  liberarFormNegocio();
+  ir({ nombre: 'negocios' });
+}
+
+function leerPrecio(texto) {
+  const limpio = String(texto).trim().replace(/\s/g, '').replace(',', '.');
+  if (!/^\d+(\.\d{1,2})?$/.test(limpio)) return NaN;
+  return Math.round(Number(limpio) * 100) / 100;
+}
+
+function validar() {
+  const f = estado.form;
+  const errores = {};
+  if (!f.nombre.trim()) errores.nombre = 'Escribe el nombre del producto.';
+  const precio = leerPrecio(f.precio);
+  if (!f.precio.trim()) errores.precio = 'Escribe el precio.';
+  else if (Number.isNaN(precio)) errores.precio = 'Usa solo números, con hasta 2 decimales. Ej.: 45.90';
+  else if (precio <= 0) errores.precio = 'El precio debe ser mayor que 0.';
+  f.errores = errores;
+  return { valido: !Object.keys(errores).length, precio };
+}
+
+function validarNegocio() {
+  const f = estado.formNegocio;
+  const errores = {};
+  if (!f.nombre.trim()) errores.nombre = 'Escribe el nombre del negocio.';
+  if (!f.direccion.trim()) errores.direccion = 'Escribe la dirección del negocio.';
+  const telefono = f.telefono.trim();
+  const digitos = telefono.replace(/\D/g, '');
+  if (!telefono) errores.telefono = 'Escribe un número de contacto.';
+  else if (!/^\+?[\d\s()-]+$/.test(telefono) || digitos.length < 6 || digitos.length > 15) errores.telefono = 'Usa solo números, entre 6 y 15 dígitos. Ej.: 987 654 321';
+  if (!f.responsable.trim()) errores.responsable = 'Escribe el nombre del responsable.';
+  f.errores = errores;
+  return !Object.keys(errores).length;
+}
+
+async function comprimir(archivo, lado, calidad) {
+  const url = URL.createObjectURL(archivo);
+  try {
+    const img = new Image();
+    img.src = url;
+    await img.decode();
+    const escala = Math.min(1, lado / Math.max(img.naturalWidth, img.naturalHeight));
+    const lienzo = document.createElement('canvas');
+    lienzo.width = Math.round(img.naturalWidth * escala);
+    lienzo.height = Math.round(img.naturalHeight * escala);
+    const contexto = lienzo.getContext('2d');
+    contexto.fillStyle = '#FFFFFF';
+    contexto.fillRect(0, 0, lienzo.width, lienzo.height);
+    contexto.drawImage(img, 0, 0, lienzo.width, lienzo.height);
+    const blob = await new Promise(resolver => lienzo.toBlob(resolver, 'image/jpeg', calidad));
+    if (!blob) throw new Error('sin-blob');
+    return blob;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+
+function blobADataUrl(blob) {
+  return new Promise((resolver, rechazar) => {
+    const lector = new FileReader();
+    lector.onload = () => resolver(lector.result);
+    lector.onerror = rechazar;
+    lector.readAsDataURL(blob);
+  });
+}
+
+async function agregarFotos(archivos) {
+  const f = estado.form;
+  if (!f) return;
+  const libres = MAX_FOTOS - f.imagenes.length;
+  const elegidos = archivos.slice(0, libres);
+  if (archivos.length > libres) aviso(`Solo caben ${MAX_FOTOS} fotos por producto. Se agregaron ${elegidos.length}.`);
+  for (const archivo of elegidos) {
+    try {
+      const blob = await comprimir(archivo, activos ? 1400 : 720, activos ? 0.84 : 0.72);
+      f.imagenes.push({ tipo: 'nueva', blob, url: URL.createObjectURL(blob) });
+      f.cambiado = true;
+    } catch {
+      aviso(`No se pudo leer «${archivo.name}». Usa una foto JPG, PNG o WebP.`);
+    }
+  }
+  if (estado.form === f && estado.vista.nombre === 'formulario') refrescarRanuras();
+}
+
+async function ponerLogo(archivo) {
+  const f = estado.formNegocio;
+  if (!f) return;
+  try {
+    const blob = await comprimir(archivo, activos ? 600 : 320, activos ? 0.88 : 0.8);
+    if (f.logo?.tipo === 'nueva') URL.revokeObjectURL(f.logo.url);
+    f.logo = { tipo: 'nueva', blob, url: URL.createObjectURL(blob) };
+    f.cambiado = true;
+    if (estado.formNegocio === f && estado.vista.nombre === 'negocio-form') refrescarLogo();
+  } catch {
+    aviso(`No se pudo leer «${archivo.name}». Usa una imagen JPG, PNG o WebP.`);
+  }
+}
+
+function mensajeDeError(error) {
+  const codigo = error?.code;
+  if (codigo === 'quota_exceeded' || codigo === 'quota_or_state') return 'No queda espacio para más registros o imágenes. Elimina alguno y vuelve a intentar.';
+  if (codigo === 'too_large') return 'Una de las imágenes es demasiado pesada. Prueba con otra.';
+  if (codigo === 'rate_limited' || codigo === 'resource_exhausted') return 'Demasiados cambios seguidos. Espera unos segundos y vuelve a intentar.';
+  if (codigo === 'invalid_argument' || codigo === 'not_granted') return 'Tu acceso a esta vitrina es solo de lectura.';
+  return 'No se pudo guardar. Revisa tu conexión y vuelve a intentar.';
+}
+
+async function subirImagen(img) {
+  if (img.tipo === 'guardada') return img.ref;
+  if (activos) {
+    const resultado = await activos.upload(img.blob, { type: 'image/jpeg' });
+    return resultado.id;
+  }
+  return blobADataUrl(img.blob);
+}
+
+async function guardar() {
+  const f = estado.form;
+  const { valido, precio } = validar();
+  if (!valido) {
+    renderFormulario();
+    const primero = f.errores.nombre ? 'campo-nombre' : 'campo-precio';
+    document.getElementById(primero)?.focus();
+    return;
+  }
+  estado.ocupado = true;
+  renderFormulario();
+  try {
+    const refs = [];
+    for (const img of f.imagenes) {
+      const ref = await subirImagen(img);
+      if (img.tipo === 'nueva') { URL.revokeObjectURL(img.url); Object.assign(img, { tipo: 'guardada', ref }); }
+      refs.push(ref);
+    }
+    const ahora = new Date().toISOString();
+    const datos = {
+      nombre: f.nombre.trim(),
+      descripcion: f.descripcion.trim(),
+      precio,
+      imagenes: refs,
+      ejemplo: false,
+      creado: f.original?.creado || ahora,
+      actualizado: f.id ? ahora : null
+    };
+    const id = await almacenes.productos.guardar(f.id, datos);
+    const descartadas = (f.original?.imagenes || []).filter(ref => !refs.includes(ref));
+    borrarImagenes(descartadas);
+    estado.ocupado = false;
+    const eraNuevo = !f.id;
+    liberarFormulario();
+    ir({ nombre: 'detalle', id });
+    aviso(eraNuevo ? 'Producto registrado' : 'Cambios guardados');
+  } catch (error) {
+    estado.ocupado = false;
+    renderFormulario();
+    aviso(mensajeDeError(error));
+  }
+}
+
+async function guardarNegocio() {
+  const f = estado.formNegocio;
+  if (!validarNegocio()) {
+    renderFormNegocio();
+    const primero = ['nombre', 'direccion', 'telefono', 'responsable'].find(campo => f.errores[campo]);
+    document.getElementById(`neg-${primero}`)?.focus();
+    return;
+  }
+  estado.ocupado = true;
+  renderFormNegocio();
+  try {
+    let logo = null;
+    if (f.logo) {
+      logo = await subirImagen(f.logo);
+      if (f.logo.tipo === 'nueva') { URL.revokeObjectURL(f.logo.url); f.logo = { tipo: 'guardada', ref: logo }; }
+    }
+    const ahora = new Date().toISOString();
+    const datos = {
+      nombre: f.nombre.trim(),
+      logo,
+      direccion: f.direccion.trim(),
+      telefono: f.telefono.trim(),
+      responsable: f.responsable.trim(),
+      creado: f.original?.creado || ahora,
+      actualizado: f.id ? ahora : null
+    };
+    await almacenes.negocios.guardar(f.id, datos);
+    if (f.original?.logo && f.original.logo !== logo) borrarImagenes([f.original.logo]);
+    estado.ocupado = false;
+    const eraNuevo = !f.id;
+    liberarFormNegocio();
+    ir({ nombre: 'negocios' });
+    aviso(eraNuevo ? 'Negocio registrado' : 'Cambios guardados');
+  } catch (error) {
+    estado.ocupado = false;
+    renderFormNegocio();
+    aviso(mensajeDeError(error));
+  }
+}
+
+function borrarImagenes(refs) {
+  if (!activos) return;
+  refs.filter(ref => !/^(data:|blob:|ejemplo:)/.test(ref)).forEach(ref => activos.delete(ref).catch(() => {}));
+}
+
+async function eliminar() {
+  const p = productoPorId(estado.vista.id);
+  if (!p) return;
+  estado.ocupado = true;
+  renderHoja();
+  try {
+    await almacenes.productos.eliminar(p.id);
+    borrarImagenes(p.imagenes || []);
+    estado.ocupado = false;
+    ir({ nombre: 'lista' });
+    aviso('Producto eliminado');
+  } catch (error) {
+    estado.ocupado = false;
+    estado.hoja = null;
+    renderHoja();
+    aviso(mensajeDeError(error));
+  }
+}
+
+async function eliminarNegocio() {
+  const n = negocioPorId(estado.formNegocio?.id);
+  if (!n) return;
+  estado.ocupado = true;
+  renderHoja();
+  try {
+    await almacenes.negocios.eliminar(n.id);
+    if (n.logo) borrarImagenes([n.logo]);
+    estado.ocupado = false;
+    liberarFormNegocio();
+    ir({ nombre: 'negocios' });
+    aviso('Negocio eliminado');
+  } catch (error) {
+    estado.ocupado = false;
+    estado.hoja = null;
+    renderHoja();
+    aviso(mensajeDeError(error));
+  }
+}
+
+function recibir(productos) {
+  const anterior = estado.vista.nombre === 'detalle' ? JSON.stringify(productoPorId(estado.vista.id)) : null;
+  estado.productos = productos;
+  estado.cargando = false;
+  if (estado.vista.nombre === 'lista') refrescarRejilla();
+  else if (estado.vista.nombre === 'catalogo') refrescarCatalogo();
+  else if (estado.vista.nombre === 'detalle' && !estado.hoja && anterior !== JSON.stringify(productoPorId(estado.vista.id))) renderDetalle();
+}
+
+function recibirNegocios(negocios) {
+  estado.negocios = negocios;
+  estado.cargandoNegocios = false;
+  if (estado.vista.nombre === 'negocios') refrescarNegocios();
+}
+
+function crearAlmacenDb(db, nombreColeccion) {
+  const coleccion = db.collection(nombreColeccion);
+  return {
+    escuchar(alRecibir, alFallar) {
+      return coleccion.orderBy('creado', 'desc').onSnapshot(
+        instantanea => alRecibir(instantanea.docs.map(d => ({ ...d.data(), id: d.id }))),
+        alFallar
+      );
+    },
+    async guardar(id, datos) {
+      const ref = id ? coleccion.doc(id) : coleccion.doc();
+      await ref.set(datos);
+      return ref.id;
+    },
+    async eliminar(id) {
+      await coleccion.doc(id).delete();
+    }
+  };
+}
+
+function crearAlmacenLocal(clave, iniciales) {
+  let items = null;
+  try { items = JSON.parse(localStorage.getItem(clave) || 'null'); } catch { items = null; }
+  if (!Array.isArray(items)) items = iniciales.map(item => ({ ...item }));
+  let alRecibir = () => {};
+  const persistir = () => {
+    try { localStorage.setItem(clave, JSON.stringify(items)); }
+    catch { aviso('Este navegador no tiene espacio para guardar más imágenes.'); }
+  };
+  return {
+    escuchar(callback) { alRecibir = callback; callback(items.slice()); return () => {}; },
+    async guardar(id, datos) {
+      if (id) items = items.map(item => (item.id === id ? { ...datos, id } : item));
+      else { id = 'p' + Date.now().toString(36); items = [{ ...datos, id }, ...items]; }
+      persistir();
+      alRecibir(items.slice());
+      return id;
+    },
+    async eliminar(id) {
+      items = items.filter(item => item.id !== id);
+      persistir();
+      alRecibir(items.slice());
+    }
+  };
+}
+
+function enListado() {
+  return ['lista', 'catalogo', 'negocios'].includes(estado.vista.nombre);
+}
+
+function usarLocal() {
+  almacenes = {
+    productos: crearAlmacenLocal('vitrina-productos', EJEMPLOS_LOCALES),
+    negocios: crearAlmacenLocal('vitrina-negocios', [])
+  };
+  estado.modo = 'local';
+  if (enListado()) render();
+  almacenes.productos.escuchar(recibir);
+  almacenes.negocios.escuchar(recibirNegocios);
+}
+
+async function iniciar() {
+  render();
+  const claude = window.claude;
+  if (!claude?.use) { usarLocal(); return; }
+  const pedir = nombre => claude.use(nombre).catch(() => null);
+  const [db, assets, user] = await Promise.all([pedir('db'), pedir('assets'), pedir('user')]);
+  if (!db) { usarLocal(); return; }
+  activos = assets;
+  if (user) {
+    try { if ((await user.can('data.write')) === false) estado.puedeEditar = false; } catch {}
+  }
+  almacenes = {
+    productos: crearAlmacenDb(db, 'productos'),
+    negocios: crearAlmacenDb(db, 'negocios')
+  };
+  estado.modo = 'db';
+  if (enListado()) render();
+  const alFallar = () => aviso('Se perdió la conexión con tus datos. Recarga la página.');
+  almacenes.productos.escuchar(recibir, alFallar);
+  almacenes.negocios.escuchar(recibirNegocios, alFallar);
+}
+
+function pedirConfirmacionSalida(accion) {
+  estado.hoja = { titulo: '¿Salir sin guardar?', texto: 'Perderás los cambios que hiciste en este formulario.', cancelar: 'Seguir editando', confirmar: 'Salir', accion };
+  renderHoja();
+}
+
+document.addEventListener('click', evento => {
+  const el = evento.target.closest('[data-accion]');
+  if (!el) return;
+  const accion = el.dataset.accion;
+  if (accion === 'seccion') cambiarSeccion(el.dataset.seccion);
+  else if (accion === 'nuevo') abrirFormulario(null);
+  else if (accion === 'ver') ir({ nombre: 'detalle', id: el.dataset.id });
+  else if (accion === 'volver') ir({ nombre: 'lista' });
+  else if (accion === 'editar') abrirFormulario(productoPorId(estado.vista.id));
+  else if (accion === 'agregar-foto') { selector.value = ''; selector.click(); }
+  else if (accion === 'quitar-foto') {
+    const [quitada] = estado.form.imagenes.splice(Number(el.dataset.indice), 1);
+    if (quitada?.tipo === 'nueva') URL.revokeObjectURL(quitada.url);
+    estado.form.cambiado = true;
+    refrescarRanuras();
+  } else if (accion === 'portada') {
+    const indice = Number(el.dataset.indice);
+    if (indice > 0) {
+      const [elegida] = estado.form.imagenes.splice(indice, 1);
+      estado.form.imagenes.unshift(elegida);
+      estado.form.cambiado = true;
+      refrescarRanuras();
+    }
+  } else if (accion === 'cancelar') {
+    if (estado.form?.cambiado) pedirConfirmacionSalida('confirmar-salir');
+    else salirFormulario();
+  } else if (accion === 'confirmar-salir') salirFormulario();
+  else if (accion === 'pedir-eliminar') {
+    const p = productoPorId(estado.vista.id);
+    estado.hoja = { titulo: '¿Eliminar este producto?', texto: `«${p.nombre}» y sus fotos se borrarán de tu vitrina. No se puede deshacer.`, cancelar: 'Cancelar', confirmar: 'Eliminar', accion: 'confirmar-eliminar' };
+    renderHoja();
+  } else if (accion === 'confirmar-eliminar') eliminar();
+  else if (accion === 'nuevo-negocio') abrirFormNegocio(null);
+  else if (accion === 'editar-negocio') abrirFormNegocio(negocioPorId(el.dataset.id));
+  else if (accion === 'elegir-logo') { selectorLogo.value = ''; selectorLogo.click(); }
+  else if (accion === 'quitar-logo') {
+    const logo = estado.formNegocio.logo;
+    if (logo?.tipo === 'nueva') URL.revokeObjectURL(logo.url);
+    estado.formNegocio.logo = null;
+    estado.formNegocio.cambiado = true;
+    refrescarLogo();
+  } else if (accion === 'cancelar-negocio') {
+    if (estado.formNegocio?.cambiado) pedirConfirmacionSalida('confirmar-salir-negocio');
+    else salirFormNegocio();
+  } else if (accion === 'confirmar-salir-negocio') salirFormNegocio();
+  else if (accion === 'pedir-eliminar-negocio') {
+    const n = negocioPorId(estado.formNegocio?.id);
+    if (!n) return;
+    estado.hoja = { titulo: '¿Eliminar este negocio?', texto: `«${n.nombre}» y su logo se borrarán. No se puede deshacer.`, cancelar: 'Cancelar', confirmar: 'Eliminar', accion: 'confirmar-eliminar-negocio' };
+    renderHoja();
+  } else if (accion === 'confirmar-eliminar-negocio') eliminarNegocio();
+  else if (accion === 'cerrar-hoja' && !estado.ocupado) { estado.hoja = null; renderHoja(); }
+});
+
+const CAMPOS_PRODUCTO = { 'campo-nombre': 'nombre', 'campo-descripcion': 'descripcion', 'campo-precio': 'precio' };
+const CAMPOS_NEGOCIO = { 'neg-nombre': 'nombre', 'neg-direccion': 'direccion', 'neg-telefono': 'telefono', 'neg-responsable': 'responsable' };
+
+document.addEventListener('input', evento => {
+  const objetivo = evento.target;
+  if (objetivo.id === 'buscar') { estado.busqueda = objetivo.value; refrescarRejilla(); return; }
+  if (objetivo.id === 'buscar-web') { estado.busqueda = objetivo.value; refrescarCatalogo(); return; }
+  if (objetivo.id === 'buscar-negocio') { estado.busquedaNegocios = objetivo.value; refrescarNegocios(); return; }
+  let f = null;
+  let campo = null;
+  let prefijo = '';
+  if (CAMPOS_PRODUCTO[objetivo.id] && estado.form) { f = estado.form; campo = CAMPOS_PRODUCTO[objetivo.id]; }
+  else if (CAMPOS_NEGOCIO[objetivo.id] && estado.formNegocio) { f = estado.formNegocio; campo = CAMPOS_NEGOCIO[objetivo.id]; prefijo = 'neg-'; }
+  if (!f) return;
+  f[campo] = objetivo.value;
+  f.cambiado = true;
+  if (objetivo.id === 'campo-descripcion') document.getElementById('contador-descripcion').textContent = `${objetivo.value.length}/${MAX_DESCRIPCION}`;
+  if (f.errores[campo]) {
+    delete f.errores[campo];
+    objetivo.removeAttribute('aria-invalid');
+    objetivo.removeAttribute('aria-describedby');
+    document.getElementById(`error-${prefijo}${campo}`)?.remove();
+  }
+});
+
+document.addEventListener('submit', evento => {
+  const id = evento.target.id;
+  if (id !== 'formulario' && id !== 'formulario-negocio') return;
+  evento.preventDefault();
+  if (estado.ocupado) return;
+  if (id === 'formulario') guardar();
+  else guardarNegocio();
+});
+
+document.addEventListener('keydown', evento => {
+  if (evento.key === 'Escape' && estado.hoja && !estado.ocupado) { estado.hoja = null; renderHoja(); }
+});
+
+selector.addEventListener('change', () => {
+  const archivos = Array.from(selector.files || []);
+  if (archivos.length) agregarFotos(archivos);
+});
+
+selectorLogo.addEventListener('change', () => {
+  const archivo = selectorLogo.files?.[0];
+  if (archivo) ponerLogo(archivo);
+});
+
+iniciar();
+</script>
+
+</body></html>

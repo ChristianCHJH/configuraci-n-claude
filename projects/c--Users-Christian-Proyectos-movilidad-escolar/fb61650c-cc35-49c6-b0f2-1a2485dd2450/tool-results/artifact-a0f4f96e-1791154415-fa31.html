@@ -1,0 +1,969 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Pantallas de Movilidad Escolar</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
+<style>
+:root {
+  --fondo: #eef8fc;
+  --superficie: #ffffff;
+  --texto: #1f3446;
+  --texto-2: #475967;
+  --tenue: #6b7b87;
+  --borde: #c7e1f2;
+  --primario: #2473a2;
+  --primario-suave: #dfeffa;
+  --ambar: #f4cf64;
+  --ambar-suave: #fbf3dd;
+  --ambar-texto: #6f5f2e;
+  --verde: #29795d;
+  --verde-suave: #e2f1ea;
+  --rojo: #b3432f;
+  --rojo-suave: #f8e5e1;
+  --marco: #1f3446;
+  --sombra: 0 1px 2px rgb(31 52 70 / .06), 0 8px 24px rgb(31 52 70 / .08);
+  --display: "Sora", "Segoe UI", system-ui, sans-serif;
+  --cuerpo: "Plus Jakarta Sans", "Segoe UI", system-ui, sans-serif;
+  --app-fondo: #edf6fb; --app-blanco: #ffffff; --app-texto: #1f3446; --app-texto-2: #475967; --app-tenue: #6b7b87;
+  --app-borde: #cfe3f0; --app-borde-f: #b9d2e2; --app-primario: #2473a2; --app-info: #dcedf8; --app-info-texto: #1d6c8d;
+  --app-verde: #29795d; --app-verde-suave: #e2f1ea; --app-verde-borde: #bfe0d0; --app-ambar-suave: #fbf3dd; --app-ambar-borde: #efdfae;
+  --app-rojo: #b5513f; --app-barra: #f6fbfd; --app-gesto: #7a8791; --app-apagado: #dbe6ee; --app-ambar-texto: #7a6424; --app-naranja: #b0672e; --app-punteado: #dfc98a; --visor-marco: #0b141b;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #0f1c26; --superficie: #172834; --texto: #e4eef4; --texto-2: #b5c6d2; --tenue: #8ea1ae;
+    --borde: #2a4556; --primario: #79bde6; --primario-suave: #1c3b50; --ambar: #f4cf64; --ambar-suave: #3a321a;
+    --ambar-texto: #f1dc9c; --verde: #6fcfa6; --verde-suave: #173a2e; --rojo: #f19a88; --rojo-suave: #43231d;
+    --marco: #050b10; --sombra: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fondo: #0f1c26; --superficie: #172834; --texto: #e4eef4; --texto-2: #b5c6d2; --tenue: #8ea1ae;
+  --borde: #2a4556; --primario: #79bde6; --primario-suave: #1c3b50; --ambar: #f4cf64; --ambar-suave: #3a321a;
+  --ambar-texto: #f1dc9c; --verde: #6fcfa6; --verde-suave: #173a2e; --rojo: #f19a88; --rojo-suave: #43231d;
+  --marco: #050b10; --sombra: 0 1px 2px rgb(0 0 0 / .3), 0 8px 24px rgb(0 0 0 / .35);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--fondo); color: var(--texto); font-family: var(--cuerpo); font-size: 15px; line-height: 1.55; }
+.envoltura { max-width: 1180px; margin: 0 auto; padding-inline: 20px; padding-block: 36px 64px; }
+h1, h2, h3 { font-family: var(--display); text-wrap: balance; margin: 0; letter-spacing: -.01em; }
+h1 { font-size: clamp(28px, 4.4vw, 42px); line-height: 1.12; color: var(--primario); }
+h2 { font-size: clamp(22px, 3vw, 28px); line-height: 1.2; }
+h3 { font-size: 16px; }
+p { margin: 0; }
+.rotulo { font-size: 11.5px; font-weight: 700; letter-spacing: .09em; text-transform: uppercase; color: var(--tenue); }
+
+.cabecera { display: grid; grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr); gap: 32px; align-items: end; }
+.cabecera .intro { color: var(--texto-2); max-width: 60ch; margin-top: 12px; }
+.fuente { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 16px; font-size: 13px; color: var(--tenue); }
+.fuente b { color: var(--texto-2); font-weight: 600; }
+.cifras { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.cifra { background: var(--superficie); border: 1px solid var(--borde); border-radius: 14px; padding: 12px 14px; }
+.cifra strong { display: block; font-family: var(--display); font-size: 26px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.cifra span { font-size: 12.5px; color: var(--tenue); }
+.cifra.alerta { background: var(--rojo-suave); border-color: color-mix(in srgb, var(--rojo) 35%, var(--borde)); }
+.cifra.alerta strong { color: var(--rojo); }
+
+.veredicto { margin-top: 28px; background: var(--superficie); border: 1px solid var(--borde); border-radius: 18px; padding: 20px; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px 28px; }
+.veredicto h2 { grid-column: 1 / -1; }
+.veredicto .frase { grid-column: 1 / -1; color: var(--texto-2); max-width: 75ch; }
+.veredicto h3 { font-size: 14px; margin-bottom: 6px; }
+.veredicto ul { margin: 0; padding-left: 18px; display: grid; gap: 5px; font-size: 14px; color: var(--texto-2); }
+.veredicto li b { color: var(--texto); font-weight: 600; }
+
+.roles { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: color-mix(in srgb, var(--fondo) 92%, transparent); backdrop-filter: blur(8px); margin-top: 28px; padding-block: 10px; border-bottom: 1px solid var(--borde); display: grid; gap: 8px; }
+.roles-fila { display: flex; gap: 8px; overflow-x: auto; scrollbar-width: none; }
+.roles a { flex: none; display: inline-flex; align-items: center; gap: 8px; text-decoration: none; color: var(--texto-2); font-weight: 600; font-size: 14px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--borde); background: var(--superficie); }
+.roles a:hover, .roles a:focus-visible { border-color: var(--primario); color: var(--primario); outline: none; }
+.roles a small, .filtro small { font-weight: 500; color: var(--tenue); font-variant-numeric: tabular-nums; }
+.filtros { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
+.filtros .rotulo { margin-right: 4px; }
+.filtro { font: inherit; font-size: 13.5px; font-weight: 600; color: var(--texto-2); background: transparent; border: 1px solid var(--borde); border-radius: 999px; padding: 6px 12px; cursor: pointer; display: inline-flex; gap: 6px; align-items: center; }
+.filtro:hover { border-color: var(--primario); color: var(--primario); }
+.filtro:focus-visible { outline: 3px solid var(--primario); outline-offset: 2px; }
+.filtro[aria-pressed="true"] { background: var(--primario); border-color: var(--primario); color: var(--superficie); }
+.filtro[aria-pressed="true"] small { color: inherit; opacity: .8; }
+
+.matriz-caja { margin-top: 32px; background: var(--superficie); border: 1px solid var(--borde); border-radius: 18px; padding: 20px; }
+.matriz-caja p.nota { color: var(--tenue); font-size: 13px; margin-top: 4px; }
+.tabla-scroll { overflow-x: auto; margin-top: 14px; }
+table { border-collapse: collapse; width: 100%; min-width: 640px; font-size: 14px; }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--borde); vertical-align: top; }
+th { font-size: 12px; font-weight: 700; color: var(--tenue); text-transform: uppercase; letter-spacing: .06em; }
+td.celda { text-align: center; width: 120px; }
+th.celda { text-align: center; }
+.si, .no, .parcial, .falta { display: inline-block; min-width: 26px; padding: 2px 8px; border-radius: 999px; font-size: 12.5px; font-weight: 700; }
+.si { background: var(--verde-suave); color: var(--verde); }
+.no { color: var(--tenue); }
+.parcial { background: var(--ambar-suave); color: var(--ambar-texto); }
+.falta { background: var(--rojo-suave); color: var(--rojo); }
+
+.rol { margin-top: 56px; scroll-margin-top: 120px; }
+.rol-cabeza { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 16px; }
+.rol-cabeza .insignia { font-family: var(--display); font-size: 13px; font-weight: 600; padding: 3px 10px; border-radius: 999px; background: var(--primario-suave); color: var(--primario); }
+.rol-cabeza .barra { font-size: 13px; color: var(--tenue); }
+.rol-cabeza .barra b { color: var(--texto-2); }
+.rol-resumen { color: var(--texto-2); max-width: 70ch; margin-top: 8px; }
+
+.dos { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; margin-top: 18px; }
+.panel { background: var(--superficie); border: 1px solid var(--borde); border-radius: 16px; padding: 16px 18px; min-width: 0; }
+.panel.atencion { background: var(--ambar-suave); border-color: color-mix(in srgb, var(--ambar) 55%, var(--borde)); }
+.panel h3 { margin-bottom: 8px; }
+.panel ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; font-size: 14px; color: var(--texto-2); }
+.panel.atencion ul { color: var(--ambar-texto); }
+.panel li b { color: var(--texto); font-weight: 600; }
+.panel.atencion li b { color: inherit; }
+
+.galeria { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 28px 20px; margin-top: 24px; }
+.vacio { margin-top: 20px; font-size: 14px; color: var(--tenue); padding: 14px 16px; border: 1px dashed var(--borde); border-radius: 14px; }
+.pantalla { display: flex; flex-direction: column; gap: 10px; min-width: 0; }
+.telefono { display: block; width: 100%; padding: 6px; border-radius: 26px; background: var(--marco); box-shadow: var(--sombra); border: 0; cursor: zoom-in; transition: transform .18s ease; }
+.telefono:hover { transform: translateY(-2px); }
+.telefono:focus-visible { outline: 3px solid var(--primario); outline-offset: 3px; }
+.telefono img { display: block; width: 100%; height: auto; aspect-ratio: 1280 / 2856; object-fit: cover; border-radius: 20px; background: var(--primario-suave); }
+.hueco { width: 100%; max-width: 100%; aspect-ratio: 1280 / 2856; border-radius: 26px; border: 2px dashed var(--borde); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 18px; text-align: center; }
+.hueco .icono { width: 44px; height: 44px; border-radius: 999px; display: grid; place-items: center; font-family: var(--display); font-weight: 700; font-size: 20px; }
+.hueco strong { font-family: var(--display); font-size: 14px; }
+.hueco span { font-size: 12.5px; }
+.hueco.sin-captura { background: var(--primario-suave); color: var(--primario); border-color: color-mix(in srgb, var(--primario) 35%, var(--borde)); }
+.hueco.sin-captura .icono { background: var(--superficie); }
+.hueco.por-construir { background: var(--rojo-suave); color: var(--rojo); border-color: color-mix(in srgb, var(--rojo) 40%, var(--borde)); }
+.hueco.por-construir .icono { background: var(--superficie); }
+.pie { display: grid; gap: 3px; }
+.pie .num { font-size: 11.5px; font-weight: 700; color: var(--tenue); font-variant-numeric: tabular-nums; letter-spacing: .04em; }
+.pie h3 { font-size: 15px; }
+.pie p { font-size: 13px; color: var(--texto-2); }
+.pie code { font-size: 12px; color: var(--tenue); overflow-wrap: anywhere; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.chip { font-size: 11.5px; font-weight: 700; padding: 2px 8px; border-radius: 999px; }
+.chip.prd { background: var(--verde-suave); color: var(--verde); }
+.chip.extra { background: var(--primario-suave); color: var(--primario); }
+.chip.sistema { background: var(--ambar-suave); color: var(--ambar-texto); }
+.chip.e-sin-captura { background: transparent; color: var(--primario); border: 1px solid var(--borde); }
+.chip.e-por-construir { background: var(--rojo-suave); color: var(--rojo); }
+
+.galeria.con-propuestas .pantalla { gap: 0; }
+.galeria.con-propuestas .pie { margin-top: 10px; align-content: start; }
+.prop-marco { margin-top: 20px; padding-top: 12px; border-top: 2px dashed color-mix(in srgb, var(--ambar) 75%, var(--borde)); display: grid; gap: 8px; align-content: start; }
+.prop-rotulo { color: var(--ambar-texto); }
+.chip.propuesta { background: var(--ambar-suave); color: var(--ambar-texto); }
+.aviso-prop { margin-top: 18px; font-size: 14px; color: var(--ambar-texto); background: var(--ambar-suave); border: 1px dashed color-mix(in srgb, var(--ambar) 75%, var(--borde)); border-radius: 14px; padding: 12px 16px; max-width: 80ch; }
+.aviso-prop b { font-weight: 700; }
+@supports (grid-template-rows: subgrid) {
+  .galeria.con-propuestas { row-gap: 0; }
+  .galeria.con-propuestas .pantalla { display: grid; grid-template-rows: subgrid; grid-row: span 4; margin-bottom: 28px; }
+}
+
+.mock { container-type: inline-size; display: block; position: relative; width: 100%; max-width: 100%; aspect-ratio: 1280 / 2856; border-radius: 20px; overflow: hidden; background: var(--app-fondo); color: var(--app-texto); font-family: var(--cuerpo); text-align: left; --u: calc(100cqw / 360); }
+.mock svg { flex: none; width: calc(var(--u) * 16); height: calc(var(--u) * 16); }
+.m-pant { position: absolute; inset: 0; display: flex; flex-direction: column; font-size: calc(var(--u) * 13); line-height: 1.25; font-weight: 500; }
+:where(.m-pant span) { display: block; }
+.m-estado { flex: none; display: flex; justify-content: space-between; align-items: center; padding: calc(var(--u) * 15) calc(var(--u) * 24) 0; font-size: calc(var(--u) * 11.5); font-weight: 700; }
+.m-senal { display: flex; align-items: center; gap: calc(var(--u) * 5); }
+.m-pila { width: calc(var(--u) * 21); height: calc(var(--u) * 10); border-radius: calc(var(--u) * 3.5); background: var(--app-texto); }
+.m-cuerpo { flex: 1; min-height: 0; overflow: hidden; display: flex; flex-direction: column; gap: calc(var(--u) * 11); padding: calc(var(--u) * 24) calc(var(--u) * 17) 0; }
+.m-titulo { font-size: calc(var(--u) * 26); font-weight: 700; line-height: 1.1; letter-spacing: -.015em; color: var(--app-primario); }
+.m-sub { margin-top: calc(var(--u) * -6); font-size: calc(var(--u) * 13); color: var(--app-tenue); }
+.m-btn { display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 8); height: calc(var(--u) * 47); border-radius: calc(var(--u) * 14); font-size: calc(var(--u) * 13.5); font-weight: 700; }
+.m-btn.lleno { background: var(--app-primario); color: var(--app-blanco); }
+.m-btn.borde { background: var(--app-blanco); color: var(--app-texto-2); border: calc(var(--u) * 1.5) solid var(--app-borde-f); }
+.m-btn.rojo { background: var(--app-rojo); color: var(--app-blanco); }
+.m-chips { display: flex; gap: calc(var(--u) * 7); }
+.m-chip { display: flex; align-items: center; height: calc(var(--u) * 36); padding: 0 calc(var(--u) * 10.5); border-radius: calc(var(--u) * 11); border: calc(var(--u) * 1.5) solid var(--app-borde-f); background: var(--app-blanco); color: var(--app-texto-2); font-size: calc(var(--u) * 12.5); font-weight: 600; }
+.m-chip.elegido { background: var(--app-primario); border-color: var(--app-primario); color: var(--app-blanco); }
+.m-fila { display: flex; align-items: center; gap: calc(var(--u) * 11); padding: calc(var(--u) * 11) calc(var(--u) * 12); background: var(--app-blanco); border: calc(var(--u) * 1) solid var(--app-borde); border-radius: calc(var(--u) * 16); }
+.m-fila > svg { color: var(--app-tenue); }
+.m-av { flex: none; display: grid; place-items: center; width: calc(var(--u) * 40); height: calc(var(--u) * 40); border-radius: calc(var(--u) * 11); background: var(--app-primario); color: var(--app-blanco); font-size: calc(var(--u) * 13); font-weight: 700; }
+.m-fila-txt { flex: 1; min-width: 0; }
+.m-nombre { font-size: calc(var(--u) * 14.5); font-weight: 700; }
+.m-rol { margin-top: calc(var(--u) * 1); font-size: calc(var(--u) * 11.5); color: var(--app-tenue); }
+.m-activo { flex: none; padding: calc(var(--u) * 3) calc(var(--u) * 8); border-radius: calc(var(--u) * 8); background: var(--app-verde-suave); border: calc(var(--u) * 1) solid var(--app-verde-borde); color: var(--app-verde); font-size: calc(var(--u) * 11); font-weight: 600; }
+.m-rol-chip { flex: none; padding: calc(var(--u) * 3) calc(var(--u) * 8); border-radius: calc(var(--u) * 8); background: var(--app-info); border: calc(var(--u) * 1) solid var(--app-borde); color: var(--app-primario); font-size: calc(var(--u) * 11); font-weight: 600; }
+.m-nota { display: flex; gap: calc(var(--u) * 9); padding: calc(var(--u) * 12) calc(var(--u) * 14); border-radius: calc(var(--u) * 14); background: var(--app-info); color: var(--app-info-texto); font-size: calc(var(--u) * 12); }
+.m-nota.centro { align-items: center; }
+.m-nav { flex: none; display: flex; gap: calc(var(--u) * 6); padding: calc(var(--u) * 7) calc(var(--u) * 8) calc(var(--u) * 26); background: var(--app-barra); border-top: calc(var(--u) * 1) solid var(--app-borde); }
+.m-tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: calc(var(--u) * 3); padding: calc(var(--u) * 7) 0; border-radius: calc(var(--u) * 14); color: var(--app-tenue); font-size: calc(var(--u) * 11.5); font-weight: 600; }
+.m-tab svg { width: calc(var(--u) * 19); height: calc(var(--u) * 19); }
+.m-tab.elegido { background: var(--app-ambar-suave); color: var(--app-primario); font-weight: 700; }
+.m-gesto { position: absolute; left: 50%; bottom: calc(var(--u) * 7); width: calc(var(--u) * 92); height: calc(var(--u) * 3); margin-left: calc(var(--u) * -46); border-radius: 99px; background: var(--app-gesto); }
+.m-cab { display: flex; align-items: center; gap: calc(var(--u) * 12); color: var(--app-primario); }
+.m-cab svg { width: calc(var(--u) * 20); height: calc(var(--u) * 20); }
+.m-cab .m-titulo { font-size: calc(var(--u) * 21); }
+.m-etiquetas { display: flex; gap: calc(var(--u) * 6); margin-top: calc(var(--u) * -3); }
+.m-seccion { margin-top: calc(var(--u) * 5); margin-bottom: calc(var(--u) * -4); font-size: calc(var(--u) * 12.5); font-weight: 700; color: var(--app-texto-2); }
+.m-datos { background: var(--app-blanco); border: calc(var(--u) * 1) solid var(--app-borde); border-radius: calc(var(--u) * 16); }
+.m-dato { display: flex; justify-content: space-between; align-items: baseline; gap: calc(var(--u) * 10); padding: calc(var(--u) * 11) calc(var(--u) * 13); }
+.m-dato + .m-dato { border-top: calc(var(--u) * 1) solid var(--app-borde); }
+.m-dato .m-campo { flex: none; font-size: calc(var(--u) * 12); color: var(--app-tenue); }
+.m-dato .m-valor { min-width: 0; text-align: right; font-size: calc(var(--u) * 12.5); font-weight: 700; }
+.m-dato .m-valor.sin { font-weight: 500; color: var(--app-tenue); }
+.m-acceso { display: flex; align-items: center; justify-content: space-between; gap: calc(var(--u) * 10); padding: calc(var(--u) * 11) calc(var(--u) * 13); background: var(--app-ambar-suave); border: calc(var(--u) * 1) solid var(--app-ambar-borde); border-radius: calc(var(--u) * 16); }
+.m-acceso .m-usuario { font-size: calc(var(--u) * 13); font-weight: 700; }
+.m-acceso .m-clave { margin-top: calc(var(--u) * 2); font-size: calc(var(--u) * 12); color: var(--app-texto-2); }
+.m-acceso .m-ver { flex: none; display: flex; align-items: center; gap: calc(var(--u) * 5); padding: calc(var(--u) * 9) calc(var(--u) * 11); border-radius: calc(var(--u) * 11); background: var(--app-blanco); color: var(--app-primario); font-size: calc(var(--u) * 12.5); font-weight: 700; }
+.m-acceso .m-ver.visible { background: var(--app-primario); color: var(--app-blanco); }
+.m-acciones { flex: none; display: flex; gap: calc(var(--u) * 9); padding: calc(var(--u) * 11) calc(var(--u) * 17) calc(var(--u) * 28); border-top: calc(var(--u) * 1) solid var(--app-borde); background: var(--app-fondo); }
+.m-acciones .m-btn { flex: 1; }
+.m-fab { position: absolute; right: calc(var(--u) * 17); bottom: calc(var(--u) * 98); display: grid; place-items: center; width: calc(var(--u) * 54); height: calc(var(--u) * 54); border-radius: 50%; background: var(--app-primario); color: var(--app-blanco); box-shadow: 0 calc(var(--u) * 3) calc(var(--u) * 10) rgb(31 52 70 / .28); }
+.mock .m-fab svg { width: calc(var(--u) * 24); height: calc(var(--u) * 24); }
+.m-bus-ic { flex: none; display: grid; place-items: center; width: calc(var(--u) * 40); height: calc(var(--u) * 40); border-radius: calc(var(--u) * 11); background: var(--app-info); color: var(--app-primario); }
+.mock .m-bus-ic svg { width: calc(var(--u) * 19); height: calc(var(--u) * 19); }
+.m-linea { display: flex; align-items: center; gap: calc(var(--u) * 7); }
+.m-placa { padding: calc(var(--u) * 1) calc(var(--u) * 6); border: calc(var(--u) * 1.2) solid var(--app-borde-f); border-radius: calc(var(--u) * 5); font-size: calc(var(--u) * 10.5); font-weight: 700; letter-spacing: .06em; color: var(--app-texto-2); font-variant-numeric: tabular-nums; }
+.m-conductor { display: flex; align-items: center; gap: calc(var(--u) * 4); margin-top: calc(var(--u) * 3); font-size: calc(var(--u) * 11.5); color: var(--app-tenue); }
+.mock .m-conductor svg { width: calc(var(--u) * 12); height: calc(var(--u) * 12); }
+.m-iconos { flex: none; display: flex; gap: calc(var(--u) * 6); }
+.m-icono-btn { display: grid; place-items: center; width: calc(var(--u) * 33); height: calc(var(--u) * 33); border-radius: calc(var(--u) * 10); border: calc(var(--u) * 1.5) solid var(--app-borde-f); background: var(--app-blanco); color: var(--app-texto-2); }
+.mock .m-icono-btn svg { width: calc(var(--u) * 15); height: calc(var(--u) * 15); }
+.m-icono-btn.apagado { background: var(--app-apagado); border-color: var(--app-apagado); color: var(--app-tenue); opacity: .6; }
+.m-cifras { display: flex; gap: calc(var(--u) * 7); }
+.m-cifra-t { flex: 1; padding: calc(var(--u) * 8) 0; text-align: center; background: var(--app-blanco); border: calc(var(--u) * 1) solid var(--app-borde); border-radius: calc(var(--u) * 14); font-size: calc(var(--u) * 10.5); color: var(--app-tenue); }
+.m-cifra-t b { display: block; font-size: calc(var(--u) * 17); line-height: 1.15; color: var(--app-primario); font-variant-numeric: tabular-nums; }
+.m-cuerpo.denso { gap: calc(var(--u) * 9); }
+.m-grupo { display: flex; flex-direction: column; gap: calc(var(--u) * 5); }
+.m-etq { font-size: calc(var(--u) * 12.5); font-weight: 700; color: var(--app-texto-2); }
+.m-input { display: flex; align-items: center; height: calc(var(--u) * 42); padding: 0 calc(var(--u) * 13); border-radius: calc(var(--u) * 13); background: var(--app-blanco); border: calc(var(--u) * 1) solid var(--app-borde); font-size: calc(var(--u) * 13.5); }
+.m-dos { display: flex; gap: calc(var(--u) * 9); }
+.m-dos > .m-grupo { flex: 1; min-width: 0; }
+.m-radio { display: flex; align-items: center; gap: calc(var(--u) * 11); padding: calc(var(--u) * 7) calc(var(--u) * 12); border-radius: calc(var(--u) * 13); background: var(--app-blanco); border: calc(var(--u) * 1.5) solid var(--app-borde); }
+.m-radio.elegido { background: var(--app-info); border-color: var(--app-primario); }
+.m-radio.apagado { opacity: .5; }
+.m-punto { flex: none; width: calc(var(--u) * 20); height: calc(var(--u) * 20); border-radius: 50%; background: var(--app-blanco); border: calc(var(--u) * 1.5) solid var(--app-borde-f); }
+.m-radio.elegido .m-punto { border: calc(var(--u) * 6) solid var(--app-primario); }
+.m-radio-t { font-size: calc(var(--u) * 13); font-weight: 700; }
+.m-btn.suave { height: calc(var(--u) * 42); background: var(--app-info); color: var(--app-info-texto); }
+.m-quitar { display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 6); margin-top: calc(var(--u) * 5); color: var(--app-rojo); font-size: calc(var(--u) * 13); font-weight: 700; }
+.hueco.sin-pantalla { background: var(--ambar-suave); color: var(--ambar-texto); border-color: color-mix(in srgb, var(--ambar) 75%, var(--borde)); }
+.hueco.sin-pantalla .icono { background: var(--superficie); }
+.visor-mock { width: min(calc((100vh - 122px) * 1280 / 2856), calc(100vw - 44px)); border: 6px solid var(--visor-marco); border-radius: 22px; overflow: hidden; }
+.visor-mock .mock { border-radius: 0; }
+
+.m-fam { display: flex; flex-direction: column; gap: calc(var(--u) * 7); padding: calc(var(--u) * 11) calc(var(--u) * 12); background: var(--app-blanco); border: calc(var(--u) * 1) solid var(--app-borde); border-radius: calc(var(--u) * 16); }
+.m-fam-cab { display: flex; align-items: center; gap: calc(var(--u) * 10); }
+.m-casa { flex: none; display: grid; place-items: center; width: calc(var(--u) * 34); height: calc(var(--u) * 34); border-radius: calc(var(--u) * 10); background: var(--app-ambar-suave); color: var(--app-ambar-texto); }
+.mock .m-casa svg { width: calc(var(--u) * 17); height: calc(var(--u) * 17); }
+.m-fam-nombre { flex: 1; min-width: 0; font-size: calc(var(--u) * 15); font-weight: 700; }
+.m-per { display: flex; align-items: center; gap: calc(var(--u) * 7); padding: calc(var(--u) * 10) calc(var(--u) * 11); border-radius: calc(var(--u) * 12); background: var(--app-fondo); }
+.m-per.blanca { background: var(--app-blanco); border: calc(var(--u) * 1) solid var(--app-borde); }
+.m-per .m-nombre { font-size: calc(var(--u) * 13.5); }
+.m-per > svg { margin-left: auto; color: var(--app-tenue); }
+.m-hijos { display: flex; align-items: center; gap: calc(var(--u) * 6); padding: 0 calc(var(--u) * 3); font-size: calc(var(--u) * 12); font-weight: 700; color: var(--app-primario); }
+.m-hijos svg { color: var(--app-tenue); }
+.mock .m-hijos svg { width: calc(var(--u) * 14); height: calc(var(--u) * 14); }
+.m-rot { margin-top: calc(var(--u) * 4); margin-bottom: calc(var(--u) * -4); font-size: calc(var(--u) * 10.5); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--app-naranja); }
+.m-punteada { display: flex; align-items: center; justify-content: space-between; gap: calc(var(--u) * 10); padding: calc(var(--u) * 10) calc(var(--u) * 13); border-radius: calc(var(--u) * 16); background: var(--app-blanco); border: calc(var(--u) * 1.2) dashed var(--app-punteado); }
+.m-vincular { flex: none; padding: calc(var(--u) * 8) calc(var(--u) * 12); border-radius: calc(var(--u) * 11); background: var(--app-ambar-suave); color: var(--app-ambar-texto); font-size: calc(var(--u) * 12.5); font-weight: 700; }
+.m-etq-fila { display: flex; justify-content: space-between; align-items: baseline; }
+.m-etq-fila .m-cuenta { font-size: calc(var(--u) * 11.5); color: var(--app-tenue); }
+.m-marca { display: flex; align-items: center; gap: calc(var(--u) * 11); padding: calc(var(--u) * 9) calc(var(--u) * 13); }
+.m-marca + .m-marca { border-top: calc(var(--u) * 1) solid var(--app-borde); }
+.m-caja { flex: none; display: grid; place-items: center; width: calc(var(--u) * 22); height: calc(var(--u) * 22); border-radius: calc(var(--u) * 7); background: var(--app-blanco); border: calc(var(--u) * 1.5) solid var(--app-borde-f); color: var(--app-blanco); }
+.m-nav.cuatro { gap: calc(var(--u) * 3); padding-inline: calc(var(--u) * 5); }
+.m-nav.cuatro .m-tab { font-size: calc(var(--u) * 10.5); }
+.m-av.suave { background: var(--app-info); color: var(--app-primario); }
+.m-sin { flex: none; padding: calc(var(--u) * 3) calc(var(--u) * 8); border-radius: calc(var(--u) * 8); background: var(--app-ambar-suave); border: calc(var(--u) * 1) solid var(--app-punteado); color: var(--app-ambar-texto); font-size: calc(var(--u) * 11); font-weight: 600; }
+.m-ops { display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u) * 8); }
+.m-ops.tres { grid-template-columns: 1fr 1fr 1fr; }
+.m-op { display: flex; align-items: center; justify-content: center; gap: calc(var(--u) * 5); height: calc(var(--u) * 40); border-radius: calc(var(--u) * 13); background: var(--app-blanco); border: calc(var(--u) * 1.5) solid var(--app-borde-f); color: var(--app-texto-2); font-size: calc(var(--u) * 12.5); font-weight: 700; }
+.mock .m-op svg { width: calc(var(--u) * 13); height: calc(var(--u) * 13); }
+.m-op.elegido { background: var(--app-info); border-color: var(--app-primario); color: var(--app-primario); }
+.m-btn.apagado { background: var(--app-apagado); color: var(--app-tenue); }
+.m-caja.marcada { background: var(--app-verde); border-color: var(--app-verde); }
+.mock .m-caja svg { width: calc(var(--u) * 13); height: calc(var(--u) * 13); stroke-width: 3; }
+.m-resumen { display: grid; grid-template-columns: 1fr 1fr; gap: calc(var(--u) * 8); }
+.m-res { padding: calc(var(--u) * 11) calc(var(--u) * 12); background: var(--app-blanco); border: calc(var(--u) * 1) solid var(--app-borde); border-radius: calc(var(--u) * 16); }
+.m-res b { display: block; font-size: calc(var(--u) * 24); line-height: 1.1; color: var(--app-primario); font-variant-numeric: tabular-nums; }
+.m-res .m-res-t { font-size: calc(var(--u) * 12.5); font-weight: 700; }
+.m-res .m-res-d { margin-top: calc(var(--u) * 3); font-size: calc(var(--u) * 10.5); color: var(--app-tenue); }
+.m-lista { background: var(--app-blanco); border: calc(var(--u) * 1) solid var(--app-borde); border-radius: calc(var(--u) * 16); }
+.m-item { display: flex; align-items: center; gap: calc(var(--u) * 10); padding: calc(var(--u) * 10) calc(var(--u) * 12); }
+.m-item + .m-item { border-top: calc(var(--u) * 1) solid var(--app-borde); }
+.m-item > svg { margin-left: auto; color: var(--app-tenue); }
+.m-item .m-nombre { font-size: calc(var(--u) * 13); }
+.m-punto-alerta { flex: none; width: calc(var(--u) * 9); height: calc(var(--u) * 9); border-radius: 50%; background: var(--app-rojo); }
+.m-punto-alerta.leve { background: var(--app-punteado); }
+.m-hora { flex: none; width: calc(var(--u) * 44); font-size: calc(var(--u) * 13.5); font-weight: 700; color: var(--app-primario); font-variant-numeric: tabular-nums; }
+.m-turnos { display: flex; flex-wrap: wrap; gap: calc(var(--u) * 5); margin-top: calc(var(--u) * 5); }
+.m-turno { padding: calc(var(--u) * 2) calc(var(--u) * 7); border-radius: calc(var(--u) * 7); background: var(--app-info); color: var(--app-info-texto); font-size: calc(var(--u) * 10.5); font-weight: 600; font-variant-numeric: tabular-nums; }
+.m-turno-caja { display: flex; flex-direction: column; gap: calc(var(--u) * 8); padding: calc(var(--u) * 11) calc(var(--u) * 12); background: var(--app-blanco); border: calc(var(--u) * 1) solid var(--app-borde); border-radius: calc(var(--u) * 16); }
+.m-turno-cab { display: flex; align-items: center; justify-content: space-between; }
+.m-turno-cab .m-nombre { font-size: calc(var(--u) * 13.5); }
+.m-turno-cab svg { color: var(--app-rojo); }
+.m-turno-caja .m-input { height: calc(var(--u) * 38); font-weight: 700; font-variant-numeric: tabular-nums; }
+.m-cuenta-cab { display: flex; align-items: center; gap: calc(var(--u) * 12); }
+.m-cuenta-cab .m-av { width: calc(var(--u) * 52); height: calc(var(--u) * 52); border-radius: calc(var(--u) * 15); font-size: calc(var(--u) * 16); }
+.m-cuenta-cab .m-nombre { font-size: calc(var(--u) * 17); }
+.m-version { text-align: center; font-size: calc(var(--u) * 11.5); color: var(--app-tenue); }
+
+.visor { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; }
+.visor::backdrop { background: rgb(8 16 22 / .82); }
+.visor-cuerpo { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 16px; }
+.visor img { max-height: calc(100vh - 110px); max-width: calc(100vw - 32px); border-radius: 22px; border: 6px solid #0b141b; }
+.visor-barra { display: flex; gap: 10px; align-items: center; color: #e4eef4; font-family: var(--display); font-size: 14px; }
+.visor button { font: inherit; font-weight: 600; color: #1f3446; background: #e4eef4; border: 0; border-radius: 999px; padding: 7px 14px; cursor: pointer; }
+.visor button:focus-visible { outline: 3px solid var(--ambar); }
+
+footer { margin-top: 56px; padding-top: 18px; border-top: 1px solid var(--borde); color: var(--tenue); font-size: 13px; }
+
+@media (max-width: 860px) {
+  .cabecera { grid-template-columns: 1fr; }
+  .dos, .veredicto { grid-template-columns: 1fr; }
+  .cifras { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}
+@media (max-width: 520px) {
+  .cifras { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .galeria { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px 12px; }
+  .envoltura { padding-inline: 16px; }
+}
+@media (prefers-reduced-motion: reduce) { .telefono { transition: none; } .telefono:hover { transform: none; } }
+</style>
+
+<div class="envoltura">
+  <header class="cabecera">
+    <div>
+      <div class="rotulo">App Android · capturas reales</div>
+      <h1>Pantallas de Movilidad Escolar</h1>
+      <p class="intro">Todo lo que muestra la app, ordenado por rol: lo capturado en el emulador, lo construido que aún no tiene captura y lo que falta construir según el PRD y el backend.</p>
+      <div class="fuente">
+        <span><b>Emulador</b> Pixel 9 Pro · Android 16</span>
+        <span><b>Backend</b> NestJS en localhost:3000</span>
+        <span><b>Capturas</b> 30 sep, 3 y 4 oct 2026</span>
+        <span><b>Revisión y construcción</b> 3 y 4 oct 2026</span>
+      </div>
+    </div>
+    <div class="cifras" id="cifras"></div>
+  </header>
+
+  <section class="veredicto" aria-labelledby="t-veredicto">
+    <h2 id="t-veredicto">¿Están todas las pantallas?</h2>
+    <p class="frase">Sí. Todas las pantallas del PRD están construidas y todas tienen captura real del emulador. Las 3 que faltaban se construyeron el 3 de octubre. Las otras 18 ya existían en el código, pero no tenían foto; se tomaron ese mismo día.</p>
+    <div>
+      <h3>Construido el 3 y 4 de octubre</h3>
+      <ul>
+        <li><b>Permiso de avisos del apoderado</b> (PRD §7): sale después del login en Android 13 o superior, explica los 4 avisos y pide el permiso. «Ahora no» no vuelve a insistir en ese celular.</li>
+        <li><b>Vehículos</b>: nueva pestaña del administrador con <b>Nuevo / editar bus</b> y eliminar. Un bus con conductor asignado no se puede eliminar.</li>
+        <li><b>Permisos del conductor</b>: pide avisos después de la ubicación y revisa el GPS al tocar Empezar. Ahí apareció un fallo: el GPS no se enviaba hasta volver a Mi ruta. Ya está corregido.</li>
+        <li><b>Administrador rediseñado</b> (4 oct): lista simple de usuarios con detalle al tocar, Editar en una sola pantalla y Vehículos compacto. Ya no existen Ver clave en la lista, Usuarios (abajo) ni Editar (abajo).</li>
+        <li><b>Pantallas sin explicaciones</b> (4 oct): fuera frases de ayuda, razones, notas y textos repetidos en 40 pantallas. Los diálogos quedan con la pregunta y sus botones, y Mi cuenta del apoderado entra en una sola pantalla.</li>
+        <li><b>Inicio y apoderados del administrador</b> (4 oct): pestaña Inicio con lo que falta completar y las salidas del día, filtro Apoderados y detalle del apoderado con sus hijos.</li>
+        <li><b>Backend</b>: solo el administrador crea, edita o elimina buses, y no se aceptan códigos repetidos. El bus ahora guarda su placa (4 oct). Los cambios de la base se aplican solos al arrancar (migraciones).</li>
+      </ul>
+    </div>
+    <div>
+      <h3>Ya cubierto</h3>
+      <ul>
+        <li><b>Crear conductores</b>: ya existe en Administrador › Nuevo usuario.</li>
+        <li>Todo lo demás del PRD tiene pantalla: login, sesión cerrada, ida, vuelta, familias, alumnos, colegios, avisos y Mi cuenta.</li>
+        <li>Fuera de alcance según el PRD: panel web, reportes, chat y pagos.</li>
+      </ul>
+    </div>
+  </section>
+
+  <nav class="roles" aria-label="Roles y filtro">
+    <div class="filtros" id="filtros" role="group" aria-label="Filtrar pantallas">
+      <span class="rotulo">Mostrar</span>
+    </div>
+    <div class="roles-fila" id="navRoles"></div>
+  </nav>
+
+  <section class="matriz-caja" aria-labelledby="t-matriz">
+    <h2 id="t-matriz">Quién hace qué</h2>
+    <p class="nota">Lo construido hoy, por rol. Ámbar: existe, pero con una observación.</p>
+    <div class="tabla-scroll">
+      <table>
+        <thead><tr><th>Acción</th><th class="celda">Administrador</th><th class="celda">Conductor</th><th class="celda">Apoderado</th></tr></thead>
+        <tbody id="matriz"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <main id="secciones"></main>
+
+  <footer>Capturas tomadas con adb sobre la app debug (<code>com.movilidadescolar.debug</code>). Usuarios de prueba: admin, lsalazar (conductor), rjara y mquispe (apoderados). Para las capturas del 3 oct se cerró a mano el viaje colgado del 23/9, se creó la familia de prueba Palomino y se usó por un momento una alumna de prueba en el Bus 07 (ya quitada). El 4 oct se recapturó el administrador, el Bus 04 quedó con la placa de prueba B4K-712 y se recapturaron las pantallas sin textos explicativos. Las pantallas nuevas del administrador (Inicio, Apoderados) y su barra de 4 pestañas se capturaron con el admin de prueba local «capturas».</footer>
+</div>
+
+<dialog class="visor" id="visor" aria-label="Captura ampliada">
+  <div class="visor-cuerpo">
+    <img id="visorImg" alt="">
+    <div class="visor-mock" id="visorMock" hidden></div>
+        <div class="visor-barra">
+      <button type="button" id="visorAnt" aria-label="Anterior">←</button>
+      <span id="visorTitulo"></span>
+      <button type="button" id="visorSig" aria-label="Siguiente">→</button>
+      <button type="button" id="visorCerrar">Cerrar</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+const roles = [
+  {
+    id: "comun", nombre: "Común", barra: "sin barra",
+    resumen: "Lo ve cualquiera antes de entrar o cuando su sesión se cierra. Una sola app para todos: el login devuelve el rol y abre sus pantallas.",
+    ve: [
+      "<b>Login</b> con usuario, clave, botón Ver y mensaje de clave incorrecta.",
+      "<b>Sesión cerrada</b> cuando el mismo usuario entra en otro celular, con el motivo."
+    ],
+    falta: [
+      "<b>Corregido el 4 oct</b>: se quitó la nota del login que no mencionaba al administrador."
+    ],
+    pantallas: [
+      ["01-login", "Login", "Usuario y clave. El rol sale del token.", "prd"],
+      ["02-login-clave-incorrecta", "Clave incorrecta", "Mensaje claro bajo la clave, sin borrar lo escrito.", "prd"],
+      ["57-sesion-cerrada", "Tu sesión se cerró", "El usuario mquispe entró en otro celular.", "prd"]
+    ]
+  },
+  {
+    id: "admin", nombre: "Administrador", barra: "Inicio · Usuarios · Vehículos · Mi cuenta",
+    aviso: "<b>Construido y capturado el 4 oct:</b> Inicio (15), filtro Apoderados (16) y detalle del apoderado (17). Las salidas del día salen de las horas que hoy tiene cada conductor. <b>Propuestas que siguen en revisión:</b> (1) <b>Turnos por bus</b>, debajo de la 12 y la 13: cada bus tiene turnos de mañana, tarde o noche, con su hora de ida y de vuelta; con esto, Inicio y Mi ruta tomarían las horas de los turnos. (2) <b>Mi cuenta</b>, debajo de la 11: suma el rol y la versión de la app.",
+    resumen: "Da de alta conductores y otros administradores, les asigna el bus, registra los buses y ve las claves. No ve familias ni el viaje en vivo.",
+    ve: [
+      "<b>Inicio</b>: cuántos usuarios y buses hay, lo que falta completar (bus sin conductor, conductor sin bus) y las salidas del día.",
+      "<b>Usuarios</b>: lista simple con nombre y activo, filtro por rol (también Apoderados, con su familia y sus hijos) y el + flotante para crear.",
+      "<b>Detalle</b> al tocar un usuario: datos, clave con Ver / Ocultar, su bus, lo que ya cargó, Editar y Desactivar.",
+      "<b>Nuevo usuario</b>: rol, datos, licencia y bus; usuario y clave se generan solos.",
+      "<b>Editar</b>: solo lo que se cambia, más nueva clave y quitar. Entra en una sola pantalla.",
+      "<b>Vehículos</b>: bus, placa y conductor, con Editar y Eliminar como íconos y el + para crear.",
+      "<b>Detalle del apoderado</b>: contacto, casa, hijos a su cargo, el otro apoderado y su clave. Solo se desactiva: los datos los edita el conductor.",
+      "<b>Mi cuenta</b>: nombre, usuario y cerrar sesión."
+    ],
+    falta: [
+      "El PRD deja este rol <b>fuera de la fase de prueba</b>, pero ya está construido. Hay que decidir si se queda y actualizar el PRD.",
+      "El admin <b>ve las claves en texto plano</b> (la app avisa que es solo en esta fase).",
+      "<b>Corregido el 4 oct</b>: el admin ya no ve Desactivar sobre su propia cuenta.",
+      "La <b>placa es opcional</b>: el Bus 07 todavía no la tiene."
+    ],
+    pantallas: [
+      ["10-admin-usuarios", "Usuarios", "Lista simple: nombre, rol y activo. Nuevo usuario es el + flotante.", "extra"],
+      ["13-admin-filtro-conductores", "Filtro Conductores", "Solo conductores, con el mismo +.", "extra"],
+      ["11-admin-detalle-conductor", "Detalle · clave a la vista", "Luis Salazar: datos, clave, Bus 04 y lo que ya cargó (3 familias, 5 alumnos, 3 colegios).", "extra"],
+      ["12-admin-detalle-oculto", "Detalle · clave oculta", "Rosa Medina, como abre por defecto.", "extra"],
+      ["12b-admin-detalle-propio", "Detalle · cuenta propia", "Sobre sí mismo, el admin solo puede editar.", "extra"],
+      ["19-admin-desactivar-usuario", "Desactivar usuario", "Desde el detalle, confirma antes de dejar sin acceso a Luis Salazar.", "extra"],
+      ["14-admin-nuevo-usuario", "Nuevo conductor", "Datos, licencia y bus libre.", "extra"],
+      ["15-admin-nuevo-administrador", "Nuevo administrador", "Solo nombre y contacto.", "extra"],
+      ["15b-admin-usuario-creado", "Usuario creado", "Usuario y clave generados para entregarlos.", "extra"],
+      ["16-admin-editar-usuario", "Editar conductor", "Solo lo que se cambia, nueva clave y quitar, en una pantalla.", "extra"],
+      ["18-admin-mi-cuenta", "Mi cuenta", "Nombre, usuario, cerrar sesión.", "extra"],
+      ["60-admin-vehiculos", "Vehículos", "Bus, placa y conductor. Eliminar se apaga si el bus tiene conductor.", "extra"],
+      ["62-admin-editar-bus", "Editar bus", "Código y placa del Bus 04.", "extra"],
+      ["61-admin-nuevo-bus", "Nuevo bus", "Avisa si el código ya existe (Bus 04).", "extra"],
+      ["70-admin-inicio", "Inicio", "Primera pestaña: resumen, lo que falta completar y las salidas del día.", "extra"],
+      ["71-admin-filtro-apoderados", "Filtro Apoderados", "Cada apoderado con parentesco, familia y cuántos hijos tiene.", "extra"],
+      ["72-admin-detalle-apoderado", "Detalle del apoderado", "Contacto, casa, hijos a su cargo, el otro apoderado y su clave. Solo Desactivar.", "extra"]
+    ]
+  },
+  {
+    id: "conductor", nombre: "Conductor", barra: "Mi ruta · Familias · Colegios",
+    aviso: "<b>Propuestas en revisión.</b> Debajo de las pantallas 18, 19, 24 y 25: Familias como lista simple, con el detalle del apoderado al tocarlo. Debajo de la 20, 28, 29 y 30: una pestaña Alumnos, el detalle del alumno con su familia y sus apoderados, y Nuevo alumno con la familia elegida al crearlo. La barra inferior pasaría a cuatro pestañas: Mi ruta · Alumnos · Familias · Colegios. También cambian Quitar apoderado (26), que se abre desde el detalle, y Agregar apoderado (22), que serviría además para editarlo. Las pantallas actuales no cambian.",
+    resumen: "Hace la ida y la vuelta, marca a cada alumno y registra colegios, familias, apoderados y alumnos de su ruta. Solo ve lo de su bus.",
+    ve: [
+      "<b>Permiso de ubicación</b> explicado antes del diálogo de Android, y luego el <b>permiso de avisos</b>.",
+      "<b>GPS</b>: si está apagado al tocar Empezar, lo enciende desde la app; si se apaga en ruta, aparece un aviso.",
+      "<b>Mi ruta</b> y el <b>recorrido</b>: ida con Recogí / Llegué, vuelta con Subió / Bajó.",
+      "<b>Familias</b>: apoderados con su clave, hijos, alumnos sin familia para vincular.",
+      "<b>Alumnos</b> nuevos y editados: colegio, parada, ida o vuelta, familia.",
+      "<b>Colegios</b> con horario y la puerta marcada en Google Maps."
+    ],
+    falta: [
+      "<b>Viaje colgado</b>: la vuelta del 23/9 nunca se cerró y el 30/9 Mi ruta la mostraba como “Ruta iniciada”. Debería cerrarse sola al cambiar el día.",
+      "El <b>saludo</b> sale del tipo de viaje y no de la hora: a las 9:32 p. m. dice “Buenas tardes” y, tras la vuelta, “Buenos días”.",
+      "<b>Corregido el 3 oct</b>: al tocar Empezar el GPS no se enviaba hasta volver a Mi ruta; los padres veían “Sin señal del bus”.",
+      "<b>Corregido el 3 oct</b>: la lista de Familias no se actualizaba al volver de crear una familia; Renzo seguía “sin familia”.",
+      "Un viaje borrado sigue bloqueando otro del mismo tipo ese día: la regla “un viaje por día” no mira si está eliminado.",
+      "Al querer salir con ruta en curso, solo ofrece “Entendido”: no hay forma de cerrar sesión desde ahí."
+    ],
+    pantallas: [
+      ["20-conductor-permiso-ubicacion", "Permiso de ubicación", "Para qué se usa, antes de pedirlo.", "prd"],
+      ["21-conductor-dialogo-permiso", "Diálogo de Android", "El sistema pide la ubicación.", "sistema"],
+      ["22-conductor-permiso-listo", "Permiso listo", "Ya puede empezar su ruta.", "prd"],
+      ["22b-conductor-permiso-avisos", "Permiso de avisos", "Para ver el aviso fijo de ruta en curso.", "extra"],
+      ["23b-conductor-mi-ruta-empezar", "Mi ruta · Empezar", "El círculo grande para salir: vuelta, 4 alumnos.", "prd"],
+      ["23d-conductor-gps-apagado", "Enciende el GPS", "Sale al tocar Empezar con el GPS apagado.", "extra"],
+      ["23e-conductor-dialogo-gps", "Diálogo de Android", "Enciende el GPS sin salir de la app.", "sistema"],
+      ["23c-conductor-sin-alumnos", "Mi ruta · sin alumnos", "Rosa Medina, Bus 07: aún no tiene alumnos.", "prd"],
+      ["23-conductor-mi-ruta", "Mi ruta", "Ruta iniciada · vuelta a casa.", "prd"],
+      ["42-conductor-aviso-ruta-en-curso", "Salir con ruta en curso", "Pide terminar la ruta antes de salir.", "prd"],
+      ["24c-conductor-recorrido-ida", "Recorrido · ida", "Recoger en casas: Recogí o Falta por alumno.", "prd"],
+      ["24d-conductor-recorrido-sin-gps", "GPS apagado en ruta", "Aviso rojo con Activar si se apaga a mitad de ruta.", "extra"],
+      ["24e-conductor-aviso-ruta-en-curso", "Ruta en curso", "Aviso fijo de Android mientras envía el GPS.", "sistema"],
+      ["24b-conductor-cambiar-orden", "Cambiar orden", "Flechas para mover cada casa; botón Listo.", "prd"],
+      ["24-conductor-recorrido", "Recorrido · vuelta", "Recoger en colegios: Subió o Falta.", "prd"],
+      ["25-conductor-recorrido-abajo", "Recorrido (abajo)", "Dejar en casas, por parada.", "prd"],
+      ["25b-conductor-terminar-ruta", "¿Terminar la ruta?", "Resumen: 3 subieron, 3 en casa, 1 ausente.", "prd"],
+      ["26-conductor-familias", "Familias", "Familias Jara y Quispe, y Renzo sin familia.", "prd"],
+      ["27-conductor-familias-ver-clave", "Ver clave del apoderado", "rjara · clave jara7412.", "prd"],
+      ["36-conductor-hoja-vincular", "Vincular alumno", "Elegir familia para Renzo Palomino.", "prd"],
+      ["28-conductor-nueva-familia", "Nueva familia", "Apellido, apoderados e hijos sin familia.", "prd"],
+      ["34-conductor-hoja-agregar-apoderado", "Agregar apoderado", "Nombre, parentesco y celular.", "prd"],
+      ["28b-conductor-familia-creada", "Familia creada · claves", "Familia Palomino: usuario y clave de Elena.", "prd"],
+      ["32-conductor-editar-familia", "Editar familia", "Ver clave, nueva clave, quitar.", "prd"],
+      ["33-conductor-editar-familia-abajo", "Editar familia (abajo)", "Hijos a cargo y eliminar familia.", "prd"],
+      ["32b-conductor-quitar-apoderado", "Quitar apoderado", "Avisa que su celular se desconecta al instante.", "prd"],
+      ["33b-conductor-eliminar-familia", "Eliminar familia", "Los alumnos se quedan en la ruta.", "prd"],
+      ["30-conductor-nuevo-alumno", "Nuevo alumno", "Colegio, parada nueva o existente, ida o vuelta.", "prd"],
+      ["35-conductor-editar-alumno", "Editar alumno", "Parada compartida, familia, quitar de la ruta.", "prd"],
+      ["35b-conductor-quitar-alumno", "Quitar de la ruta", "Confirma antes de quitar a Renzo Palomino.", "prd"],
+      ["37-conductor-colegios", "Colegios", "Tres colegios con entrada y salida.", "prd"],
+      ["38-conductor-colegios-abajo", "Colegios (abajo)", "Los Andes, sin alumnos ni puerta.", "prd"],
+      ["39-conductor-nuevo-colegio", "Nuevo colegio", "Nombre, dirección, puerta y horario.", "prd"],
+      ["40-conductor-editar-colegio", "Editar colegio", "Puerta marcada · cambiar.", "prd"],
+      ["41-conductor-marcar-mapa", "Marcar la puerta", "Google Maps con pin central.", "prd"]
+    ]
+  },
+  {
+    id: "apoderado", nombre: "Apoderado", barra: "En ruta · Avisos · Mi cuenta",
+    resumen: "Padre, madre u otro familiar. Ve el bus solo mientras lleva a sus hijos, recibe avisos y elige cuáles quiere.",
+    ve: [
+      "<b>En ruta</b>: frase de estado, estado de cada hijo, mapa y pasos Colegio · En el bus · Casa.",
+      "<b>Llamar al conductor</b> desde la misma pantalla.",
+      "<b>Avisos</b> de hoy y de la semana, con Marcar leídos.",
+      "<b>Mi cuenta</b>: su familia, quién más ve a los hijos, interruptores de avisos y cerrar sesión, sin desplazar."
+    ],
+    falta: [
+      "Sin ruta activa dice “La vuelta sale a las 1:15 p. m.<b>.</b>”: lleva un punto de más.",
+      "Faltan tildes en textos del apoderado: “ya <b>esta</b> en el colegio”, “<b>Termino</b> a las…”, “<b>Ultima ubicacion</b>”.",
+      "El padre ve “Mateo ya está en casa” por el viaje abierto del 23/9: es información de hace una semana.",
+      "El badge dice <b>6 sin leer</b> pero la pestaña Hoy está vacía; los 6 son de días anteriores.",
+      "Los avisos push están apagados (FCM deshabilitado): hoy solo se ven dentro de la app."
+    ],
+    pantallas: [
+      ["49-apoderado-permiso-avisos", "Permiso de avisos", "Tras el login: los 4 avisos del PRD.", "prd"],
+      ["49b-apoderado-dialogo-avisos", "Diálogo de Android", "El sistema pide permiso para avisar.", "sistema"],
+      ["49c-apoderado-avisos-activados", "Avisos activados", "Listo: ya puede ver a sus hijos.", "prd"],
+      ["50-apoderado-en-ruta", "En ruta · familia Jara", "Dos hijos en el mismo bus; el bus llega en 6 min.", "prd"],
+      ["56-apoderado-quispe-en-ruta", "En ruta · familia Quispe", "El bus llega a tu casa en 8 min.", "prd"],
+      ["50b-apoderado-sin-ruta", "Sin ruta activa", "Los dos viajes de hoy ya terminaron.", "prd"],
+      ["51c-apoderado-buses-distintos", "Hijos en buses distintos", "Fichas Ana (Bus 07), Mateo y Sofia (Bus 04).", "prd"],
+      ["51b-apoderado-un-hijo", "Un solo hijo", "Familia Palomino: solo Renzo.", "prd"],
+      ["52-apoderado-avisos", "Avisos · Hoy", "Avisos de los viajes de hoy.", "prd"],
+      ["53-apoderado-avisos-semana", "Avisos · Esta semana", "Subió, bajó, llegó al colegio, ruta empezó.", "prd"],
+      ["54-apoderado-mi-cuenta", "Mi cuenta", "Familia Jara, avisos y cerrar sesión en una pantalla.", "prd"]
+    ]
+  }
+];
+
+const matriz = [
+  ["Crear conductores y administradores", "si", "no", "no"],
+  ["Asignar el bus a un conductor", "si", "no", "no"],
+  ["Registrar vehículos", "si", "no", "no"],
+  ["Ver la clave de un conductor", "si", "no", "no"],
+  ["Registrar colegios, familias y alumnos", "no", "si", "no"],
+  ["Ver la clave de los apoderados de su ruta", "no", "si", "no"],
+  ["Empezar la ruta y marcar alumnos", "no", "parcial", "no"],
+  ["Enviar su ubicación GPS", "no", "si", "no"],
+  ["Encender el GPS desde la app", "no", "si", "no"],
+  ["Ver el bus en el mapa", "no", "no", "si"],
+  ["Dar permiso de avisos", "no", "si", "si"],
+  ["Recibir avisos del viaje", "no", "no", "parcial"],
+  ["Elegir qué avisos recibe", "no", "no", "si"]
+];
+
+const etiquetas = { prd: "En el PRD", extra: "Fuera del PRD", sistema: "Android" };
+const estados = { "sin-captura": "Sin captura", "por-construir": "Por construir" };
+const marcas = { si: "Sí", no: "—", parcial: "Sí*", falta: "Falta" };
+const filtros = [
+  ["todas", "Todas"],
+  ["construidas", "Construidas"],
+  ["por-construir", "Por construir"]
+];
+
+
+const ico = d => `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${d}</svg>`;
+const I = {
+  mas: ico('<path d="M12 5v14M5 12h14"/>'),
+  der: ico('<path d="m9 6 6 6-6 6"/>'),
+  izq: ico('<path d="m15 6-6 6 6 6"/>'),
+  usuarios: ico('<circle cx="9" cy="8" r="3.5"/><path d="M2.5 20c0-3.6 2.9-6 6.5-6s6.5 2.4 6.5 6"/><path d="M16 4.6a3.5 3.5 0 0 1 0 6.8M18.5 14.6c1.9.9 3 2.8 3 5.4"/>'),
+  persona: ico('<circle cx="12" cy="8" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/>'),
+  bus: ico('<rect x="5" y="4" width="14" height="13" rx="2"/><path d="M5 11h14M8 17v2M16 17v2"/>'),
+  birrete: ico('<path d="m3 9 9-4 9 4-9 4-9-4Z"/><path d="M7 11v4c0 1.2 2.2 2.5 5 2.5s5-1.3 5-2.5v-4"/>'),
+  casa: ico('<path d="m4 11 8-7 8 7"/><path d="M6 10v9h12v-9"/>'),
+  ojoNo: ico('<path d="M2.5 12S6 5.5 12 5.5 21.5 12 21.5 12 18 18.5 12 18.5 2.5 12 2.5 12Z"/><circle cx="12" cy="12" r="2.5"/><path d="m4 4 16 16"/>'),
+  lapiz: ico('<path d="M4 20h4L19 9l-4-4L4 16v4Z"/>'),
+  tacho: ico('<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/>'),
+  visto: ico('<path d="m5 12 5 5 9-10"/>')
+};
+const alumnosApp = [
+  { ini: "MJ", nombre: "Mateo Jara", colegio: "San Andres", parada: "Jr. Las Begonias 118", familia: "Jara" },
+  { ini: "SJ", nombre: "Sofia Jara", colegio: "San Andres", parada: "Jr. Las Begonias 118", familia: "Jara" },
+  { ini: "DQ", nombre: "Diego Quispe", colegio: "Santa Rosa", parada: "Av. Los Alamos 540", familia: "Quispe" },
+  { ini: "LQ", nombre: "Lucia Quispe", colegio: "Santa Rosa", parada: "Av. Los Alamos 540", familia: "Quispe" },
+  { ini: "RP", nombre: "Renzo Palomino", colegio: "San Andres", parada: "Calle Los Cedros 77", familia: "" }
+];
+const familiasApp = [
+  { apellido: "Jara", apoderados: [["Carmen Ruiz", "Madre"], ["Rufo Jara", "Padre"]], hijos: ["Mateo Jara", "Sofia Jara"] },
+  { apellido: "Quispe", apoderados: [["Marisol Quispe", "Madre"]], hijos: ["Diego Quispe", "Lucia Quispe"] }
+];
+const mEstado = hora => `<span class="m-estado"><span>${hora}</span><span class="m-senal"><span>5G</span><span class="m-pila"></span></span></span>`;
+const mMarco = (hora, cuerpo, pie, denso) => `<span class="mock"><span class="m-pant">${mEstado(hora)}<span class="m-cuerpo${denso ? " denso" : ""}">${cuerpo}</span>${pie}<span class="m-gesto"></span></span></span>`;
+const mNavConductor = elegida => `<span class="m-nav cuatro">${[["Mi ruta", I.bus], ["Alumnos", I.persona], ["Familias", I.usuarios], ["Colegios", I.birrete]]
+  .map(([t, i]) => `<span class="m-tab${t === elegida ? " elegido" : ""}">${i}${t}</span>`).join("")}</span>`;
+const mPersona = ([nombre, parentesco], clase = "") => `<span class="m-per ${clase}"><span class="m-nombre">${nombre}</span><span class="m-rol-chip">${parentesco}</span>${I.der}</span>`;
+
+function mockFamilias() {
+  const tarjetas = familiasApp.map(f => `<span class="m-fam">
+      <span class="m-fam-cab"><span class="m-casa">${I.casa}</span><span class="m-fam-nombre">Familia ${f.apellido}</span><span class="m-icono-btn">${I.lapiz}</span></span>
+      ${f.apoderados.map(a => mPersona(a)).join("")}
+      <span class="m-hijos">${I.persona}${f.hijos.join(" · ")}</span>
+    </span>`).join("");
+  return mMarco("8:21", `
+    <span class="m-titulo">Familias</span>
+    <span class="m-sub">2 familias · 3 apoderados</span>
+    ${tarjetas}`,
+    `${mNavConductor("Familias")}<span class="m-fab">${I.mas}</span>`);
+}
+
+function mockApoderado() {
+  const dato = (campo, valor) => `<span class="m-dato"><span class="m-campo">${campo}</span><span class="m-valor">${valor}</span></span>`;
+  return mMarco("8:21", `
+    <span class="m-cab">${I.izq}<span class="m-titulo">Rufo Jara</span></span>
+    <span class="m-etiquetas"><span class="m-rol-chip">Padre</span><span class="m-rol-chip">Familia Jara</span></span>
+    <span class="m-seccion">Datos de contacto</span>
+    <span class="m-datos">${dato("Nombre completo", "Rufo Jara")}${dato("Celular", "987 111 222")}${dato("Último ingreso", "23/9, 5:10 a. m.")}</span>
+    <span class="m-seccion">Acceso a la app</span>
+    <span class="m-acceso">
+      <span><span class="m-usuario">Usuario: rjara</span><span class="m-clave">Clave: jara7412</span></span>
+      <span class="m-ver visible">${I.ojoNo}Ocultar</span>
+    </span>
+    <span class="m-seccion">Hijos que ve</span>
+    <span class="m-nota centro">${I.persona}<span>Mateo Jara · Sofia Jara</span></span>`,
+    `<span class="m-acciones"><span class="m-btn borde">${I.lapiz} Editar</span><span class="m-btn rojo">Quitar</span></span>`);
+}
+
+function mockEditarFamilia() {
+  const marca = (nombre, detalle, si) => `<span class="m-marca"><span class="m-caja${si ? " marcada" : ""}">${I.visto}</span><span><span class="m-nombre">${nombre}</span><span class="m-rol">${detalle}</span></span></span>`;
+  return mMarco("8:22", `
+    <span class="m-cab">${I.izq}<span class="m-titulo">Familia Jara</span></span>
+    <span class="m-etq-fila"><span class="m-etq">Apoderados</span><span class="m-cuenta">2 apoderados</span></span>
+    ${familiasApp[0].apoderados.map(a => mPersona(a, "blanca")).join("")}
+    <span class="m-btn suave">${I.mas} Agregar apoderado</span>
+    <span class="m-etq-fila"><span class="m-etq">Hijos a cargo</span><span class="m-cuenta">2 elegidos</span></span>
+    <span class="m-datos">
+      ${marca("Mateo Jara", "San Andres · Jr. Las Begonias 118", true)}
+      ${marca("Sofia Jara", "San Andres · Jr. Las Begonias 118", true)}
+      ${marca("Renzo Palomino", "San Andres · Calle Los Cedros 77", false)}
+    </span>
+    <span class="m-btn suave">${I.mas} Nuevo alumno</span>
+    <span class="m-quitar">${I.tacho} Eliminar familia</span>`,
+    `<span class="m-acciones"><span class="m-btn lleno">Guardar cambios</span></span>`, true);
+}
+
+function mockAlumnos() {
+  const filas = alumnosApp.map(a => `<span class="m-fila">
+      <span class="m-av suave">${a.ini}</span>
+      <span class="m-fila-txt"><span class="m-nombre">${a.nombre}</span><span class="m-rol">${a.colegio}${a.familia ? " · Familia " + a.familia : ""}</span></span>
+      ${a.familia ? "" : `<span class="m-sin">Sin familia</span>`}${I.der}
+    </span>`).join("");
+  return mMarco("8:21", `
+    <span class="m-titulo">Alumnos</span>
+    <span class="m-sub">5 alumnos · 1 sin familia</span>
+    <span class="m-chips"><span class="m-chip elegido">Todos</span><span class="m-chip">Sin familia</span></span>
+    ${filas}`,
+    `${mNavConductor("Alumnos")}<span class="m-fab">${I.mas}</span>`);
+}
+
+function mockAlumno(a) {
+  const dato = (campo, valor) => `<span class="m-dato"><span class="m-campo">${campo}</span><span class="m-valor">${valor}</span></span>`;
+  const fam = familiasApp.find(f => f.apellido === a.familia);
+  const familia = fam
+    ? `<span class="m-fam"><span class="m-fam-cab"><span class="m-casa">${I.casa}</span><span class="m-fam-nombre">Familia ${fam.apellido}</span></span>${fam.apoderados.map(x => mPersona(x)).join("")}</span>`
+    : `<span class="m-punteada"><span class="m-nombre">Sin familia</span><span class="m-vincular">Vincular</span></span>`;
+  return mMarco("8:23", `
+    <span class="m-cab">${I.izq}<span class="m-titulo">${a.nombre}</span></span>
+    <span class="m-etiquetas"><span class="m-rol-chip">${a.colegio}</span>${fam ? "" : `<span class="m-sin">Sin familia</span>`}</span>
+    <span class="m-seccion">Datos del alumno</span>
+    <span class="m-datos">${dato("Colegio", a.colegio)}${dato("Parada", a.parada)}${dato("Viaja en", "Ida y vuelta")}</span>
+    <span class="m-seccion">Familia y apoderados</span>
+    ${familia}`,
+    `<span class="m-acciones"><span class="m-btn borde">${I.lapiz} Editar</span><span class="m-btn rojo">Quitar de la ruta</span></span>`);
+}
+
+function mockNuevoAlumno() {
+  const op = (t, elegido) => `<span class="m-op${elegido ? " elegido" : ""}">${t}</span>`;
+  return mMarco("8:22", `
+    <span class="m-cab">${I.izq}<span class="m-titulo">Nuevo alumno</span></span>
+    <span class="m-grupo"><span class="m-etq">Nombre y apellido</span><span class="m-input">Mateo Jara</span></span>
+    <span class="m-grupo"><span class="m-etq">Colegio</span><span class="m-ops tres">${op("San Andres", true)}${op("Santa Rosa")}${op("Los Andes")}</span></span>
+    <span class="m-grupo"><span class="m-etq">Viaja en</span><span class="m-ops">${op("Ida al colegio", true)}${op("Vuelta a casa", true)}</span></span>
+    <span class="m-grupo"><span class="m-etq">Familia</span><span class="m-ops">${op("Jara", true)}${op("Quispe")}${op(I.mas + "Nueva")}${op("Sin familia")}</span></span>
+    <span class="m-nota centro">${I.casa}<span>Se recoge en la casa de la familia Jara: Jr. Las Begonias 118</span></span>`,
+    `<span class="m-acciones"><span class="m-btn lleno">Guardar alumno</span></span>`, true);
+}
+
+Object.assign(I, {
+  inicio: ico('<path d="M3 11.5 12 4l9 7.5"/><path d="M5.5 10v10h13V10"/><path d="M10 20v-5h4v5"/>'),
+  cuenta: ico('<circle cx="12" cy="12" r="9"/><circle cx="12" cy="10" r="3"/><path d="M6.5 18.5c1.2-2 3.2-3 5.5-3s4.3 1 5.5 3"/>'),
+  salir: ico('<path d="M15 4h4v16h-4"/><path d="M10 8l-4 4 4 4M6 12h10"/>')
+});
+const mNavAdmin = elegida => `<span class="m-nav cuatro">${[["Inicio", I.inicio], ["Usuarios", I.usuarios], ["Vehículos", I.bus], ["Mi cuenta", I.cuenta]]
+  .map(([t, i]) => `<span class="m-tab${t === elegida ? " elegido" : ""}">${i}${t}</span>`).join("")}</span>`;
+const busesApp = [
+  { codigo: "Bus 04", placa: "B4K-712", conductor: "Luis Salazar", turnos: [["Mañana", "06:40", "13:15"], ["Tarde", "13:30", "18:20"]] },
+  { codigo: "Bus 07", placa: "", conductor: "Rosa Medina", turnos: [] }
+];
+
+function mockInicioAdmin() {
+  const alerta = (titulo, detalle, leve) => `<span class="m-item"><span class="m-punto-alerta${leve ? " leve" : ""}"></span><span class="m-fila-txt"><span class="m-nombre">${titulo}</span><span class="m-rol">${detalle}</span></span>${I.der}</span>`;
+  const salida = (hora, bus, detalle) => `<span class="m-item"><span class="m-hora">${hora}</span><span class="m-fila-txt"><span class="m-nombre">${bus}</span><span class="m-rol">${detalle}</span></span></span>`;
+  return mMarco("6:12", `
+    <span class="m-titulo">Buenos días</span>
+    <span class="m-sub">Domingo 4 de octubre</span>
+    <span class="m-resumen">
+      <span class="m-res"><b>7</b><span class="m-res-t">Usuarios</span><span class="m-res-d">2 conductores · 4 apoderados · 1 admin</span></span>
+      <span class="m-res"><b>2</b><span class="m-res-t">Buses</span><span class="m-res-d">1 listo · 1 sin horarios</span></span>
+    </span>
+    <span class="m-etq-fila"><span class="m-etq">Requiere atención</span><span class="m-cuenta">1</span></span>
+    <span class="m-lista">${alerta("Bus 07 sin horarios", "No saldrá hasta agregar sus turnos")}</span>
+    <span class="m-etq-fila"><span class="m-etq">Salidas de hoy</span><span class="m-cuenta">4</span></span>
+    <span class="m-lista">
+      ${salida("06:40", "Bus 04", "Ida · Luis S.")}
+      ${salida("13:15", "Bus 04", "Vuelta · Luis S.")}
+      ${salida("13:30", "Bus 04", "Ida tarde · Luis S.")}
+      ${salida("18:20", "Bus 04", "Vuelta tarde · Luis S.")}
+    </span>`,
+    mNavAdmin("Inicio"), true);
+}
+
+function mockUsuariosApoderados() {
+  const fila = (ini, nombre, detalle) => `<span class="m-fila"><span class="m-av suave">${ini}</span><span class="m-fila-txt"><span class="m-nombre">${nombre}</span><span class="m-rol">${detalle}</span></span><span class="m-activo">Activo</span></span>`;
+  return mMarco("8:21", `
+    <span class="m-titulo">Usuarios</span>
+    <span class="m-chips"><span class="m-chip">Todos</span><span class="m-chip">Admin</span><span class="m-chip">Conductor</span><span class="m-chip elegido">Apoderado</span></span>
+    ${fila("CR", "Carmen Ruiz", "Madre · Familia Jara · 2 hijos")}
+    ${fila("RJ", "Rufo Jara", "Padre · Familia Jara · 2 hijos")}
+    ${fila("MQ", "Marisol Quispe", "Madre · Familia Quispe · 2 hijos")}
+    ${fila("EP", "Elena Palomino", "Madre · Familia Palomino · 1 hijo")}`,
+    `${mNavAdmin("Usuarios")}<span class="m-fab">${I.mas}</span>`);
+}
+
+function mockDetalleApoderadoAdmin() {
+  const dato = (campo, valor) => `<span class="m-dato"><span class="m-campo">${campo}</span><span class="m-valor">${valor}</span></span>`;
+  const hijo = (ini, nombre, detalle) => `<span class="m-item"><span class="m-av suave">${ini}</span><span class="m-fila-txt"><span class="m-nombre">${nombre}</span><span class="m-rol">${detalle}</span></span>${I.der}</span>`;
+  return mMarco("8:22", `
+    <span class="m-cab">${I.izq}<span class="m-titulo">Rufo Jara</span></span>
+    <span class="m-etiquetas"><span class="m-rol-chip">Padre · Familia Jara</span><span class="m-activo">Activo</span></span>
+    <span class="m-seccion">Datos de contacto</span>
+    <span class="m-datos">${dato("Celular", "987 111 222")}${dato("Documento", "DNI 45879632")}${dato("Casa", "Jr. Las Begonias 118")}</span>
+    <span class="m-etq-fila"><span class="m-etq">Hijos a su cargo</span><span class="m-cuenta">2</span></span>
+    <span class="m-lista">${hijo("MJ", "Mateo Jara", "San Andres · Ida y vuelta")}${hijo("SJ", "Sofia Jara", "San Andres · Ida y vuelta")}</span>
+    <span class="m-seccion">También ve a sus hijos</span>
+    <span class="m-lista"><span class="m-item"><span class="m-fila-txt"><span class="m-nombre">Carmen Ruiz</span><span class="m-rol">Madre · 987 333 444</span></span></span></span>
+    <span class="m-acceso">
+      <span><span class="m-usuario">Usuario: rjara</span><span class="m-clave">Clave: ••••••••</span></span>
+      <span class="m-ver">${I.ojoNo}Ver</span>
+    </span>`,
+    `<span class="m-acciones"><span class="m-btn rojo">Desactivar</span></span>`, true);
+}
+
+function mockVehiculosTurnos() {
+  const filas = busesApp.map(b => `<span class="m-fila">
+      <span class="m-bus-ic">${I.bus}</span>
+      <span class="m-fila-txt">
+        <span class="m-linea"><span class="m-nombre">${b.codigo}</span>${b.placa ? `<span class="m-placa">${b.placa}</span>` : ""}</span>
+        <span class="m-conductor">${I.persona}${b.conductor}</span>
+        <span class="m-turnos">${b.turnos.length
+          ? b.turnos.map(([t, ida, vuelta]) => `<span class="m-turno">${t} ${ida} · ${vuelta}</span>`).join("")
+          : `<span class="m-sin">Sin horarios</span>`}</span>
+      </span>
+      <span class="m-iconos"><span class="m-icono-btn">${I.lapiz}</span><span class="m-icono-btn apagado">${I.tacho}</span></span>
+    </span>`).join("");
+  return mMarco("8:24", `
+    <span class="m-titulo">Vehículos</span>
+    <span class="m-sub">2 buses · 1 sin horarios</span>
+    ${filas}`,
+    `${mNavAdmin("Vehículos")}<span class="m-fab">${I.mas}</span>`);
+}
+
+function mockEditarBusTurnos() {
+  const turno = ([nombre, ida, vuelta]) => `<span class="m-turno-caja">
+      <span class="m-turno-cab"><span class="m-nombre">${nombre}</span>${I.tacho}</span>
+      <span class="m-dos">
+        <span class="m-grupo"><span class="m-etq">Salida ida</span><span class="m-input">${ida}</span></span>
+        <span class="m-grupo"><span class="m-etq">Salida vuelta</span><span class="m-input">${vuelta}</span></span>
+      </span>
+    </span>`;
+  return mMarco("8:25", `
+    <span class="m-cab">${I.izq}<span class="m-titulo">Editar bus</span></span>
+    <span class="m-dos">
+      <span class="m-grupo"><span class="m-etq">Código</span><span class="m-input">Bus 04</span></span>
+      <span class="m-grupo"><span class="m-etq">Placa</span><span class="m-input">B4K-712</span></span>
+    </span>
+    <span class="m-etq-fila"><span class="m-etq">Turnos y horarios</span><span class="m-cuenta">2 turnos</span></span>
+    ${busesApp[0].turnos.map(turno).join("")}
+    <span class="m-btn suave">${I.mas} Agregar turno</span>`,
+    `<span class="m-acciones"><span class="m-btn lleno">Guardar cambios</span></span>`, true);
+}
+
+function mockCuentaAdmin() {
+  const dato = (campo, valor) => `<span class="m-dato"><span class="m-campo">${campo}</span><span class="m-valor">${valor}</span></span>`;
+  return mMarco("8:26", `
+    <span class="m-titulo">Mi cuenta</span>
+    <span class="m-cuenta-cab"><span class="m-av">AD</span><span><span class="m-nombre">Administrador</span><span class="m-rol">admin</span></span></span>
+    <span class="m-datos">${dato("Nombre", "Administrador")}${dato("Usuario", "admin")}${dato("Rol", "Administrador")}</span>
+    <span class="m-btn borde">${I.salir} Cerrar sesión</span>
+    <span class="m-version">Versión 0.1.1</span>`,
+    mNavAdmin("Mi cuenta"));
+}
+
+const propuestas = {
+  "18-admin-mi-cuenta": { id: "prop-cuenta-admin", titulo: "Mi cuenta · con rol y versión", texto: "Lo mismo de hoy, más el rol y la versión instalada de la app, útil para saber si alguien tiene la última.", dibujo: mockCuentaAdmin },
+  "60-admin-vehiculos": { id: "prop-vehiculos-turnos", titulo: "Vehículos · con turnos", texto: "Cada bus muestra sus turnos con la hora de ida y de vuelta. El que no tiene turnos queda marcado: sin horarios, ese bus no sale.", dibujo: mockVehiculosTurnos },
+  "62-admin-editar-bus": { id: "prop-editar-bus-turnos", titulo: "Editar bus · turnos y horarios", texto: "Código y placa, y debajo sus turnos: mañana, tarde o noche, cada uno con ida, vuelta o ambas. No se repite un turno en el mismo bus. Hoy las horas quedan fijas al asignar el bus; con esto se cambian aquí.", dibujo: mockEditarBusTurnos },
+
+  "26-conductor-familias": { id: "prop-familias", titulo: "Familias · lista simple", texto: "Solo familias: cada una con sus apoderados (nombre y parentesco) y sus hijos. Usuario y Ver clave salen de la lista, y los alumnos sin familia pasan a la pestaña Alumnos. El lápiz edita y el + crea una familia.", dibujo: mockFamilias },
+  "27-conductor-familias-ver-clave": { id: "prop-apoderado", titulo: "Detalle del apoderado", texto: "Al tocar a Rufo Jara: contacto, usuario y clave con Ver / Ocultar, y los hijos que ve. Editar y Quitar pasan aquí. El celular es de ejemplo.", dibujo: mockApoderado },
+  "36-conductor-hoja-vincular": { id: "prop-alumnos", titulo: "Alumnos · pestaña nueva", texto: "Todos los alumnos de la ruta, con su colegio y su familia. El que no tiene familia queda marcado y se puede filtrar. El + crea un alumno. Vincular se abre desde su detalle.", dibujo: mockAlumnos },
+  "30-conductor-nuevo-alumno": { id: "prop-nuevo-alumno", titulo: "Nuevo alumno · la casa sale de la familia", texto: "Solo nombre, colegio, ida o vuelta y familia. Ya no se pregunta dónde se recoge: se recoge en la casa de la familia elegida. «Sin familia» lo crea igual, sin casa, y no entra al recorrido hasta vincularlo. Cambio en la base: hoy la dirección (parada) es obligatoria en el alumno y la familia solo guarda el apellido; la parada pasaría a la familia, y Nueva familia pediría la dirección.", dibujo: mockNuevoAlumno },
+  "35-conductor-editar-alumno": { id: "prop-alumno", titulo: "Detalle del alumno · pantalla nueva", texto: "Al tocar a Mateo Jara: colegio, parada y viaje, su familia y sus apoderados. Tocar a un apoderado abre su detalle. Editar y Quitar de la ruta pasan aquí.", dibujo: () => mockAlumno(alumnosApp[0]) },
+  "35b-conductor-quitar-alumno": { id: "prop-alumno-sin-familia", titulo: "Detalle · alumno sin familia", texto: "Renzo Palomino todavía sin familia: Vincular abre la hoja de la pantalla 20.", dibujo: () => mockAlumno(alumnosApp[4]) },
+  "32-conductor-editar-familia": { id: "prop-editar-familia", titulo: "Editar familia · una pantalla", texto: "Sin Ver clave, Nueva clave ni Quitar por cada apoderado, entra todo junto: apoderados, hijos a cargo y Eliminar familia. «Nuevo alumno» lo crea ya vinculado a esta familia.", dibujo: mockEditarFamilia },
+  "33-conductor-editar-familia-abajo": { id: "prop-editar-familia-abajo", titulo: "Editar familia (abajo) · ya no hace falta", texto: "La edición entra en una pantalla: no queda segunda mitad que desplazar.", hueco: ["Ya no hace falta", "Editar familia entra en una pantalla"] }
+};
+
+const fichas = roles.flatMap(r => r.pantallas.map(([archivo, titulo, texto, tipo, estado = "captura", fuente = ""]) =>
+  ({ rol: r.id, archivo, titulo, texto, tipo, estado, fuente, tituloLargo: `${r.nombre} · ${titulo}` })));
+const contar = f => fichas.filter(f).length;
+const pasa = { todas: () => true, construidas: f => f.estado !== "por-construir", "por-construir": f => f.estado === "por-construir" };
+
+document.getElementById("cifras").innerHTML = [
+  [contar(f => f.estado === "captura"), "con captura", ""],
+  [contar(f => f.estado === "sin-captura"), "construidas sin captura", ""],
+  [contar(f => f.estado === "por-construir"), "por construir", "alerta"],
+  [roles.reduce((n, r) => n + r.falta.length, 0), "cosas por revisar", ""]
+].map(([n, t, c]) => `<div class="cifra ${c}"><strong>${n}</strong><span>${t}</span></div>`).join("");
+
+document.getElementById("filtros").insertAdjacentHTML("beforeend", filtros
+  .map(([id, texto]) => `<button type="button" class="filtro" id="filtro-${id}" data-filtro="${id}" aria-pressed="false">${texto} <small>${contar(pasa[id])}</small></button>`).join(""));
+
+document.getElementById("matriz").innerHTML = matriz
+  .map(([accion, ...c]) => `<tr><td>${accion}</td>${c.map(v => `<td class="celda"><span class="${v}">${marcas[v]}</span></td>`).join("")}</tr>`).join("");
+
+let visibles = [];
+let actual = 0;
+
+function bloquePropuesta(f, i) {
+  const p = propuestas[f.archivo];
+  if (!p || f.estado !== "captura") return "";
+  const num = String(i + 1).padStart(2, "0");
+  return `<div class="prop-marco">
+      <span class="rotulo prop-rotulo">Propuesta para ${num}</span>
+      ${p.dibujo
+        ? `<button type="button" class="telefono" data-archivo="${p.id}" aria-label="Ampliar propuesta: ${p.titulo}">${p.dibujo()}</button>`
+        : `<div class="hueco sin-pantalla" role="img" aria-label="${p.hueco.join(": ")}"><span class="icono" aria-hidden="true">✓</span><strong>${p.hueco[0]}</strong><span>${p.hueco[1]}</span></div>`}
+    </div>
+    <div class="pie prop-pie">
+      <span class="num">${num} · propuesta</span>
+      <h3>${p.titulo}</h3>
+      <p>${p.texto}</p>
+      <div class="chips"><span class="chip propuesta">Propuesta</span></div>
+    </div>`;
+}
+
+function tarjeta(f, i) {
+  const visual = f.estado === "captura"
+    ? `<button type="button" class="telefono" data-archivo="${f.archivo}" aria-label="Ampliar ${f.titulo}">
+        <img src="img/${f.archivo}.jpg" alt="${f.titulo}" loading="lazy" width="600" height="1339">
+      </button>`
+    : `<div class="hueco ${f.estado}" role="img" aria-label="${estados[f.estado]}: ${f.titulo}">
+        <span class="icono" aria-hidden="true">${f.estado === "por-construir" ? "+" : "◌"}</span>
+        <strong>${estados[f.estado]}</strong>
+        <span>${f.estado === "por-construir" ? "No existe en la app" : "Existe en el código"}</span>
+      </div>`;
+  const chipEstado = f.estado === "captura" ? "" : `<span class="chip e-${f.estado}">${estados[f.estado]}</span>`;
+  return `<figure class="pantalla" style="margin:0">
+    ${visual}
+    <figcaption class="pie">
+      <span class="num">${String(i + 1).padStart(2, "0")}</span>
+      <h3>${f.titulo}</h3>
+      <p>${f.texto}</p>
+      ${f.fuente ? `<code>${f.fuente}</code>` : ""}
+      <div class="chips"><span class="chip ${f.tipo}">${etiquetas[f.tipo]}</span>${chipEstado}</div>
+    </figcaption>
+    ${bloquePropuesta(f, i)}
+  </figure>`;
+}
+
+function pintar(filtro) {
+  const elegidas = fichas.filter(pasa[filtro]);
+  visibles = elegidas.filter(f => f.estado === "captura").flatMap(f => {
+    const p = propuestas[f.archivo];
+    return p && p.dibujo ? [f, { archivo: p.id, dibujo: p.dibujo, tituloLargo: `Propuesta · ${p.titulo}` }] : [f];
+  });
+  document.querySelectorAll(".filtro").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.filtro === filtro)));
+  document.getElementById("navRoles").innerHTML = roles
+    .map(r => `<a href="#${r.id}">${r.nombre} <small>${elegidas.filter(f => f.rol === r.id).length}</small></a>`).join("");
+  document.getElementById("secciones").innerHTML = roles.map(r => {
+    const propias = elegidas.filter(f => f.rol === r.id);
+    const conProp = propias.some(f => propuestas[f.archivo] && f.estado === "captura");
+    const galeria = propias.length
+      ? `<div class="galeria${conProp ? " con-propuestas" : ""}">${propias.map(tarjeta).join("")}</div>`
+      : `<p class="vacio">Nada por construir en este rol.</p>`;
+    return `<section class="rol" id="${r.id}" aria-labelledby="t-${r.id}">
+      <div class="rol-cabeza">
+        <h2 id="t-${r.id}">${r.nombre}</h2>
+        <span class="insignia">${propias.length} pantallas</span>
+        <span class="barra">Barra inferior: <b>${r.barra}</b></span>
+      </div>
+      <p class="rol-resumen">${r.resumen}</p>
+      <div class="dos">
+        <div class="panel"><h3>Qué ve hoy</h3><ul>${r.ve.map(x => `<li>${x}</li>`).join("")}</ul></div>
+        <div class="panel atencion"><h3>Qué falta o revisar</h3><ul>${r.falta.map(x => `<li>${x}</li>`).join("")}</ul></div>
+      </div>
+      ${r.aviso && conProp ? `<p class="aviso-prop">${r.aviso}</p>` : ""}
+      ${galeria}
+    </section>`;
+  }).join("");
+  try { localStorage.setItem("filtro-pantallas", filtro); } catch (e) {}
+}
+
+let inicial = "todas";
+try { const guardado = localStorage.getItem("filtro-pantallas"); if (guardado && pasa[guardado]) inicial = guardado; } catch (e) {}
+pintar(inicial);
+
+document.getElementById("filtros").addEventListener("click", e => {
+  const boton = e.target.closest(".filtro");
+  if (boton) pintar(boton.dataset.filtro);
+});
+
+const visor = document.getElementById("visor");
+const visorImg = document.getElementById("visorImg");
+const visorTitulo = document.getElementById("visorTitulo");
+const visorMock = document.getElementById("visorMock");
+function mostrar(i) {
+  actual = (i + visibles.length) % visibles.length;
+  const v = visibles[actual];
+  const dibujada = Boolean(v.dibujo);
+  visorImg.hidden = dibujada;
+  visorMock.hidden = !dibujada;
+  if (dibujada) {
+    visorMock.innerHTML = v.dibujo();
+  } else {
+    visorImg.src = `img/${v.archivo}.jpg`;
+    visorImg.alt = v.tituloLargo;
+  }
+  visorTitulo.textContent = v.tituloLargo;
+}
+document.getElementById("secciones").addEventListener("click", e => {
+  const boton = e.target.closest(".telefono");
+  if (!boton) return;
+  mostrar(visibles.findIndex(f => f.archivo === boton.dataset.archivo));
+  visor.showModal();
+});
+document.getElementById("visorAnt").addEventListener("click", () => mostrar(actual - 1));
+document.getElementById("visorSig").addEventListener("click", () => mostrar(actual + 1));
+document.getElementById("visorCerrar").addEventListener("click", () => visor.close());
+visor.addEventListener("click", e => { if (e.target === visor) visor.close(); });
+visor.addEventListener("keydown", e => {
+  if (e.key === "ArrowLeft") mostrar(actual - 1);
+  if (e.key === "ArrowRight") mostrar(actual + 1);
+});
+</script>
+
+
+
+
+
+</body></html>

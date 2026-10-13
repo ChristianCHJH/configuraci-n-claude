@@ -1,0 +1,3 @@
+- [Subida a Play Store](play-store-subida.md) — Gradle Play Publisher, track internal, credencial en .claves; apps movilidad y tienda
+- [Push directo a main](rama-main-directo.md) — no hay develop; commits sueltos van directo a main
+- [Sesiones en paralelo](sesiones-en-paralelo.md) — otra sesión en el repo: usar otra rama/worktree o esperar
