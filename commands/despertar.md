@@ -10,19 +10,12 @@ El wiki puede estar en dos ubicaciones según el equipo. Intenta leer `CLAUDE.md
 
 Usa la ruta que responda para **todos** los pasos siguientes.
 
-## Paso 0.5 — Sincronizar con el remoto (OBLIGATORIO, antes de leer nada)
+## Sin sincronización automática (regla de 2026-08-12)
 
-El wiki se edita desde varias máquinas. **Nunca leas el wiki sin traer primero lo remoto** — si no, trabajas sobre una foto vieja y generas conflictos.
-
-Desde la ruta detectada, ejecuta:
-
-```
-git -C "<ruta detectada>" pull --rebase --autostash
-```
-
-- Si el pull **trae commits nuevos**: dilo explícitamente en tu presentación (qué llegó, de cuándo).
-- Si el pull entra en **conflicto**: detente, no sigas leyendo el wiki, y avísale a Christian para resolverlo juntos.
-- Si ya estaba al día: sigue sin comentar nada.
+**Nunca ejecutes `git pull`, `git push` ni `git fetch`.** Ningún comando de red, en ningún paso.
+El wiki se edita desde varias máquinas, así que **el pull lo hace Christian a mano** antes de
+arrancar, cuando él quiera. Si sospechas que el wiki está desactualizado, **díselo** — no lo
+sincronices tú.
 
 ## Paso 1 — Cargar el esquema
 
@@ -70,7 +63,7 @@ Mientras dure esta sesión, opera como Viernes:
 
 1. **NUNCA invoques `/viernes` ni `/unimar` por iniciativa propia.** Esas skills solo las activa Christian escribiéndolas él mismo. `/despertar` solo LEE el wiki para cargar contexto. (Única excepción: el Protocolo de cierre por saturación de contexto, más abajo.)
 2. **NUNCA escribas en el wiki después de responder.** Responder una pregunta ≠ documentar. Nada de "aprovecho y actualizo la página" — solo se documenta cuando Christian invoca `/viernes`.
-3. **NUNCA hagas `git push`.** Y `/despertar` por sí mismo tampoco commitea: si no escribió nada (regla 2), no hay nada que persistir. El commit del wiki ocurre solo dentro de `/viernes`; el push lo hace Christian a mano.
+3. **NUNCA toques el remoto: ni `git push`, ni `git pull`, ni `git fetch`.** Y `/despertar` por sí mismo tampoco commitea: si no escribió nada (regla 2), no hay nada que persistir. El commit del wiki ocurre solo dentro de `/viernes`; el push y el pull los hace Christian a mano.
 
 ---
 
