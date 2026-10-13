@@ -1,0 +1,304 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Ubicación de cambios TMS</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+<style>
+:root {
+  --fondo: #eef2f6;
+  --papel: #ffffff;
+  --tinta: #10233a;
+  --tenue: #5a6b80;
+  --linea: #d9e1ea;
+  --marino: #12365a;
+  --marino-suave: #e3ebf4;
+  --marca: #e11d48;
+  --marca-suave: #fde8ed;
+  --si: #157347;
+  --si-suave: #e2f3ea;
+  --no: #b42318;
+  --no-suave: #fbe7e4;
+  --pregunta: #8a5a00;
+  --pregunta-suave: #fff4dc;
+  --sombra: 0 1px 2px rgba(16, 35, 58, .06), 0 6px 18px rgba(16, 35, 58, .05);
+  --letra: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #0b1622; --papel: #111f2e; --tinta: #e4ecf5; --tenue: #93a4b9; --linea: #22364c;
+    --marino: #8db8e6; --marino-suave: #16314d; --marca: #fb6f8c; --marca-suave: #3a1621;
+    --si: #5fd39a; --si-suave: #123726; --no: #ff8b7d; --no-suave: #3c1714;
+    --pregunta: #f3c564; --pregunta-suave: #33280f;
+    --sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 18px rgba(0, 0, 0, .25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fondo: #0b1622; --papel: #111f2e; --tinta: #e4ecf5; --tenue: #93a4b9; --linea: #22364c;
+  --marino: #8db8e6; --marino-suave: #16314d; --marca: #fb6f8c; --marca-suave: #3a1621;
+  --si: #5fd39a; --si-suave: #123726; --no: #ff8b7d; --no-suave: #3c1714;
+  --pregunta: #f3c564; --pregunta-suave: #33280f;
+  --sombra: 0 1px 2px rgba(0, 0, 0, .3), 0 6px 18px rgba(0, 0, 0, .25);
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--fondo); color: var(--tinta); font: 15px/1.55 var(--letra); padding-inline: 16px; padding-block: 0 64px; }
+.envoltura { max-width: 1040px; margin-inline: auto; }
+code { font-family: var(--mono); font-size: .86em; }
+
+.barra {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+  margin-inline: -16px; padding: 10px 16px;
+  background: color-mix(in srgb, var(--fondo) 88%, transparent);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--linea);
+}
+.barra-in { max-width: 1040px; margin-inline: auto; display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+.avance { display: flex; align-items: center; gap: 10px; flex: 1 1 260px; min-width: 0; }
+.avance-txt { font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap; font-size: 14px; }
+.riel { flex: 1; height: 6px; border-radius: 99px; background: var(--linea); overflow: hidden; display: flex; }
+.riel i { display: block; height: 100%; transition: width .25s ease; }
+.riel .r-si { background: var(--si); }
+.riel .r-no { background: var(--no); }
+.boton {
+  font: 600 14px var(--letra); border-radius: 8px; padding: 8px 14px; cursor: pointer;
+  border: 1px solid var(--marino); background: var(--marino); color: var(--papel);
+}
+.boton:hover { filter: brightness(1.08); }
+.boton:focus-visible, .op:focus-visible, .zoom:focus-visible, .nota:focus-visible, summary:focus-visible, .indice a:focus-visible { outline: 3px solid var(--marca); outline-offset: 2px; }
+.aviso-copia { font-size: 13px; color: var(--si); font-weight: 600; min-width: 0; }
+
+.encabezado { padding-block: 36px 8px; }
+.eyebrow { font: 600 12px var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--tenue); }
+h1 { font-size: clamp(26px, 4vw, 34px); line-height: 1.15; margin: 6px 0 10px; text-wrap: balance; letter-spacing: -.01em; }
+.bajada { max-width: 68ch; color: var(--tenue); margin: 0; }
+.bajada strong { color: var(--tinta); }
+.leyenda { display: inline-flex; align-items: center; gap: 6px; font-weight: 600; color: var(--marca); }
+.leyenda::before { content: ""; width: 18px; height: 12px; border: 2.5px solid var(--marca); border-radius: 4px; }
+.notas-entorno { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 14px; font-size: 13px; color: var(--tenue); }
+.notas-entorno span { white-space: nowrap; }
+
+.indice { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: 8px; margin-block: 22px 8px; }
+.indice a {
+  display: flex; justify-content: space-between; gap: 8px; align-items: baseline;
+  padding: 10px 12px; border-radius: 8px; background: var(--papel); border: 1px solid var(--linea);
+  color: var(--tinta); text-decoration: none; font-weight: 600; font-size: 14px;
+}
+.indice a:hover { border-color: var(--marino); }
+.rg { font: 500 12px var(--mono); color: var(--tenue); white-space: nowrap; }
+
+.seccion { margin-top: 34px; display: flex; flex-direction: column; gap: 18px; }
+.seccion h2 { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; font-size: 19px; margin: 0; padding-bottom: 8px; border-bottom: 2px solid var(--tinta); }
+
+.pedido {
+  background: var(--papel); border: 1px solid var(--linea); border-radius: 12px; box-shadow: var(--sombra);
+  padding: 18px; display: flex; flex-direction: column; gap: 14px; min-width: 0;
+  scroll-margin-top: 72px; transition: border-color .2s ease;
+}
+.pedido[data-estado="si"] { border-color: var(--si); }
+.pedido[data-estado="no"] { border-color: var(--no); }
+.cab { display: flex; gap: 12px; align-items: flex-start; }
+.num {
+  flex: none; font: 600 14px var(--mono); font-variant-numeric: tabular-nums;
+  background: var(--marca-suave); color: var(--marca); border-radius: 6px; padding: 3px 7px; margin-top: 1px;
+}
+.cab h3 { margin: 0; font-size: 17px; line-height: 1.4; font-weight: 600; text-wrap: pretty; min-width: 0; }
+.donde { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 13.5px; color: var(--tenue); }
+.ruta { background: var(--marino-suave); color: var(--marino); padding: 3px 8px; border-radius: 6px; font-weight: 600; white-space: nowrap; }
+.pasos { display: inline-flex; flex-wrap: wrap; gap: 4px 6px; align-items: center; min-width: 0; }
+.pasos .sep { color: var(--linea); font-weight: 700; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .pasos .sep { color: var(--tenue); } }
+:root[data-theme="dark"] .pasos .sep { color: var(--tenue); }
+
+.galeria { display: grid; grid-template-columns: 2fr 1fr; gap: 10px; align-items: start; }
+.galeria.sola { grid-template-columns: 1fr; }
+.galeria .fig-principal { grid-row: span 2; }
+.fig { margin: 0; display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.zoom { all: unset; cursor: zoom-in; display: block; border-radius: 8px; overflow: hidden; border: 1px solid var(--linea); line-height: 0; }
+.zoom img { width: 100%; height: auto; max-width: 100%; display: block; aspect-ratio: 16 / 9; object-fit: cover; object-position: top left; }
+.zoom:hover { border-color: var(--marino); }
+figcaption { font-size: 12.5px; color: var(--tenue); line-height: 1.4; }
+@media (max-width: 720px) {
+  .galeria { grid-template-columns: 1fr; }
+  .galeria .fig-principal { grid-row: auto; }
+}
+
+.hoy, .pregunta { margin: 0; max-width: 78ch; }
+.rot { display: inline-block; font: 600 11px var(--mono); letter-spacing: .07em; text-transform: uppercase; margin-right: 8px; padding: 2px 6px; border-radius: 4px; vertical-align: 1px; }
+.hoy .rot { background: var(--marino-suave); color: var(--marino); }
+.pregunta { background: var(--pregunta-suave); border-radius: 8px; padding: 9px 12px; font-weight: 500; }
+.pregunta .rot { background: var(--pregunta); color: var(--papel); }
+
+.codigo summary { cursor: pointer; font-size: 13px; color: var(--tenue); font-weight: 500; width: fit-content; }
+.codigo ul { margin: 8px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; }
+.codigo li { font-size: 13px; overflow-wrap: anywhere; color: var(--tenue); }
+
+.respuesta { display: flex; flex-wrap: wrap; gap: 8px 10px; align-items: center; padding-top: 12px; border-top: 1px dashed var(--linea); }
+.preg { font-weight: 600; font-size: 14px; margin-right: 2px; }
+.op {
+  font: 600 14px var(--letra); padding: 7px 13px; border-radius: 8px; cursor: pointer;
+  border: 1.5px solid var(--linea); background: var(--papel); color: var(--tinta);
+}
+.op.si:hover, .op.si[aria-pressed="true"] { border-color: var(--si); }
+.op.no:hover, .op.no[aria-pressed="true"] { border-color: var(--no); }
+.op.si[aria-pressed="true"] { background: var(--si-suave); color: var(--si); }
+.op.no[aria-pressed="true"] { background: var(--no-suave); color: var(--no); }
+.nota-et { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.nota {
+  flex: 1 1 240px; min-width: 0; font: 14px var(--letra); color: var(--tinta);
+  background: var(--fondo); border: 1px solid var(--linea); border-radius: 8px; padding: 8px 11px;
+}
+.nota::placeholder { color: var(--tenue); }
+
+.visor { border: 0; padding: 0; background: transparent; max-width: 100vw; max-height: 100vh; width: 100vw; height: 100vh; }
+.visor::backdrop { background: rgba(6, 14, 24, .86); }
+.visor-in { width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 16px; }
+.visor img { max-width: 100%; max-height: calc(100vh - 90px); border-radius: 8px; box-shadow: 0 10px 40px rgba(0, 0, 0, .5); }
+.visor p { margin: 0; color: #e4ecf5; font-size: 14px; text-align: center; }
+.visor .cerrar { position: absolute; top: 14px; right: 16px; font: 600 14px var(--letra); background: #ffffff; color: #10233a; border: 0; border-radius: 8px; padding: 8px 14px; cursor: pointer; }
+
+.pie { margin-top: 40px; font-size: 13px; color: var(--tenue); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+
+<div class="barra" role="region" aria-label="Avance de la revisión">
+  <div class="barra-in">
+    <div class="avance">
+      <span class="avance-txt" id="avance-txt">0 de 19 revisados</span>
+      <span class="riel" aria-hidden="true"><i class="r-si" id="r-si" style="width:0"></i><i class="r-no" id="r-no" style="width:0"></i></span>
+    </div>
+    <span class="aviso-copia" id="aviso-copia" role="status"></span>
+    <button type="button" class="boton" id="copiar">Copiar respuestas</button>
+  </div>
+</div>
+
+<main class="envoltura">
+  <header class="encabezado">
+    <div class="eyebrow">TMS Unimar · pedidos de la reunión</div>
+    <h1>¿Es esta la pantalla de cada cambio?</h1>
+    <p class="bajada">Una ficha por pedido, con la captura y <span class="leyenda">el punto exacto</span> marcado. Marca <strong>Sí</strong> o <strong>No</strong> en cada una y pulsa <strong>Copiar respuestas</strong> para pegármelas en el chat.</p>
+    <div class="notas-entorno">
+      <span>Capturas del 02/10/2026</span>
+      <span>Ambiente local, datos de prueba E2E</span>
+      <span>Nada se guardó: solo se abrieron pantallas</span>
+    </div>
+    <nav class="indice" aria-label="Secciones"><a href="#s-inicio"><span>Inicio de planificación y cargas</span><span class="rg">1–2</span></a><a href="#s-clasificacion"><span>Clasificación y consolidado por nave</span><span class="rg">3–6</span></a><a href="#s-citas"><span>Citas de transporte</span><span class="rg">7–14</span></a><a href="#s-asignacion"><span>Asignación</span><span class="rg">15–16</span></a><a href="#s-general"><span>General</span><span class="rg">17–19</span></a></nav>
+  </header>
+  <section class="seccion" id="s-inicio"><h2>Inicio de planificación y cargas<span class="rg">2 pedidos</span></h2><article class="pedido" id="p1" data-n="1"><header class="cab"><span class="num">01</span><h3>Cambiar el texto «Iniciar y crear 17 viajes» por la cantidad de citas ingresadas.</h3></header><div class="donde"><code class="ruta">/consolidado-nave</code><span class="pasos"><span>Consolidado por nave</span><span class="sep" aria-hidden="true">›</span><span>desplegar la nave</span><span class="sep" aria-hidden="true">›</span><span>Iniciar en la fila RD</span><span class="sep" aria-hidden="true">›</span><span>Cargar las citas ahora</span><span class="sep" aria-hidden="true">›</span><span>Continuar</span></span></div><div class="galeria"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/01b-iniciar-grilla.webp" data-pie="Grilla con 3 citas pegadas: el botón dice «6 viajes»" aria-label="Ampliar: Grilla con 3 citas pegadas: el botón dice «6 viajes»"><img src="img/01b-iniciar-grilla.webp" alt="Grilla con 3 citas pegadas: el botón dice «6 viajes»" loading="lazy" width="1600" height="900"></button><figcaption>Grilla con 3 citas pegadas: el botón dice «6 viajes»</figcaption></figure><figure class="fig"><button type="button" class="zoom" data-src="img/01a-iniciar-paso1.webp" data-pie="Paso 1: el mismo texto sale con «Crear N viajes sin cita»" aria-label="Ampliar: Paso 1: el mismo texto sale con «Crear N viajes sin cita»"><img src="img/01a-iniciar-paso1.webp" alt="Paso 1: el mismo texto sale con «Crear N viajes sin cita»" loading="lazy" width="1600" height="900"></button><figcaption>Paso 1: el mismo texto sale con «Crear N viajes sin cita»</figcaption></figure><figure class="fig"><button type="button" class="zoom" data-src="img/01-iniciar-boton.webp" data-pie="Dónde se abre: botón Iniciar de la RD" aria-label="Ampliar: Dónde se abre: botón Iniciar de la RD"><img src="img/01-iniciar-boton.webp" alt="Dónde se abre: botón Iniciar de la RD" loading="lazy" width="1600" height="900"></button><figcaption>Dónde se abre: botón Iniciar de la RD</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>El número del botón cuenta las filas de la grilla, que nacen una por contenedor. Con 3 citas pegadas y 3 filas vacías dice «Iniciar y crear 6 viajes». El texto sale en dos lugares: el paso 1 y la grilla.</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · consolidado-nave/componentes/modal-carga-al-iniciar.tsx:76-79</code></li><li><code>web · consolidado-nave/componentes/modal-iniciar-planificacion.tsx:127-132</code></li><li><code>web · consolidado-nave/aplicacion/use-inicio-de-planificacion.ts:88-100</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 1?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-1">Nota</label><input id="nota-1" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p2" data-n="2"><header class="cab"><span class="num">02</span><h3>Mostrar la cantidad de BL en la parte inferior del detalle de la carga.</h3></header><div class="donde"><code class="ruta">/consolidado-nave  ·  /carga-archivo/:id</code><span class="pasos"><span>Consolidado por nave</span><span class="sep" aria-hidden="true">›</span><span>desplegar la nave</span><span class="sep" aria-hidden="true">›</span><span>Ver N cargas</span></span></div><div class="galeria"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/02a-cargas-pie.webp" data-pie="Opción A: pie del modal de cargas («8 cargas movidas en esta versión»)" aria-label="Ampliar: Opción A: pie del modal de cargas («8 cargas movidas en esta versión»)"><img src="img/02a-cargas-pie.webp" alt="Opción A: pie del modal de cargas («8 cargas movidas en esta versión»)" loading="lazy" width="1600" height="900"></button><figcaption>Opción A: pie del modal de cargas («8 cargas movidas en esta versión»)</figcaption></figure><figure class="fig"><button type="button" class="zoom" data-src="img/02b-detalle-archivo.webp" data-pie="Opción B: detalle del archivo subido («8 filas · 8 se cargaron»)" aria-label="Ampliar: Opción B: detalle del archivo subido («8 filas · 8 se cargaron»)"><img src="img/02b-detalle-archivo.webp" alt="Opción B: detalle del archivo subido («8 filas · 8 se cargaron»)" loading="lazy" width="1600" height="900"></button><figcaption>Opción B: detalle del archivo subido («8 filas · 8 se cargaron»)</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>Ninguna pantalla cuenta BL hoy. El modal de cargas lista un BL por fila y su pie solo dice cuántas cargas hay.</p><p class="pregunta"><span class="rot">Pregunta</span>¿Es la opción A (pie del modal de cargas) o la B (detalle del archivo)?</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · consolidado-nave/componentes/modal-cargas-version.tsx:159-186</code></li><li><code>web · carga-archivo/paginas/detalle-carga-archivo.tsx:166-196</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 2?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-2">Nota</label><input id="nota-2" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article></section><section class="seccion" id="s-clasificacion"><h2>Clasificación y consolidado por nave<span class="rg">4 pedidos</span></h2><article class="pedido" id="p3" data-n="3"><header class="cab"><span class="num">03</span><h3>Lógica de clasificación combinada: IMO + OOG + ISO.</h3></header><div class="donde"><code class="ruta">/consolidado-nave</code><span class="pasos"><span>Consolidado por nave</span><span class="sep" aria-hidden="true">›</span><span>Ver N cargas</span><span class="sep" aria-hidden="true">›</span><span>clic en la clasificación de una carga</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/03-clasificacion.webp" data-pie="Menú de clasificación de una carga" aria-label="Ampliar: Menú de clasificación de una carga"><img src="img/03-clasificacion.webp" alt="Menú de clasificación de una carga" loading="lazy" width="1600" height="900"></button><figcaption>Menú de clasificación de una carga</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>IMO y REFRIG vienen del reporte. IQBF, OOG y SENSIBLE se marcan a mano. Se pueden combinar. ISO no existe como clasificación: solo están las columnas Tamaño y Tipo.</p><p class="pregunta"><span class="rot">Pregunta</span>¿ISO se refiere al código ISO del contenedor (tamaño y tipo, p. ej. 22G1)?</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · consolidado-nave/componentes/menu-clasificacion.tsx:13-161</code></li><li><code>api · relacion-detallada/domain/clasificacion-carga.ts:4-10</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 3?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-3">Nota</label><input id="nota-3" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p4" data-n="4"><header class="cab"><span class="num">04</span><h3>Pantalla consolidado por nave: contadores por tipo de carga.</h3></header><div class="donde"><code class="ruta">/consolidado-nave</code><span class="pasos"><span>Consolidado por nave</span><span class="sep" aria-hidden="true">›</span><span>columnas «Conteo por tipo»</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/04-contadores.webp" data-pie="Grupo «Conteo por tipo»: Norm, IMO, IQBF, Ref, OOG, Sens" aria-label="Ampliar: Grupo «Conteo por tipo»: Norm, IMO, IQBF, Ref, OOG, Sens"><img src="img/04-contadores.webp" alt="Grupo «Conteo por tipo»: Norm, IMO, IQBF, Ref, OOG, Sens" loading="lazy" width="1600" height="900"></button><figcaption>Grupo «Conteo por tipo»: Norm, IMO, IQBF, Ref, OOG, Sens</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>Solo IMO y REF tienen número. IQBF, OOG y Sens siempre muestran «—». Una carga que solo es OOG suma en Norm.</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · consolidado-nave/componentes/tabla-de-naves.constantes.ts:16-27</code></li><li><code>api · relacion-detallada/infrastructure/persistence/sentencias-consolidado-nave.ts:139-144</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 4?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-4">Nota</label><input id="nota-4" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p5" data-n="5"><header class="cab"><span class="num">05</span><h3>Bug: al marcar OOG / IMO / sensible no se ve en pantalla ni en el contador hasta recargar la página.</h3></header><div class="donde"><code class="ruta">/consolidado-nave</code><span class="pasos"><span>Consolidado por nave</span><span class="sep" aria-hidden="true">›</span><span>Ver N cargas</span><span class="sep" aria-hidden="true">›</span><span>clic en la clasificación</span><span class="sep" aria-hidden="true">›</span><span>marcar</span><span class="sep" aria-hidden="true">›</span><span>Guardar</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/05-bug-clasificacion.webp" data-pie="OOG marcado, a punto de guardar" aria-label="Ampliar: OOG marcado, a punto de guardar"><img src="img/05-bug-clasificacion.webp" alt="OOG marcado, a punto de guardar" loading="lazy" width="1600" height="900"></button><figcaption>OOG marcado, a punto de guardar</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>No guardé para no cambiar datos. El arreglo va en lo que se refresca después de «Guardar»: la fila del modal y el contador del consolidado.</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · consolidado-nave/aplicacion/use-clasificacion-de-carga.ts:26-45</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 5?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-5">Nota</label><input id="nota-5" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p6" data-n="6"><header class="cab"><span class="num">06</span><h3>Bug: el contador no está contando OOG.</h3></header><div class="donde"><code class="ruta">/consolidado-nave</code><span class="pasos"><span>Consolidado por nave</span><span class="sep" aria-hidden="true">›</span><span>columna OOG</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/06-oog.webp" data-pie="Columna OOG: siempre «—»" aria-label="Ampliar: Columna OOG: siempre «—»"><img src="img/06-oog.webp" alt="Columna OOG: siempre «—»" loading="lazy" width="1600" height="900"></button><figcaption>Columna OOG: siempre «—»</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>La columna OOG no tiene dato detrás (valor nulo en la web) y la consulta de la API solo cuenta IMO y REFRIG. Lo mismo pasa con IQBF y Sens.</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · consolidado-nave/componentes/tabla-de-naves.constantes.ts:25</code></li><li><code>api · relacion-detallada/infrastructure/persistence/sentencias-consolidado-nave.ts:212-214</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 6?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-6">Nota</label><input id="nota-6" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article></section><section class="seccion" id="s-citas"><h2>Citas de transporte<span class="rg">8 pedidos</span></h2><article class="pedido" id="p7" data-n="7"><header class="cab"><span class="num">07</span><h3>Validar el formato de la carga de citas (N° de cita / fecha / hora) por terminal: APM, DPW, Chancay, TPP.</h3></header><div class="donde"><code class="ruta">/consolidado-nave</code><span class="pasos"><span>Iniciar en la fila RD</span><span class="sep" aria-hidden="true">›</span><span>Cargar las citas ahora</span><span class="sep" aria-hidden="true">›</span><span>Continuar</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/07-grilla-citas.webp" data-pie="Grilla donde se pegan las citas desde Excel" aria-label="Ampliar: Grilla donde se pegan las citas desde Excel"><img src="img/07-grilla-citas.webp" alt="Grilla donde se pegan las citas desde Excel" loading="lazy" width="1600" height="900"></button><figcaption>Grilla donde se pegan las citas desde Excel</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>Es una sola grilla para todas las terminales. Acepta fecha dd/mm/aaaa o ISO y hora hh:mm o hhmm. No hay nada distinto por terminal.</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · consolidado-nave/aplicacion/grilla-de-citas.ts:21-37</code></li><li><code>api · planificacion/domain/inicio-de-planificacion.ts:51-77</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 7?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-7">Nota</label><input id="nota-7" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p8" data-n="8"><header class="cab"><span class="num">08</span><h3>Permitir cambiar / modificar la fecha de una cita.</h3></header><div class="donde"><code class="ruta">/planificacion-citas</code><span class="pasos"><span>Citas de transporte</span><span class="sep" aria-hidden="true">›</span><span>Editar en la fila</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/08-editar-fecha.webp" data-pie="Modal «Editar viaje»: fecha y hora de la cita" aria-label="Ampliar: Modal «Editar viaje»: fecha y hora de la cita"><img src="img/08-editar-fecha.webp" alt="Modal «Editar viaje»: fecha y hora de la cita" loading="lazy" width="1600" height="900"></button><figcaption>Modal «Editar viaje»: fecha y hora de la cita</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>Ya se puede cambiar fecha y hora desde «Editar viaje». El cambio alcanza a todos los viajes de esa cita.</p><p class="pregunta"><span class="rot">Pregunta</span>Si ya existe, ¿qué es lo que no deja? ¿Cambiarla en otro estado, o desde otra pantalla?</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · planificacion-citas/componentes/campos-de-la-cita.tsx:48-58</code></li><li><code>api · planificacion/infrastructure/persistence/sentencias-editor-de-servicio.ts:84-98</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 8?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-8">Nota</label><input id="nota-8" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p9" data-n="9"><header class="cab"><span class="num">09</span><h3>Corregir el caso de cita múltiple. Por aclarar el detalle.</h3></header><div class="donde"><code class="ruta">/planificacion-citas</code><span class="pasos"><span>Citas de transporte</span><span class="sep" aria-hidden="true">›</span><span>Agregar servicio</span><span class="sep" aria-hidden="true">›</span><span>escribir un N° de cita que ya existe</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/09-cita-multiple.webp" data-pie="Un N° repetido se suma a la cita existente" aria-label="Ampliar: Un N° repetido se suma a la cita existente"><img src="img/09-cita-multiple.webp" alt="Un N° repetido se suma a la cita existente" loading="lazy" width="1600" height="900"></button><figcaption>Un N° repetido se suma a la cita existente</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>Un servicio nuevo con un N° que ya existe en la terminal se suma a esa cita y hereda su fecha y hora. «Registrar cita» manda un solo servicio, aunque la API acepta varios.</p><p class="pregunta"><span class="rot">Pregunta</span>La lista dice «por aclarar». ¿Es este caso?</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · planificacion-citas/componentes/modal-agregar-servicio.tsx:208-237</code></li><li><code>web · planificacion-citas/aplicacion/use-registro-de-cita.ts:89</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 9?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-9">Nota</label><input id="nota-9" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p10" data-n="10"><header class="cab"><span class="num">10</span><h3>Al agregar un servicio, revisar qué campos se copian.</h3></header><div class="donde"><code class="ruta">/planificacion-citas</code><span class="pasos"><span>Citas de transporte</span><span class="sep" aria-hidden="true">›</span><span>Agregar servicio</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/10-agregar-servicio.webp" data-pie="Formulario «Agregar servicio de transporte»" aria-label="Ampliar: Formulario «Agregar servicio de transporte»"><img src="img/10-agregar-servicio.webp" alt="Formulario «Agregar servicio de transporte»" loading="lazy" width="1600" height="900"></button><figcaption>Formulario «Agregar servicio de transporte»</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>Copia fecha y hora si la cita ya existe. Al elegir la placa trae el transportista y el conductor habituales. No copia la nave (la columna Nave queda vacía) y crea una planificación nueva por cada servicio.</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · planificacion-citas/aplicacion/use-formulario-servicio.ts:20-44</code></li><li><code>api · planificacion/infrastructure/persistence/fila-del-servicio-manual.ts:44-75</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 10?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-10">Nota</label><input id="nota-10" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p11" data-n="11"><header class="cab"><span class="num">11</span><h3>Ordenar el listado por la cita más próxima.</h3></header><div class="donde"><code class="ruta">/planificacion-citas</code><span class="pasos"><span>Citas de transporte</span><span class="sep" aria-hidden="true">›</span><span>columna Hora · Fecha</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/11-orden.webp" data-pie="Listado de servicios" aria-label="Ampliar: Listado de servicios"><img src="img/11-orden.webp" alt="Listado de servicios" loading="lazy" width="1600" height="900"></button><figcaption>Listado de servicios</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>Hoy salen primero los que no tienen cita y después por fecha de cita de mayor a menor: la más lejana queda arriba.</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>api · planificacion/infrastructure/persistence/sentencias-consulta-servicios.ts:276-278</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 11?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-11">Nota</label><input id="nota-11" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p12" data-n="12"><header class="cab"><span class="num">12</span><h3>Filtros: al elegir el tipo de operación, mostrar solo las columnas de esa operación.</h3></header><div class="donde"><code class="ruta">/planificacion-citas</code><span class="pasos"><span>Citas de transporte</span><span class="sep" aria-hidden="true">›</span><span>filtro Operación</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/12-filtros.webp" data-pie="Filtro de operación y columnas del listado" aria-label="Ampliar: Filtro de operación y columnas del listado"><img src="img/12-filtros.webp" alt="Filtro de operación y columnas del listado" loading="lazy" width="1600" height="900"></button><figcaption>Filtro de operación y columnas del listado</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>El filtro esconde filas, no columnas. Las 12 columnas son las mismas para importación y exportación.</p><p class="pregunta"><span class="rot">Pregunta</span>¿Qué columnas van solo en importación y cuáles solo en exportación?</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · planificacion-citas/componentes/filtros-de-servicios.tsx:18-73</code></li><li><code>web · planificacion-citas/componentes/tabla-de-servicios.tsx:27-89</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 12?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-12">Nota</label><input id="nota-12" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p13" data-n="13"><header class="cab"><span class="num">13</span><h3>Planificación: al agregar una cita nueva, la carga debe ser masiva, no de una en una.</h3></header><div class="donde"><code class="ruta">/planificacion-citas</code><span class="pasos"><span>Citas de transporte</span><span class="sep" aria-hidden="true">›</span><span>Registrar cita en cada fila sin cita</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/13-registrar-cita.webp" data-pie="«Registrar cita», fila por fila (captura del recorrido del 1 de octubre)" aria-label="Ampliar: «Registrar cita», fila por fila (captura del recorrido del 1 de octubre)"><img src="img/13-registrar-cita.webp" alt="«Registrar cita», fila por fila (captura del recorrido del 1 de octubre)" loading="lazy" width="1600" height="900"></button><figcaption>«Registrar cita», fila por fila (captura del recorrido del 1 de octubre)</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>Cada servicio sin cita tiene su botón «Registrar cita» y se registra uno a la vez. Hoy no hay servicios sin cita en la base local, por eso la captura es del recorrido del 1 de octubre.</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · planificacion-citas/componentes/celdas-de-servicio.tsx:98-103</code></li><li><code>web · planificacion-citas/aplicacion/use-registro-de-cita.ts:87-96</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 13?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-13">Nota</label><input id="nota-13" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p14" data-n="14"><header class="cab"><span class="num">14</span><h3>Al crear viajes en una planificación que ya tiene viajes: crear solo los de las citas que se están completando, no uno por cada posición. Si no se puede saber, preguntar antes de crear.</h3></header><div class="donde"><code class="ruta">/consolidado-nave  ·  /planificacion-citas</code><span class="pasos"><span>Iniciar en la fila RD</span><span class="sep" aria-hidden="true">›</span><span>Crear N viajes sin cita  o  Cargar las citas ahora</span></span></div><div class="galeria"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/01a-iniciar-paso1.webp" data-pie="«Crear 6 viajes sin cita»: un viaje por contenedor" aria-label="Ampliar: «Crear 6 viajes sin cita»: un viaje por contenedor"><img src="img/01a-iniciar-paso1.webp" alt="«Crear 6 viajes sin cita»: un viaje por contenedor" loading="lazy" width="1600" height="900"></button><figcaption>«Crear 6 viajes sin cita»: un viaje por contenedor</figcaption></figure><figure class="fig"><button type="button" class="zoom" data-src="img/01b-iniciar-grilla.webp" data-pie="En la grilla, las filas sin cita también se crean («3 sin cita, se registran después»)" aria-label="Ampliar: En la grilla, las filas sin cita también se crean («3 sin cita, se registran después»)"><img src="img/01b-iniciar-grilla.webp" alt="En la grilla, las filas sin cita también se crean («3 sin cita, se registran después»)" loading="lazy" width="1600" height="900"></button><figcaption>En la grilla, las filas sin cita también se crean («3 sin cita, se registran después»)</figcaption></figure><figure class="fig"><button type="button" class="zoom" data-src="img/14b-carga-suelta.webp" data-pie="Otra vía: «Planificar carga suelta», con «Añadir viaje»" aria-label="Ampliar: Otra vía: «Planificar carga suelta», con «Añadir viaje»"><img src="img/14b-carga-suelta.webp" alt="Otra vía: «Planificar carga suelta», con «Añadir viaje»" loading="lazy" width="1600" height="900"></button><figcaption>Otra vía: «Planificar carga suelta», con «Añadir viaje»</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>Al iniciar una RD se crea un viaje por contenedor. En la grilla cada fila es un viaje, tenga cita o no. Una RD ya iniciada no deja crear más viajes.</p><p class="pregunta"><span class="rot">Pregunta</span>¿El caso es una RD nueva (RD2) de una nave que ya tiene viajes, o la carga suelta?</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · consolidado-nave/aplicacion/use-inicio-de-planificacion.ts:48</code></li><li><code>web · consolidado-nave/componentes/opciones-de-inicio.tsx:28</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 14?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-14">Nota</label><input id="nota-14" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article></section><section class="seccion" id="s-asignacion"><h2>Asignación<span class="rg">2 pedidos</span></h2><article class="pedido" id="p15" data-n="15"><header class="cab"><span class="num">15</span><h3>Renombrar «Asignar viaje» por «Asignar». Alternativas: «Asignar transportista» / «Asignar transporte». Falta elegir el texto final.</h3></header><div class="donde"><code class="ruta">/planificacion-citas</code><span class="pasos"><span>Citas de transporte</span><span class="sep" aria-hidden="true">›</span><span>Asignar viaje en la fila</span></span></div><div class="galeria"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/15a-asignar-boton.webp" data-pie="Botón en la fila" aria-label="Ampliar: Botón en la fila"><img src="img/15a-asignar-boton.webp" alt="Botón en la fila" loading="lazy" width="1600" height="900"></button><figcaption>Botón en la fila</figcaption></figure><figure class="fig"><button type="button" class="zoom" data-src="img/16-asignar-transportista.webp" data-pie="Título del modal" aria-label="Ampliar: Título del modal"><img src="img/16-asignar-transportista.webp" alt="Título del modal" loading="lazy" width="1600" height="900"></button><figcaption>Título del modal</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>El texto sale en el botón de la fila y en el título del modal.</p><p class="pregunta"><span class="rot">Pregunta</span>¿Cuál queda: «Asignar», «Asignar transportista» o «Asignar transporte»?</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · planificacion-citas/componentes/celdas-de-servicio.tsx:104-106</code></li><li><code>web · planificacion-citas/componentes/modal-asignar-viaje.tsx:16-94</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 15?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-15">Nota</label><input id="nota-15" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p16" data-n="16"><header class="cab"><span class="num">16</span><h3>No permitir cambiar los datos del transportista: se traen de SAP.</h3></header><div class="donde"><code class="ruta">/planificacion-citas</code><span class="pasos"><span>Citas de transporte</span><span class="sep" aria-hidden="true">›</span><span>Asignar viaje</span><span class="sep" aria-hidden="true">›</span><span>campo Transportista</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/16-asignar-transportista.webp" data-pie="Modal «Asignar viaje»: transportista" aria-label="Ampliar: Modal «Asignar viaje»: transportista"><img src="img/16-asignar-transportista.webp" alt="Modal «Asignar viaje»: transportista" loading="lazy" width="1600" height="900"></button><figcaption>Modal «Asignar viaje»: transportista</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>Al elegir la placa se trae el transportista habitual, pero el campo sigue siendo un selector que se puede cambiar por otro del maestro.</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · planificacion-citas/componentes/selectores-del-viaje.tsx:26-39</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 16?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-16">Nota</label><input id="nota-16" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article></section><section class="seccion" id="s-general"><h2>General<span class="rg">3 pedidos</span></h2><article class="pedido" id="p17" data-n="17"><header class="cab"><span class="num">17</span><h3>Ordenar las opciones del menú y mejorar cómo se ve.</h3></header><div class="donde"><code class="ruta">menú lateral</code><span class="pasos"><span>botón ☰ arriba a la izquierda</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/17-menu.webp" data-pie="Menú lateral desplegado" aria-label="Ampliar: Menú lateral desplegado"><img src="img/17-menu.webp" alt="Menú lateral desplegado" loading="lazy" width="1600" height="900"></button><figcaption>Menú lateral desplegado</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>Dos grupos: Operación (Carga de Archivo, Consolidado por nave, Citas de transporte) y Mantenimientos (7 opciones). El orden sale de un solo catálogo.</p><p class="pregunta"><span class="rot">Pregunta</span>¿En qué orden van?</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · app/catalogo-de-pantallas.ts:33-140</code></li><li><code>web · app/armazon/menu-de-navegacion.tsx</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 17?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-17">Nota</label><input id="nota-17" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p18" data-n="18"><header class="cab"><span class="num">18</span><h3>Ampliar el tiempo de inactividad antes de cerrar la sesión.</h3></header><div class="donde"><code class="ruta">/login</code><span class="pasos"><span>pantalla a la que vuelve la sesión al vencer</span></span></div><div class="galeria sola"><figure class="fig fig-principal"><button type="button" class="zoom" data-src="img/18-login.webp" data-pie="Login: a donde vuelve la sesión al vencer" aria-label="Ampliar: Login: a donde vuelve la sesión al vencer"><img src="img/18-login.webp" alt="Login: a donde vuelve la sesión al vencer" loading="lazy" width="1600" height="900"></button><figcaption>Login: a donde vuelve la sesión al vencer</figcaption></figure></div><p class="hoy"><span class="rot">Hoy</span>El TMS no mide inactividad. La sesión dura lo que fija UMS y se renueva 5 minutos antes de vencer. El tiempo se configura en UMS, no en el TMS.</p><p class="pregunta"><span class="rot">Pregunta</span>¿El cambio se hace en la configuración de UMS?</p><details class="codigo"><summary>Dónde está en el código</summary><ul><li><code>web · nucleo/sesion/proveedor-sesion.tsx:20, 57-92</code></li><li><code>web · nucleo/sesion/permisos.ts:115-121</code></li></ul></details><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 18?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-18">Nota</label><input id="nota-18" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article><article class="pedido" id="p19" data-n="19"><header class="cab"><span class="num">19</span><h3>Cargar la data en QA (pendiente).</h3></header><p class="hoy"><span class="rot">Hoy</span>No es una pantalla: es una tarea de despliegue. Sin captura.</p><div class="respuesta" role="group" aria-label="¿Es la pantalla del pedido 19?"><span class="preg">¿Es aquí?</span><button type="button" class="op si" data-valor="si" aria-pressed="false">Sí, es aquí</button><button type="button" class="op no" data-valor="no" aria-pressed="false">No es aquí</button><label class="nota-et" for="nota-19">Nota</label><input id="nota-19" class="nota" type="text" placeholder="Opcional: dónde sí es, o qué falta"></div></article></section>
+  <p class="pie">Clic en cualquier captura para verla en grande. Tus respuestas quedan guardadas en este navegador.</p>
+</main>
+
+<dialog class="visor" id="visor" aria-label="Captura ampliada">
+  <div class="visor-in">
+    <button type="button" class="cerrar" id="visor-cerrar">Cerrar</button>
+    <img id="visor-img" alt="">
+    <p id="visor-pie"></p>
+  </div>
+</dialog>
+
+<script>
+(function () {
+  var CLAVE = 'tms-ubicacion-cambios-v1';
+  var pedidos = Array.prototype.slice.call(document.querySelectorAll('.pedido'));
+  var total = pedidos.length;
+  var estado = {};
+  try { estado = JSON.parse(localStorage.getItem(CLAVE) || '{}') || {}; } catch (e) { estado = {}; }
+
+  function guardar() {
+    try { localStorage.setItem(CLAVE, JSON.stringify(estado)); } catch (e) {}
+  }
+
+  function pintar(art) {
+    var n = art.dataset.n;
+    var r = estado[n] || {};
+    art.dataset.estado = r.valor || '';
+    art.querySelectorAll('.op').forEach(function (b) {
+      b.setAttribute('aria-pressed', String(b.dataset.valor === r.valor));
+    });
+    var nota = art.querySelector('.nota');
+    if (nota && document.activeElement !== nota) nota.value = r.nota || '';
+  }
+
+  function avance() {
+    var si = 0, no = 0;
+    pedidos.forEach(function (art) {
+      var r = estado[art.dataset.n];
+      if (r && r.valor === 'si') si++;
+      if (r && r.valor === 'no') no++;
+    });
+    document.getElementById('avance-txt').textContent = (si + no) + ' de ' + total + ' revisados';
+    document.getElementById('r-si').style.width = (si / total * 100) + '%';
+    document.getElementById('r-no').style.width = (no / total * 100) + '%';
+  }
+
+  pedidos.forEach(function (art) {
+    var n = art.dataset.n;
+    art.querySelectorAll('.op').forEach(function (b) {
+      b.addEventListener('click', function () {
+        var r = estado[n] || {};
+        r.valor = r.valor === b.dataset.valor ? '' : b.dataset.valor;
+        estado[n] = r;
+        guardar(); pintar(art); avance();
+      });
+    });
+    var nota = art.querySelector('.nota');
+    nota.addEventListener('input', function () {
+      var r = estado[n] || {};
+      r.nota = nota.value;
+      estado[n] = r;
+      guardar();
+    });
+    pintar(art);
+  });
+  avance();
+
+  function resumen() {
+    var lineas = ['Revisión de pantallas TMS:'];
+    pedidos.forEach(function (art) {
+      var n = art.dataset.n;
+      var r = estado[n] || {};
+      var marca = r.valor === 'si' ? 'sí' : r.valor === 'no' ? 'NO' : 'sin revisar';
+      lineas.push(n + ' ' + marca + (r.nota ? ' — ' + r.nota.trim() : ''));
+    });
+    return lineas.join('\n');
+  }
+
+  var aviso = document.getElementById('aviso-copia');
+  document.getElementById('copiar').addEventListener('click', function () {
+    var texto = resumen();
+    function respaldo() {
+      var area = document.createElement('textarea');
+      area.value = texto; area.setAttribute('readonly', '');
+      area.style.position = 'fixed'; area.style.opacity = '0';
+      document.body.appendChild(area); area.select();
+      var ok = false;
+      try { ok = document.execCommand('copy'); } catch (e) {}
+      document.body.removeChild(area);
+      aviso.textContent = ok ? 'Copiado. Pégalo en el chat.' : 'No se pudo copiar: selecciona el texto a mano.';
+    }
+    try {
+      navigator.clipboard.writeText(texto).then(function () {
+        aviso.textContent = 'Copiado. Pégalo en el chat.';
+      }, respaldo);
+    } catch (e) { respaldo(); }
+    setTimeout(function () { aviso.textContent = ''; }, 4000);
+  });
+
+  var visor = document.getElementById('visor');
+  var visorImg = document.getElementById('visor-img');
+  var visorPie = document.getElementById('visor-pie');
+  document.querySelectorAll('.zoom').forEach(function (b) {
+    b.addEventListener('click', function () {
+      visorImg.src = b.dataset.src;
+      visorImg.alt = b.dataset.pie;
+      visorPie.textContent = b.dataset.pie;
+      if (typeof visor.showModal === 'function') visor.showModal();
+    });
+  });
+  document.getElementById('visor-cerrar').addEventListener('click', function () { visor.close(); });
+  visor.addEventListener('click', function (ev) { if (ev.target === visor || ev.target.classList.contains('visor-in')) visor.close(); });
+})();
+</script>
+
+</body></html>

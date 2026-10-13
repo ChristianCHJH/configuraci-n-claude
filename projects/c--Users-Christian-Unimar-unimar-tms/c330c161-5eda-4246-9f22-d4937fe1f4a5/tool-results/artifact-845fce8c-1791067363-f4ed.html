@@ -1,0 +1,1036 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Observaciones del PR 125</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#f3f5f5;--surface:#ffffff;--surface-2:#eaeff0;--ink:#16212a;--muted:#56666e;--line:#d6dee0;
+  --accent:#1d4e89;--si:#c2410c;--si-soft:#fbe7dc;--no:#2a7a57;--no-soft:#dcf0e6;
+  --rojo:#b42318;--rojo-soft:#fde4e1;--ambar:#9a6412;--ambar-soft:#f8ecd2;--gris:#4f6b7c;--gris-soft:#e3ebf0;
+  --font-display:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --font-body:"Atkinson Hyperlegible","Segoe UI",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",Consolas,"Courier New",monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0e1417;--surface:#162026;--surface-2:#1d2a31;--ink:#e3ebee;--muted:#93a5ad;--line:#2a3940;
+  --accent:#86b4ee;--si:#f28c50;--si-soft:#3a2418;--no:#5fc79c;--no-soft:#173328;
+  --rojo:#f2786d;--rojo-soft:#3b1d1a;--ambar:#e2b45a;--ambar-soft:#352a14;--gris:#a5bccb;--gris-soft:#22323b;color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0e1417;--surface:#162026;--surface-2:#1d2a31;--ink:#e3ebee;--muted:#93a5ad;--line:#2a3940;
+  --accent:#86b4ee;--si:#f28c50;--si-soft:#3a2418;--no:#5fc79c;--no-soft:#173328;
+  --rojo:#f2786d;--rojo-soft:#3b1d1a;--ambar:#e2b45a;--ambar-soft:#352a14;--gris:#a5bccb;--gris-soft:#22323b;color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--font-body);font-size:16px;line-height:1.55;margin:0}
+.envoltura{max-width:960px;margin:0 auto;padding-inline:16px;padding-block:28px 64px;display:flex;flex-direction:column;gap:28px}
+h1,h2,h3{font-family:var(--font-display);text-wrap:balance;margin:0;line-height:1.15}
+h1{font-size:clamp(1.8rem,4.5vw,2.6rem);font-weight:800;letter-spacing:-.01em}
+h2{font-size:1.25rem;font-weight:800}
+code{font-family:var(--font-mono);font-size:.86em;background:var(--surface-2);padding:.08em .35em;border-radius:4px;overflow-wrap:anywhere}
+a{color:var(--accent)}
+.ceja{font-family:var(--font-mono);font-size:.8rem;color:var(--muted);letter-spacing:.04em;text-transform:uppercase}
+.cabecera{display:flex;flex-direction:column;gap:10px}
+.cabecera p{margin:0;color:var(--muted);max-width:68ch}
+.bloqueo{border:1px solid var(--rojo);background:var(--rojo-soft);border-radius:10px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start}
+.bloqueo strong{color:var(--rojo)}
+.selector{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.opcion{all:unset;cursor:pointer;border:2px solid var(--line);background:var(--surface);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:4px;min-width:0}
+.opcion:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.opcion .cifra{font-family:var(--font-display);font-weight:800;font-size:clamp(2.2rem,7vw,3.2rem);line-height:1;font-variant-numeric:tabular-nums}
+.opcion .rotulo{font-weight:700;font-size:1.05rem}
+.opcion .ayuda{color:var(--muted);font-size:.9rem}
+.opcion.si .cifra{color:var(--si)}
+.opcion.no .cifra{color:var(--no)}
+.opcion.si[aria-pressed="true"]{border-color:var(--si);background:var(--si-soft)}
+.opcion.no[aria-pressed="true"]{border-color:var(--no);background:var(--no-soft)}
+.barra{display:flex;height:12px;border-radius:99px;overflow:hidden;background:var(--surface-2)}
+.barra span{display:block;height:100%}
+.barra .b-si{background:var(--si)}
+.barra .b-no{background:var(--no)}
+.leyenda-barra{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.88rem;color:var(--muted)}
+.ver-todas{all:unset;cursor:pointer;color:var(--accent);font-weight:700;font-size:.92rem}
+.ver-todas:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.criterio{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.criterio div{min-width:0}
+.criterio h3{font-size:1rem;margin-bottom:4px}
+.criterio p{margin:0;font-size:.93rem;color:var(--muted)}
+.criterio .t-si{color:var(--si)}
+.criterio .t-no{color:var(--no)}
+.filtros{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.filtros select,.filtros input[type=search]{font:inherit;font-size:.92rem;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:8px;padding:7px 10px;min-width:0}
+.filtros input[type=search]{flex:1 1 200px}
+.chip{all:unset;cursor:pointer;font-size:.85rem;font-weight:700;border-radius:99px;padding:5px 11px;border:1px solid var(--line);background:var(--surface);color:var(--muted)}
+.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.chip[aria-pressed="true"].c-r{background:var(--rojo-soft);border-color:var(--rojo);color:var(--rojo)}
+.chip[aria-pressed="true"].c-o{background:var(--ambar-soft);border-color:var(--ambar);color:var(--ambar)}
+.chip[aria-pressed="true"].c-g{background:var(--gris-soft);border-color:var(--gris);color:var(--gris)}
+.casilla{display:flex;gap:6px;align-items:center;font-size:.9rem;color:var(--muted)}
+.estado-lista{font-size:.9rem;color:var(--muted);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.lista{display:flex;flex-direction:column;gap:10px}
+.obs{background:var(--surface);border:1px solid var(--line);border-radius:12px}
+.obs[open]{border-color:var(--accent)}
+.obs.vista summary .titulo{color:var(--muted)}
+.obs summary{cursor:pointer;list-style:none;padding:13px 16px;display:grid;grid-template-columns:auto 1fr;gap:4px 12px;align-items:start}
+.obs summary::-webkit-details-marker{display:none}
+.obs summary:focus-visible{outline:3px solid var(--accent);outline-offset:-3px;border-radius:12px}
+.num{font-family:var(--font-mono);font-weight:600;font-size:.85rem;color:var(--muted);padding-top:2px;min-width:3.2ch;font-variant-numeric:tabular-nums}
+.cuerpo-sum{display:flex;flex-direction:column;gap:6px;min-width:0}
+.titulo{font-weight:700;font-size:1.02rem}
+.etiquetas{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.pill{font-size:.74rem;font-weight:700;letter-spacing:.03em;text-transform:uppercase;border-radius:99px;padding:2px 8px;white-space:nowrap}
+.p-r{background:var(--rojo-soft);color:var(--rojo)}
+.p-o{background:var(--ambar-soft);color:var(--ambar)}
+.p-g{background:var(--gris-soft);color:var(--gris)}
+.p-si{background:var(--si-soft);color:var(--si)}
+.p-no{background:var(--no-soft);color:var(--no)}
+.archivo{font-family:var(--font-mono);font-size:.76rem;color:var(--muted);overflow-wrap:anywhere}
+.detalle{padding:2px 16px 16px;display:flex;flex-direction:column;gap:14px;border-top:1px solid var(--line);margin-top:2px;padding-top:14px}
+.seccion h4{font-family:var(--font-body);font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);margin:0 0 3px}
+.seccion p{margin:0;max-width:72ch}
+.seccion.solucion p{font-weight:700}
+.seccion.alternativa p{color:var(--muted)}
+.principios{display:flex;flex-wrap:wrap;gap:6px}
+.principio{font-size:.82rem;border:1px solid var(--line);border-radius:6px;padding:2px 8px;background:var(--surface-2)}
+.veredicto{border-radius:10px;padding:10px 12px}
+.veredicto.si{background:var(--si-soft)}
+.veredicto.no{background:var(--no-soft)}
+.veredicto strong{display:block;margin-bottom:2px}
+.veredicto.si strong{color:var(--si)}
+.veredicto.no strong{color:var(--no)}
+.conversar{border:2px dashed var(--si);border-radius:10px;padding:10px 12px}
+.conversar h4{color:var(--si)}
+.acciones{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.boton{all:unset;cursor:pointer;font-weight:700;font-size:.9rem;background:var(--accent);color:var(--surface);border-radius:8px;padding:7px 14px}
+.boton:focus-visible{outline:3px solid var(--ink);outline-offset:2px}
+.vacio{background:var(--surface);border:1px dashed var(--line);border-radius:12px;padding:20px;text-align:center;color:var(--muted)}
+.glosario{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.glosario div{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 12px;min-width:0}
+.glosario strong{display:flex;justify-content:space-between;gap:8px}
+.glosario strong span{font-family:var(--font-mono);font-size:.8rem;color:var(--muted);font-weight:400}
+.glosario p{margin:4px 0 0;font-size:.9rem;color:var(--muted)}
+.pie{font-size:.85rem;color:var(--muted)}
+@media (max-width:620px){.selector,.criterio{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:no-preference){.opcion,.chip{transition:background-color .15s,border-color .15s}}
+</style>
+
+<div class="envoltura">
+  <header class="cabecera">
+    <span class="ceja">PR #125 · feature/maestras-sap → develop</span>
+    <h1>Observaciones del PR 125</h1>
+    <p>Revisión de Alberto Arroyo sobre <code>c90ad59</code>. La rama no ha cambiado desde entonces, así que las 92 siguen vigentes. Cada punto dice qué pasa, qué solución se elige, por qué es la mejor y si cambia la lógica del sistema.</p>
+  </header>
+
+  <div class="bloqueo" role="note">
+    <div><strong>Bloquea la fusión: #1.</strong> El guion de despliegue a UAT borraría los Excel y las fotos de los conductores en cada publicación. Es lo primero que hay que corregir.</div>
+  </div>
+
+  <section aria-labelledby="t-impacto" style="display:flex;flex-direction:column;gap:12px">
+    <h2 id="t-impacto">¿Cuánto toca la lógica?</h2>
+    <div class="selector">
+      <button class="opcion si" id="btn-si" aria-pressed="false" type="button">
+        <span class="cifra" id="pct-si">–</span>
+        <span class="rotulo">Impacta lógica · <span id="n-si">–</span></span>
+        <span class="ayuda">Cambia una regla, un dato o un contrato. Hay que conversarlo antes de tocar.</span>
+      </button>
+      <button class="opcion no" id="btn-no" aria-pressed="false" type="button">
+        <span class="cifra" id="pct-no">–</span>
+        <span class="rotulo">No impacta lógica · <span id="n-no">–</span></span>
+        <span class="ayuda">Pruebas, refactor, docs, infra o textos. La solución recomendada se aplica sin discutir.</span>
+      </button>
+    </div>
+    <div class="barra" aria-hidden="true"><span class="b-si" id="barra-si"></span><span class="b-no" id="barra-no"></span></div>
+    <div class="leyenda-barra"><span id="leyenda-total"></span><button class="ver-todas" id="btn-todas" type="button">Ver todas</button></div>
+  </section>
+
+  <section class="criterio" aria-label="Cómo se clasificó">
+    <div>
+      <h3 class="t-si">Impacta lógica</h3>
+      <p>Aplicar la solución cambia lo que el sistema hace: qué acepta o rechaza la API, qué datos se guardan, qué puede hacer cada persona en pantalla o qué reciben SAP, XMS o la app.</p>
+    </div>
+    <div>
+      <h3 class="t-no">No impacta lógica</h3>
+      <p>El sistema hace exactamente lo mismo después del cambio. Mejora la calidad interna, la seguridad del servidor, las pruebas, la documentación o el despliegue.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="t-lista" style="display:flex;flex-direction:column;gap:14px">
+    <h2 id="t-lista">Punto por punto</h2>
+    <div class="filtros">
+      <button class="chip c-r" data-sev="r" aria-pressed="true" type="button">Bloquea · <span data-cuenta="r"></span></button>
+      <button class="chip c-o" data-sev="o" aria-pressed="true" type="button">Importante · <span data-cuenta="o"></span></button>
+      <button class="chip c-g" data-sev="g" aria-pressed="true" type="button">Sugerencia · <span data-cuenta="g"></span></button>
+    </div>
+    <div class="filtros">
+      <select id="f-area" aria-label="Área"></select>
+      <select id="f-principio" aria-label="Principio"></select>
+      <input type="search" id="f-texto" placeholder="Buscar en títulos, archivos y textos" aria-label="Buscar">
+      <label class="casilla"><input type="checkbox" id="f-ocultar"> Ocultar los que ya leí</label>
+    </div>
+    <div class="estado-lista"><span id="estado"></span><span id="progreso"></span></div>
+    <div class="lista" id="lista"></div>
+  </section>
+
+  <section aria-labelledby="t-glosario" style="display:flex;flex-direction:column;gap:12px">
+    <h2 id="t-glosario">Los principios, en palabras simples</h2>
+    <div class="glosario" id="glosario"></div>
+  </section>
+
+  <p class="pie">Fuente: la revisión del PR (resumen, 39 comentarios en línea y el comentario con las 46 sugerencias). La clasificación «impacta / no impacta» y la explicación del porqué son un análisis aparte, no parte de la revisión de Alberto. «Ya lo leí» se guarda solo en este navegador.</p>
+</div>
+
+<script>
+const PR = "https://github.com/unimar-peru/unimar-tms/pull/125";
+const AREAS = {
+  infra: "Infra y despliegue", migraciones: "Migraciones", planificacion: "API · planificación",
+  maestras: "API · maestras SAP", web: "Web", android: "Android", docs: "Documentación", salida: "Descripción y salida del PR"
+};
+const SEV = { r: "Bloquea", o: "Importante", g: "Sugerencia" };
+const PRINCIPIOS = {
+  "fallar-cerrado": ["Fallar cerrado", "Ante la duda, el sistema se detiene o rechaza en vez de seguir. Un error visible se corrige; un dato malo silencioso no."],
+  "minimo-privilegio": ["Mínimo privilegio", "Cada cuenta o proceso tiene solo los permisos que necesita. Si lo comprometen, el daño queda acotado."],
+  "defensa-profundidad": ["Defensa en profundidad", "Varias capas de protección. Si una falla, la siguiente contiene el problema."],
+  "idempotencia": ["Idempotencia", "Repetir la misma operación deja todo igual que hacerla una vez, sin efectos de más."],
+  "reversibilidad": ["Reversibilidad", "Todo cambio que toca datos tiene un camino de vuelta probado antes de ejecutarse."],
+  "historial-inmutable": ["Historial inmutable", "Lo que ya se publicó o registró no se reescribe; se corrige con algo nuevo."],
+  "trazabilidad": ["Trazabilidad", "Siempre se puede reconstruir qué pasó, cuándo, quién y por qué."],
+  "contrato-explicito": ["Contrato explícito", "Lo que se promete a otro sistema o equipo está escrito, y el código cumple lo escrito."],
+  "validar-frontera": ["Validar en la frontera", "Los datos se revisan al entrar, antes de que causen daño adentro."],
+  "pruebas-costura": ["Probar la costura", "Probar donde las piezas se unen y contra la base real. Un simulacro puede pasar en verde aunque lo real falle."],
+  "dry": ["Una sola fuente (DRY)", "Cada regla se escribe en un solo lugar. Si está en dos, tarde o temprano se contradicen."],
+  "srp": ["Responsabilidad única", "Cada pieza tiene una sola razón para cambiar."],
+  "separacion-capas": ["Fronteras entre módulos", "Cada módulo conoce solo lo suyo y las dependencias van en un solo sentido."],
+  "inversion-dependencias": ["Inversión de dependencias", "La regla de negocio depende de una interfaz, no de la pieza concreta. Así se cambia la pieza sin tocar la regla."],
+  "yagni-kiss": ["Simple y sin sobras (YAGNI/KISS)", "No se guarda código que nadie usa ni se complica lo que puede ser simple."],
+  "nombres-claros": ["Código que se explica", "Nombres y estructura cuentan qué hace el código y por qué, sin adivinar."],
+  "aislar-efectos": ["Aislar los efectos", "Las llamadas hacia afuera (push, servicios externos) no frenan ni rompen la operación principal."],
+  "accesibilidad": ["Accesibilidad", "Cualquier persona entiende la pantalla, también con lector de pantalla o sin distinguir colores."]
+};
+
+const OBS = [
+{n:"#1",s:"r",a:"infra",f:"src/infra/iis/publicar-uat-5443.ps1:98",d:"4159872579",
+t:"El despliegue a UAT borraría los Excel y las fotos de los conductores",
+q:"El guion copia la API con `robocopy /MIR`, que deja el destino idéntico al paquete y borra lo que el paquete no trae. Los archivos subidos (Excel de RD, fotos de documentos) viven dentro de esa misma carpeta y no están excluidos.",
+r:"Sacar el almacén de archivos de la carpeta del código (por ejemplo `E:\\tms-archivos`), incluirlo en el respaldo y hacer que el guion se detenga si `ARCHIVOS_RUTA` apunta dentro de la carpeta de la API.",
+p:"Código y datos tienen ciclos de vida distintos: el código se reemplaza entero en cada despliegue y los datos se conservan siempre. Separarlos elimina el riesgo de raíz. Excluir la carpeta del `/MIR` funciona hoy, pero depende de que nadie cambie el nombre y deja la evidencia de las guías junto a lo que se borra cada vez.",
+b:"Agregar `almacen-archivos` a la lista de exclusión del robocopy.",
+k:["reversibilidad","defensa-profundidad"],l:false,lw:"Es el guion de despliegue. La app guarda y lee los archivos igual; solo cambia la ruta en el .env del servidor."},
+
+{n:"#2",s:"o",a:"migraciones",f:"migraciones/1788048000000-AgregarPlanificacionServicio.ts:31",d:"4159872950",
+t:"Se editaron dos migraciones ya publicadas sin dejar constancia",
+q:"Un commit cambió el enum por el texto `'ASIGNADO'` en dos migraciones viejas. Alberto comprobó que el SQL resultante es idéntico, pero ningún commit lo dice, como exige la regla del proyecto.",
+r:"Escribir en la descripción del PR y en el mensaje del squash qué dos migraciones se tocaron y cómo se comprobó (huella SHA-256 idéntica contra develop).",
+p:"Una base que ya corrió una migración no la vuelve a correr: si el SQL cambiara, las bases quedarían distintas sin aviso. Dejar escrita la comprobación permite auditar el historial sin repetir la revisión. Es lo mínimo que pide el README; la red automática se cubre en #13.",
+b:"Además, versionar las huellas y una prueba que las compare (ver #13).",
+k:["historial-inmutable","trazabilidad"],l:false,lw:"Solo es texto en la descripción y en el commit."},
+
+{n:"#3",s:"o",a:"infra",f:"src/infra/iis/sitio-web-tms/web.config:109",d:"4159873302",
+t:"La web de UAT se sirve sin cabeceras de seguridad",
+q:"El `web.config` de IIS dice ser el equivalente del nginx del clúster, pero no pone ninguna de sus cabeceras: CSP, anti-clickjacking, `nosniff`, `Referrer-Policy`. Tampoco oculta la versión del servidor.",
+r:"Copiar al `web.config` las mismas cuatro cabeceras del nginx (con el mismo hash de CSP), quitar `X-Powered-By` y `Server`, y que el guion de publicación verifique con `curl -I` que salen.",
+p:"La web maneja la sesión y los tokens de UMS; sin CSP ni `frame-ancestors` es más fácil incrustarla o inyectarle scripts. Ponerlas en el propio sitio hace que UAT y el clúster se comporten igual, y la verificación en el guion evita que diverjan en silencio.",
+b:"Fijarlas a nivel servidor en `applicationHost.config`, solo si varios sitios deben compartirlas.",
+k:["defensa-profundidad","contrato-explicito"],l:false,lw:"Configuración del servidor web. Si el hash de CSP no coincide con el index.html compilado la página no carga; por eso la verificación en el guion."},
+
+{n:"#4",s:"o",a:"infra",f:"src/infra/iis/base-datos/crear-base-uat.sql:98",d:"4159873671",
+t:"La cuenta de la API puede cambiar la estructura de la base",
+q:"`tms_app` tiene `db_ddladmin` (crear, alterar y borrar objetos) y es la misma cuenta con la que corre la API todos los días. Solo las migraciones necesitan ese permiso.",
+r:"Dos cuentas: `tms_migrador` con `db_ddladmin`, usada solo al correr migraciones, y `tms_app` solo con lectura y escritura de datos.",
+p:"Las bitácoras append-only se protegen con un disparador; con `db_ddladmin`, quien comprometa la API puede desactivarlo y reescribir la evidencia. Con mínimo privilegio, un fallo en la API solo alcanza los datos, no las reglas que los protegen. El CLI de migraciones ya lee usuario y clave del entorno, así que cuesta poco.",
+b:"Una sola cuenta en UAT, el riesgo anotado en GAPS.md y `DENY ALTER` sobre las tablas append-only.",
+k:["minimo-privilegio","historial-inmutable"],l:false,lw:"Permisos de base de datos. La API hace las mismas consultas."},
+
+{n:"#5",s:"o",a:"infra",f:"src/infra/iis/servicio/instalar-servicio-nssm.ps1:124",d:"4159873921",
+t:"El servicio de la API corre como LocalSystem y el .env es legible",
+q:"NSSM instala el servicio sin cuenta propia, así que corre con el máximo privilegio de Windows. El `.env`, con la clave de la base, hereda permisos de lectura para cualquier usuario local.",
+r:"Correr el servicio con la cuenta virtual `NT SERVICE\\UnimarTmsApi`, cerrar la ACL del `.env` a esa cuenta y a Administradores, y dar escritura solo a `logs` y al almacén de archivos.",
+p:"La API procesa Excel y fotos que llegan de la red. Si alguien ejecuta código a través de ella, con LocalSystem controla todo el servidor, donde también viven UMS y la base. Con una cuenta virtual el daño queda en la carpeta de la API. Es coherente con lo que el guion ya hace bien (API atada a 127.0.0.1, `tms_app` en vez de `sa`).",
+b:"Mantener LocalSystem como el Tablero SDLC, cerrar solo la ACL del `.env` y anotar la desviación.",
+k:["minimo-privilegio","defensa-profundidad"],l:false,lw:"Configuración del servicio de Windows."},
+
+{n:"#6",s:"o",a:"infra",f:"src/infra/iis/servicio/instalar-servicio-nssm.ps1:132",d:"4159874293",
+t:"Si falla un ajuste del servicio, el guion termina en verde igual",
+q:"Solo se revisa el código de salida de `nssm install`. Los doce `nssm set` siguientes (`NODE_ENV`, `TZ`, rotación de logs…) pueden fallar sin que nadie se entere: PowerShell 5.1 no lanza error cuando un ejecutable externo falla.",
+r:"Una función `Fijar-Nssm` que ejecute cada `set`, lance error si el código de salida no es 0 y, para el entorno, relea el valor con `nssm get` y lo compare.",
+p:"Si falla `AppEnvironmentExtra`, la API arranca sin `NODE_ENV=production` (sin las protecciones de producción) y sin `TZ=America/Lima` (fechas corridas en silencio), y el chequeo de salud sigue diciendo OK. Fallar cerrado convierte un error invisible en uno que detiene el despliegue. La opción de PowerShell 7.3 no sirve porque el servidor tiene 5.1.",
+b:"`$PSNativeCommandUseErrorActionPreference`, que solo existe en PowerShell 7.3+.",
+k:["fallar-cerrado"],l:false,lw:"Guion de instalación."},
+
+{n:"#7",s:"o",a:"infra",f:"src/infra/iis/base-datos/instalar-sqlserver-uat.ps1:81",d:"4159874849",
+t:"SQL Server queda con sa activo y el puerto 1433 abierto a todo el dominio",
+q:"Se instala en modo mixto con `sa` habilitado (su clave se ve en la lista de procesos durante la instalación), el 1433 queda abierto a cualquier equipo del dominio y el login de DBeaver es `db_owner`.",
+r:"Limitar la regla del firewall a la subred de TI y desarrollo, deshabilitar `sa` al terminar y dar al login de DBeaver solo lectura y escritura de datos, con caducidad de clave.",
+p:"La API entra por localhost, así que el puerto abierto solo sirve a DBeaver. Un `sa` activo y un `db_owner` con clave elegida a mano son el blanco típico de fuerza bruta, en un servidor que además aloja UMS. Cerrar lo que no se usa no le quita nada a nadie.",
+b:"Si DBeaver se usa solo desde el servidor o por túnel, no abrir el 1433.",
+k:["minimo-privilegio","defensa-profundidad"],l:false,lw:"Configuración del servidor de base."},
+
+{n:"#8",s:"o",a:"docs",f:"src/infra/iis/README.md:127",d:"4159875222",
+t:"UAT se desvía del ADR de entornos sin declararlo",
+q:"UAT usa SQL Server 2019 Express (el ADR pide 16), comparte instancia con UmsUat y la base se llama `db-tms-uat` en vez de `unimar_tms`. El ADR-TMS-026 dice lo contrario y no registra estas excepciones.",
+r:"Agregar las tres desviaciones a la D8 del ADR-TMS-026 con su criterio de retiro y abrir el pendiente G-239 para la versión real.",
+p:"Toda decisión técnica va en un ADR (regla S-06). Si UAT no ensaya el mismo motor que Producción, quien lea los resultados de UAT tiene que saberlo. Declarar la desviación es inmediato; alinear el servidor depende de TI y de licencias.",
+b:"Alinear UAT con el ADR: SQL Server 16, instancia propia y base `unimar_tms`.",
+k:["contrato-explicito","trazabilidad"],l:false,lw:"Documentación."},
+
+{n:"#9",s:"o",a:"infra",f:"src/infra/iis/README.md:212",d:"4159875537",
+t:"El ciclo de despliegue migra con la build vieja y con la API encendida",
+q:"El README manda correr las migraciones antes de copiar el paquete nuevo, desde el `dist` que todavía es el anterior, y con el servicio corriendo.",
+r:"Nuevo orden: detener servicio → copiar paquete → `migration:run` con el dist nuevo → arrancar → verificar. Implementarlo como opción `-Migrar` en `publicar-uat-5443.ps1`.",
+p:"Con el orden actual, o no se corre nada (la API nueva arranca sin sus columnas) o la API vieja atiende mientras `MoverFlotaAlModeloDeSap` borra columnas que todavía usa: errores 500 durante la ventana. Detener, actualizar y arrancar garantiza que código y esquema siempre coinciden. Automatizarlo evita depender de que alguien siga el README a mano.",
+b:"Migrar en ventana propia con el servicio detenido, usando el data-source del paquete nuevo, documentado en el README.",
+k:["reversibilidad","fallar-cerrado"],l:false,lw:"Procedimiento de despliegue."},
+
+{n:"#10",s:"o",a:"infra",f:"src/infra/iis/README.md:232",d:"4159875841",
+t:"El rollback depende de un respaldo que nadie crea",
+q:"El README dice que el respaldo es el único rollback real de una migración, pero ningún paso del ciclo lo hace. La base está en modo SIMPLE y Express no tiene Agente SQL.",
+r:"Antes de migrar, `BACKUP DATABASE … WITH COPY_ONLY, CHECKSUM, INIT`; dejar escrito el `RESTORE` en la sección de Rollback y probar la restauración una vez.",
+p:"Este PR trae migraciones que borran columnas y cambian datos, y sus `down()` no devuelven todo. Sin respaldo, «se puede revertir» es una promesa vacía. El backup `COPY_ONLY` funciona en Express y no altera la cadena de respaldos. La instantánea de VM restaura todo el servidor, no solo la base.",
+b:"Instantánea de la VM antes de cada ventana de migración.",
+k:["reversibilidad"],l:false,lw:"Paso operativo del despliegue."},
+
+{n:"#11",s:"o",a:"migraciones",f:"migraciones/1793059200000-MoverFlotaAlModeloDeSap.ts:115",d:"4159876265",
+t:"La migración de flota descarta en silencio vínculos conductor-vehículo",
+q:"Si un conductor está asignado a más de un vehículo, la migración conserva solo el más reciente y borra los demás al eliminar la columna. No los cuenta, no los guarda y desempata sin un criterio fijo.",
+r:"Insertar los vínculos que pierden con `vigente = 0` (quedan como historial), desempatar por `id` y abortar con `THROW` si se pierden filas.",
+p:"Lo que una migración de datos borra no vuelve con otro despliegue. Guardar lo descartado como historial no rompe el índice único (solo mira `vigente = 1`) y deja auditar. Pero la data maestra actual es de prueba y se borra cuando lleguen los maestros de SAP; con eso, la consulta de diagnóstico puede bastar.",
+b:"Correr una consulta de diagnóstico; si da cero duplicados, dejar la migración igual y anotarlo en el PR.",
+k:["reversibilidad","trazabilidad"],l:true,lw:"Decide qué datos sobreviven a la migración.",
+c:"¿La data de flota actual importa? Si sigue siendo de prueba (decisión del 2026-09-18), basta la consulta de diagnóstico y la migración no se toca."},
+
+{n:"#12",s:"o",a:"migraciones",f:"migraciones/1793059200000-MoverFlotaAlModeloDeSap.ts:96",d:"4159876596",
+t:"Los conductores existentes no podrán pedir guía de remisión",
+q:"La migración crea los tipos de documento sin código SUNAT. La guía ahora lee ese código y se rechaza si falta (`FALTAN_DATOS_PARA_LA_GUIA`). Antes mandaba el texto del documento tal cual.",
+r:"Sembrar `codigo_sunat` en la migración para los códigos conocidos (catálogo 06 de SUNAT), confirmando la equivalencia con SAP, y `THROW` si queda un código sin mapear.",
+p:"Es mejor que falle la migración que el conductor en la puerta del puerto: el error aparece en el despliegue y no cuando alguien intenta salir. El catálogo 06 es público y estable. Si solo SAP conoce el mapeo, la alternativa sirve, pero agrega un paso manual al despliegue.",
+b:"Paso de despliegue «sincronizar maestras de SAP» y una consulta `WHERE codigo_sunat IS NULL` antes de habilitar guías.",
+k:["fallar-cerrado","contrato-explicito"],l:true,lw:"Cambia qué conductores pueden emitir guía y quién fija el código SUNAT.",
+c:"¿Quién pone el código SUNAT: lo siembra el TMS o lo manda SAP? Si la data actual es de prueba y se borrará, alcanza con que lo mande SAP."},
+
+{n:"#13",s:"o",a:"migraciones",f:"migraciones/1793318400000-CompletadoEInicioDeViaje.ts:29",d:"4159884347",
+t:"Las migraciones usan el enum vivo y cada renombre obliga a editarlas",
+q:"Los `CHECK` de las migraciones se arman con miembros del enum del dominio. Si un valor se renombra, el SQL de una migración vieja cambia; por eso hubo que editar dos (ver #2). Nada detecta esa edición.",
+r:"En cada migración nueva escribir los valores como texto fijo (`'COMPLETADO'`, `'INICIO_VIAJE'`…) y agregar una prueba que calcule la huella de todas las migraciones publicadas y la compare con un archivo versionado.",
+p:"Una migración es una foto del pasado: no debe depender de cómo está el código hoy. Congelar los textos quita la causa, y la prueba de huellas hace que la regla «no se edita» falle sola en lugar de depender de la memoria de alguien. Una regla de lint cuesta menos, pero no detecta ediciones.",
+b:"Regla de lint que prohíba importar el enum dentro de `migraciones/`.",
+k:["historial-inmutable","fallar-cerrado"],l:false,lw:"El SQL que generan las migraciones es el mismo; cambia cómo se escribe y cómo se vigila."},
+
+{n:"#14",s:"o",a:"migraciones",f:"migraciones/1793059200000-MoverFlotaAlModeloDeSap.ts:65",d:"4159884811",
+t:"Las migraciones que mueven datos nunca se probaron con datos",
+q:"`test:integracion` corre sobre una base vacía, así que los rellenos de datos (tipos de documento, relaciones con `ROW_NUMBER`, viajes movidos a `INICIO_VIAJE`) no tocan ninguna fila. Tampoco se prueba el `down()`.",
+r:"Una prueba de integración que migre hasta la versión anterior, siembre filas de ejemplo (conductor con documento, dos vehículos del mismo conductor, viaje CONFIRMADO con fecha de inicio), corra las dos migraciones y verifique filas, índice y `down()`.",
+p:"Los defectos de relleno (duplicados, NULL, empates) solo aparecen con datos, y una vez aplicados no se arreglan con otro despliegue. La prueba queda como red para siempre; un ensayo manual sirve una sola vez.",
+b:"Ensayo manual sobre una copia de la base de UAT, con el resultado anotado en el PR.",
+k:["pruebas-costura","reversibilidad"],l:false,lw:"Solo agrega pruebas."},
+
+{n:"#15",s:"o",a:"infra",f:"datos-prueba/cargar-rds-de-prueba.ts:85",d:"4159885253",
+t:"El script de datos de prueba puede escribir en cualquier base",
+q:"Levanta la app completa con el `.env` que encuentre e inserta naves y reportes falsos sin mirar a qué base apunta. Si falla, sale con código 0 y deja la app abierta. Las fechas están fijas en septiembre de 2026, que ya pasó.",
+r:"Abortar si `NODE_ENV=production` o si `DB_NOMBRE` no está en una lista de bases de desarrollo, mostrar la base destino y pedir `--si`; cerrar en `finally`, salir con 1 ante error y calcular las fechas desde hoy.",
+p:"Un script con acceso total a la base necesita freno. Corrido por error en SRVTMS, mete datos falsos en UAT o en Producción. La lista blanca es más segura que una negra: lo desconocido se rechaza.",
+b:"Moverlo a un script de package.json que fije `DB_NOMBRE` local.",
+k:["fallar-cerrado","defensa-profundidad"],l:false,lw:"Script de desarrollo, fuera de la app."},
+
+{n:"#16",s:"o",a:"planificacion",f:"planificacion/application/guia-de-remision-del-viaje.caso-uso.ts:170",d:"4159885622",
+t:"Una guía de remisión puede emitirse dos veces si XMS no responde",
+q:"Cada pedido de guía manda a XMS un `idSolicitud` nuevo. Si XMS no contesta a tiempo pero sí la procesó, la guía queda en ERROR y el siguiente intento abre otra fila con otro `idSolicitud`. XMS no puede saber que es la misma.",
+r:"Si la última guía del servicio quedó en ERROR por falta de respuesta, el reintento usa su mismo `id` como `idSolicitud` en vez de abrir una fila nueva. Un rechazo real del emisor sí abre fila nueva.",
+p:"Es idempotencia, y el contrato con XMS ya la promete: un reintento lleva el mismo `idSolicitud` para que XMS no duplique. Una guía es un documento fiscal; emitirla dos veces tiene costo legal y operativo. Solo el caso «no sé si llegó» reutiliza la clave. Corregir el contrato deja el riesgo vivo.",
+b:"Cambiar el contrato para que no prometa idempotencia y anotar el riesgo en GAPS.md.",
+k:["idempotencia","contrato-explicito"],l:true,lw:"Cambia cómo se reintenta una guía y qué recibe XMS.",
+c:"Confirmar con el equipo de XMS que deduplica por `idSolicitud`. Es el hallazgo de mayor impacto de planificación."},
+
+{n:"#17",s:"o",a:"planificacion",f:"planificacion/domain/inicio-de-planificacion.ts:43",d:"4159885992",
+t:"Iniciar la RD con datos incoherentes crea viajes sin cita, sin avisar",
+q:"Si el cuerpo trae citas pero no trae `modo`, la API asume SIN_CITA y descarta las citas en silencio. Lo mismo con la carga suelta. Y si falta la carga suelta, el error dice SIN_VIAJES, que no explica qué falta.",
+r:"Responder 400 en español ante cualquier combinación incoherente (`INICIO_INCONSISTENTE`) y usar `FALTA_CARGA_SUELTA` en vez de SIN_VIAJES.",
+p:"Iniciar la planificación es irreversible. Ante una entrada ambigua hay que fallar cerrado: un 400 claro se corrige en segundos; viajes creados sin cita no se deshacen. El error con nombre propio dice qué falta. La unión discriminada en el DTO logra lo mismo, pero toca más código.",
+b:"Modelar el cuerpo como unión discriminada por `modo`, obligatorio, con `forbidNonWhitelisted`.",
+k:["fallar-cerrado","validar-frontera"],l:true,lw:"La API pasa a rechazar peticiones que hoy acepta.",
+c:"Comprobar que la web siempre manda `modo`. Si es así, nadie lo nota y solo se cierra la puerta a errores."},
+
+{n:"#18",s:"o",a:"planificacion",f:"planificacion/infrastructure/persistence/viaje-del-conductor.typeorm.ts:245",d:"4159886319",
+t:"Desde el portal se puede marcar la salida del puerto sin datos de carga suelta",
+q:"Cuando Transporte marca por el conductor desde el portal, se salta la regla «no se sale del puerto sin descripción, bultos y peso». No hay explicación del porqué ni prueba de ninguno de los dos casos.",
+r:"Decidir la regla con negocio y dejarla escrita. Si el portal también debe exigirla, quitar el parámetro. Si puede saltarla, una línea con el porqué y dos pruebas (conductor falla, portal pasa).",
+p:"Un parámetro verdadero/falso que cambia una regla de negocio esconde la decisión. Lo correcto aquí lo decide negocio, no la técnica: el portal es el canal de contingencia y puede tener sentido que no exija, pero tiene que ser una decisión visible y probada.",
+b:"Mantener el parámetro pero partir la regla en dos funciones con nombre que cada canal combina.",
+k:["fallar-cerrado","nombres-claros"],l:true,lw:"Es una regla de negocio: qué se exige antes de salir del puerto.",
+c:"¿El portal debe exigir los datos de carga suelta antes de marcar SALIDA_IP? Pregunta para Transporte."},
+
+{n:"#19",s:"o",a:"planificacion",f:"planificacion/infrastructure/persistence/registro-de-carga-suelta.typeorm.ts:50",d:"4159886693",
+t:"La escritura de la carga suelta del conductor no tiene pruebas",
+q:"El repositorio que guarda descripción, bultos y peso solo se prueba con un repositorio falso en memoria. Ahí viven el compare-and-set, el reenvío idempotente y el bloqueo `UPDLOCK`.",
+r:"Agregar `registro-de-carga-suelta.typeorm.spec.ts` con cinco casos (registra, reenvío igual, datos distintos, viaje ajeno, tipo inactivo) y un caso concurrente contra SQL Server.",
+p:"Con un repositorio falso, un `WHERE` mal escrito pasa en verde. La prueba tiene que estar donde está el riesgo, en el SQL. El caso concurrente es el único que demuestra que dos envíos simultáneos escriben una sola vez.",
+b:"Solo el caso concurrente en la spec de integración existente.",
+k:["pruebas-costura"],l:false,lw:"Solo agrega pruebas."},
+
+{n:"#20",s:"o",a:"planificacion",f:"planificacion/infrastructure/persistence/planificador-carga-suelta.typeorm.ts:249",d:"4159887030",
+t:"La regla «sin cuenta UMS no hay oferta» está escrita tres veces",
+q:"Ya existía en el asignador de viaje y en el editor de servicio; el PR agrega una tercera copia con la condición invertida. Lo mismo pasa con la resolución de conductor, vehículo y transportista.",
+r:"Extraer `exigirConductorConCuenta(...)` y `recursosDeLaPeticion(...)` a un solo archivo y que las tres escrituras las llamen.",
+p:"Cuando la política cambie, habrá que acordarse de tres sitios. Ya hay una copia invertida, que es justo donde nace la contradicción. Una sola función hace imposible que diverjan.",
+b:"Mover la regla a dominio y anotar la deuda en GAPS.md sin tocar asignador ni editor.",
+k:["dry"],l:false,lw:"Refactor: la regla es la misma, solo se escribe una vez."},
+
+{n:"#21",s:"o",a:"maestras",f:"shared/maestras/sincronizador-de-maestra.ts:41",d:"4159887405",
+t:"Cada reenvío idéntico de SAP provoca un conflicto falso a quien edita",
+q:"Aunque SAP mande exactamente lo mismo, el sistema hace UPDATE: cambia `fecha_actualizacion` y sube `ultimo_cambio`. En conductor e instalación portuaria, quien tenía el modal abierto recibe «Otra persona ya guardó cambios» sin que nadie haya cambiado nada.",
+r:"Comparar lo leído con lo que llega y, si no hay diferencia, no escribir: devolver la fila sin UPDATE.",
+p:"Un PUT idempotente debe serlo también en sus efectos. Escribir solo cuando algo cambia deja la auditoría veraz (`fecha_actualizacion` dice cuándo cambió el dato), evita conflictos falsos y evita vaciar la caché (#22). Separar las columnas editables en otra tabla también lo resuelve, pero toca el modelo.",
+b:"Mover `usuario_ums` y horas libres a una tabla propia y documentar en el contrato que SAP envía en serie.",
+k:["idempotencia","trazabilidad"],l:true,lw:"Cambia cuándo se escribe en la base y qué dicen las columnas de auditoría.",
+c:"Riesgo bajo: SAP recibe la misma respuesta. Solo confirmar que `fecha_actualizacion` debe significar «cambió el dato»."},
+
+{n:"#22",s:"o",a:"maestras",f:"shared/api/documentacion-sap.ts:19",d:"4159887831",
+t:"Cada escritura de SAP vacía toda la caché del consolidado",
+q:"Cualquier PUT o DELETE de SAP, aunque sea de transportistas o vehículos que el consolidado no muestra, invalida toda la caché de naves.",
+r:"Un decorador (`@InvalidaElConsolidado()`) que el interceptor lea; solo lo llevan naves, viajes de nave e instalaciones portuarias.",
+p:"Invalidar de más tenía sentido con una ingesta al día. Con SAP enviando maestras todo el tiempo, en una carga inicial la caché queda inservible. Marcar explícitamente quién invalida es claro y barato. Hay que acertar la lista: si falta uno, el consolidado mostraría datos viejos.",
+b:"Que el interceptor invalide solo cuando la respuesta trae un cambio real (depende de #21).",
+k:["contrato-explicito"],l:false,lw:"Rendimiento. La pantalla muestra lo mismo, más rápido."},
+
+{n:"#23",s:"o",a:"maestras",f:"flota/application/sincronizar-flota.caso-uso.ts:96",d:"4159896069",
+t:"Dar de baja un conductor por PUT falla si falta su transportista",
+q:"El PUT con `activo:false` sigue exigiendo que existan el tipo de documento y el transportista; el DELETE no. El contrato dice que ambos son equivalentes y no lo son.",
+r:"En una baja, no resolver ni exigir referencias: conservar lo guardado y solo poner `estado = 0` (el PUT con `activo:false` delega en `darDeBaja`).",
+p:"Una baja no necesita saber a qué empresa pertenece el conductor; solo necesita apagarlo. Exigir referencias lo deja operando, con sus aparatos activos, hasta que SAP reenvíe otra maestra. Cumplir el contrato es mejor que trasladarle el problema a SAP.",
+b:"Dejar la validación y cambiar el contrato: SAP debe usar DELETE para las bajas.",
+k:["contrato-explicito","fallar-cerrado"],l:true,lw:"Cambia la respuesta del PUT de SAP en un caso concreto.",
+c:"Confirmar que la baja por PUT debe funcionar siempre, como ya dice el contrato."},
+
+{n:"#24",s:"o",a:"maestras",f:"flota/application/relacionar-vehiculo.caso-uso.ts:38",d:"4159896420",
+t:"El relato de las relaciones de vehículo registra la etapa antes de que ocurra",
+q:"Se registra la etapa antes de escribir, no se registra la escritura y, si una referencia no existe, no queda rastro. Los demás casos de uso siguen el patrón del ADR-TMS-019; este no.",
+r:"Registrar la etapa después del resultado (con `fallida` si falló), agregar `registrarEfecto` de la escritura y una decisión cuando se rechaza una referencia de SAP.",
+p:"El relato existe para responder «¿por qué no llegó este conductor de SAP?». Si dice que la etapa ocurrió cuando falló, miente. Con el mismo patrón que el resto, soporte lee todos los relatos igual.",
+b:"Centralizarlo en un ayudante `narrarReferencia`.",
+k:["trazabilidad"],l:false,lw:"Observabilidad. La operación hace lo mismo."},
+
+{n:"#25",s:"o",a:"maestras",f:"relacion-detallada/.../vinculador-de-relacion-detallada.spec.ts:27",d:"4159896796",
+t:"Lo más delicado de las maestras se prueba contra una base falsa",
+q:"Las relaciones con `UPDLOCK`, los índices únicos filtrados, el vinculador de RD y la búsqueda de códigos SAP solo se prueban buscando pedazos de texto en el SQL. No hay prueba de integración.",
+r:"Tres specs de integración: relaciones (asignar, mover un conductor entre vehículos, dos asignaciones a la vez), vinculador (solo enlaza RD sin viaje y con la clave correcta) y códigos SAP (mayúsculas con la intercalación real).",
+p:"Comprobar que el SQL contiene «IS NULL» no prueba que haga lo correcto. El carril contra SQL Server ya existe, y el cambio que más datos mueve desde SAP es justo el que no pasa por él.",
+b:"Una sola spec «PUT de SAP de punta a punta».",
+k:["pruebas-costura"],l:false,lw:"Solo agrega pruebas."},
+
+{n:"#26",s:"o",a:"maestras",f:"relacion-detallada/.../vinculador-de-relacion-detallada.typeorm.ts:7",d:"4159897225",
+t:"SQL a mano donde el ORM bastaba, y sin su porqué",
+q:"El UPDATE del vinculador está incrustado en el adaptador sin decir por qué es SQL a mano, y el INSERT y el cierre de relaciones son SQL a mano aunque existen las entidades del ORM.",
+r:"Mover el SQL del vinculador a `sentencias-vinculador.ts` con su porqué (es un compare-and-set) y pasar insertar y cerrar al ORM dentro de la misma transacción.",
+p:"ADR-TMS-023: ORM por defecto; SQL a mano solo si decide, si es compare-and-set o si es una lectura compuesta, y siempre con su razón al lado. Así quien lee distingue el SQL especial del rutinario.",
+b:"Justificar insertar y cerrar uno por uno en `sentencias-flota.ts`.",
+k:["separacion-capas","nombres-claros"],l:false,lw:"Refactor: las mismas operaciones escritas de otra forma."},
+
+{n:"#27",s:"o",a:"maestras",f:"shared/maestras/codigos-sap.typeorm.ts:24",d:"4159897544",
+t:"Un adaptador en shared consulta tablas de dos módulos",
+q:"`CodigosSapTypeorm` vive en `shared` y consulta las siete tablas de flota y naves armando el nombre (`dbo.${tabla}`). Así flota puede buscar en nave y naves en conductor. La prueba de fronteras no lo ve porque solo recorre `modules/`.",
+r:"Dejar en `shared` solo el puerto `CodigosSap` y que cada módulo lo implemente con sus propias entidades del ORM.",
+p:"Cada módulo es dueño de sus tablas (ADR-TMS-015): si otro las nombra, cambiar una tabla rompe un módulo ajeno sin aviso. Además, armar el nombre de la tabla está prohibido desde G-233. Con inversión de dependencias, la regla queda en `shared` y la implementación donde están los datos.",
+b:"Ampliar la prueba de fronteras a `shared/` y declarar el adaptador como excepción.",
+k:["separacion-capas","inversion-dependencias"],l:false,lw:"Refactor: la búsqueda devuelve lo mismo."},
+
+{n:"#28",s:"o",a:"maestras",f:"flota/api/flota.controller.ts:208",d:"4159897880",
+t:"Los selectores se cortan en 500 sin avisar",
+q:"Las listas de activos que llenan los selectores (vehículos, conductores, transportistas) se cortan en 500. Con toda la flota de SAP, lo que pase del 500 no aparece y el despachador cree que no existe.",
+r:"Medir cuántos activos trae la primera carga de SAP y, si pasan de unos cientos, cambiar los selectores a búsqueda paginada (el endpoint `?buscar=` ya existe).",
+p:"Primero medir, después decidir: con 200 vehículos no hace falta nada; con 2.000, la búsqueda escala y la lista completa no. Subir el tope solo sirve si el volumen real queda muy por debajo, y aun así hay que avisar cuando se corta.",
+b:"Subir el tope a un valor medido y devolver `meta.truncado` para que la web avise.",
+k:["fallar-cerrado"],l:true,lw:"Cambia cómo funcionan los selectores en pantalla.",
+c:"¿Cuántos vehículos, conductores y transportistas activos manda SAP? Con ese número se decide."},
+
+{n:"#29",s:"o",a:"maestras",f:"flota/infrastructure/persistence/repositorio-conductores.typeorm.ts:70",d:"4159898177",
+t:"El repositorio todavía sabe escribir la cuenta UMS por la vía de SAP",
+q:"El tipo `DatosConductor` conserva `usuarioUms` y crear/actualizar lo siguen escribiendo. Hoy nadie lo usa, pero bastaría un campo más en el DTO de SAP para que SAP cambie la cuenta saltándose sus validaciones.",
+r:"Quitar `usuarioUms` de `DatosConductor` y de sus funciones; la cuenta solo se escribe por `vincularCuenta`.",
+p:"El candado debe estar en el tipo, no en una costumbre. Si el compilador no deja pasar el campo, nadie se salta la regla por error. De paso se borra código muerto.",
+b:"Dejar el campo e ignorarlo explícitamente, con una prueba.",
+k:["defensa-profundidad","yagni-kiss"],l:false,lw:"Hoy ese camino es inalcanzable; quitarlo no cambia nada de lo que pasa."},
+
+{n:"#30",s:"o",a:"maestras",f:"shared/seguridad/verificador-ums.ts:103",d:"4159898453",
+t:"Se borraron comentarios que explicaban decisiones no evidentes",
+q:"El PR movió a un documento las razones de decisiones raras: UMS manda `scope` como texto o como arreglo, por qué se valida la suite, por qué la clave se pide por `kid`. Son 171 líneas de comentario quitadas en 42 archivos.",
+r:"Devolver cada razón como 1 o 2 líneas sobre la función que protege; el documento queda como respaldo.",
+p:"Quien edite `comoLista` no va a abrir un documento aparte, y el próximo refactor puede «simplificar» un defecto ya arreglado. El CLAUDE.md del proyecto pide comentarios mínimos, no cero. Ojo: choca con tu regla global de código sin comentarios; la alternativa (una línea que apunte al documento) es el punto medio.",
+b:"Dejar la razón en el documento y una línea en el código que remita a la sección.",
+k:["nombres-claros","trazabilidad"],l:false,lw:"Solo comentarios. Es una decisión de estilo, no de lógica."},
+
+{n:"#31",s:"o",a:"docs",f:"docs/03-construccion/historia-tecnica-tms-010-maestras-desde-sap.es.md:43",d:"4159898859",
+t:"La historia técnica cita migraciones que no existen",
+q:"Los cuatro nombres de migración de la historia técnica TS-TMS-010 tienen timestamps viejos que hoy pertenecen a otras migraciones.",
+r:"Corregir los cuatro nombres y revisar el resto del documento contra la carpeta `migraciones/`.",
+p:"Quien busque por ese nombre cae en otra migración, y una de ellas borra columnas. Corregirlo es inmediato; citar solo el tema evita que envejezca, pero pierde precisión.",
+b:"Citar solo el tema con un enlace a la carpeta.",
+k:["trazabilidad"],l:false,lw:"Documentación."},
+
+{n:"#32",s:"o",a:"android",f:"apps/unitrans-android/gradle/libs.versions.toml:11",d:"4159899180",
+t:"La librería que cifra la sesión del conductor subió a una versión alfa",
+q:"`security-crypto` pasó de 1.0.0 (estable) a 1.1.0-alpha06 sin explicación. Es la que guarda cifrados los tokens del conductor en el teléfono.",
+r:"Volver a 1.0.0. Si la alfa corrige un fallo concreto, dejar escrito el síntoma y subir solo por ese motivo.",
+p:"En el camino del token no van versiones alfa sin razón: pueden cambiar o fallar y afectan a todos los teléfonos de campo. Lo estable es lo normal; la excepción se justifica por escrito.",
+b:"Mantener la alfa solo en el build `uat`.",
+k:["defensa-profundidad"],l:false,lw:"Dependencia. La app funciona igual con la estable (verificar que compile con 1.0.0)."},
+
+{n:"#33",s:"o",a:"web",f:"consolidado-nave/aplicacion/consolidado-nave.consultas.ts:152",d:"4159905183",
+t:"El modal «Iniciar RD» muestra el error de otra RD o lo pierde",
+q:"El error de iniciar vive en la página y nunca se limpia: al abrir otra RD, el modal nace con el error anterior. Y si se cierra el modal con la petición en curso y falla, el error no aparece en ningún lado.",
+r:"Mover `useIniciarPlanificacion` dentro del modal (o llamar `reset()` al abrir) y bloquear el cierre mientras se envía. Agregar una prueba: falla, cierra, abre otra RD sin error.",
+p:"El estado de una operación vive donde se usa; si vive en la página, se filtra entre RD. Bloquear el cierre durante el envío evita la duda «¿se inició o no?» en una operación irreversible.",
+b:"Dejar el hook en la página, resetear al abrir y recuperar un aviso de página para el error con el modal cerrado.",
+k:["fallar-cerrado","separacion-capas"],l:false,lw:"Corrige un defecto de pantalla. La regla de iniciar la RD no cambia."},
+
+{n:"#34",s:"o",a:"web",f:"consolidado-nave/aplicacion/grilla-de-citas.ts:21",d:"4159905489",
+t:"La grilla de citas acepta fechas imposibles y pierde filas mal escritas",
+q:"31/02/2026 y 99:99 pasan como válidas. Un texto que no se entiende en una fila vacía no bloquea el botón: el viaje nace sin cita y el único aviso es un borde rojo. Además, la web no conoce el máximo de 1000 citas de la API.",
+r:"Validar fecha y hora reales al normalizar, que una fila con texto no reconocido bloquee el botón, mostrar el mensaje de formato a la vista y avisar si se pasa del máximo de citas (publicado en las opciones, como `maximoViajesPorAutorizacion`).",
+p:"Validar mientras se escribe es más barato que corregir después: el error se ve antes de crear un viaje sin cita. El color solo no basta (WCAG 1.4.1). Dejar a la API como única validadora avisa tarde y con un mensaje equivocado.",
+b:"Que la API devuelva el número de fila con error y la web lo muestre.",
+k:["validar-frontera","accesibilidad","fallar-cerrado"],l:true,lw:"Cambia cuándo se puede pulsar «Iniciar»: filas que hoy se ignoran pasarían a bloquear.",
+c:"Decisión rápida: ¿una fila con texto ilegible debe bloquear el inicio? Lo esperable es que sí."},
+
+{n:"#35",s:"o",a:"web",f:"mantenimientos/paginas/tipos-descripcion-carga.tsx:3",d:"4159905785",
+t:"Una funcionalidad importa desde app/ y crea un ciclo",
+q:"La página de tipos de descripción importa `RUTA_DE_LA_PANTALLA` del catálogo de `app/`, y el catálogo importa esa misma página. El lint no lo detecta porque no prohíbe `@/app/*`.",
+r:"Mover las rutas de pantalla a `compartido/` y que el catálogo las lea de ahí. Prohibir `@/app/*` en `funcionalidades/` con su caso en la prueba de reglas de lint.",
+p:"Las dependencias van en un solo sentido: `app` mira a todo y nadie mira a `app` (ADR-TMS-020). Un ciclo vuelve frágil la carga diferida y abre la puerta a otros. La regla de lint lo impide para siempre.",
+b:"Que `usePuedeGestionar` tome la ruta de `useLocation()`.",
+k:["separacion-capas"],l:false,lw:"Refactor de importaciones."},
+
+{n:"#36",s:"o",a:"web",f:"mantenimientos/paginas/conductores.tsx:89",d:"4159906029",
+t:"Botones de editar visibles para quien solo puede ver",
+q:"Solo la pantalla de tipos de descripción oculta su botón si no hay permiso MANAGE. En conductores («Cuenta UMS») e instalaciones («Horas libres») cualquiera con VIEW ve el botón, llena el modal y recibe un 403 al guardar. La API sí protege: no hay hueco de seguridad.",
+r:"Usar `usePuedeGestionar` también en conductores e instalaciones y ajustar las pruebas para dar MANAGE donde se espera el botón.",
+p:"No ofrecer lo que no puedes hacer evita trabajo perdido y un error al final, y las tres pantallas siguen el mismo criterio. La seguridad la sigue decidiendo el servidor; la web solo deja de ofrecer lo que va a fallar.",
+b:"Mostrar siempre las acciones en las tres pantallas y confiar en el 403.",
+k:["fallar-cerrado","dry"],l:true,lw:"Cambia lo que ve cada perfil en pantalla.",
+c:"¿La web oculta las acciones sin permiso? Ya lo hace en tipos de descripción; la recomendación es igualar."},
+
+{n:"#37",s:"o",a:"web",f:"mantenimientos/paginas/conductores.tsx:111",d:"4159906298",
+t:"Tras un conflicto, el modal no deja reintentar",
+q:"El modal de cuenta UMS u horas libres guarda una foto de la fila al abrir. Tras un 409, el listado se refresca pero el modal sigue mandando el `ultimoCambio` viejo: cada Guardar vuelve a dar 409 hasta cerrar y reabrir.",
+r:"Que el modal guarde el `id` y lea la fila viva del listado: tras el refresco, el siguiente Guardar usa el `ultimoCambio` nuevo y conserva lo escrito. Cubrirlo con una prueba «409, reintento, 200».",
+p:"El mensaje dice «recarga y vuelve a guardar», pero el modal no permite recargar. Con SAP escribiendo las mismas filas, el 409 será frecuente, sobre todo mientras no se resuelva #21. Con esta solución, el segundo Guardar pisa lo que cambió el otro sin mostrárselo; eso es lo que hay que decidir.",
+b:"Cerrar el modal al recibir el 409 y avisar en la página; se pierde lo escrito.",
+k:["contrato-explicito"],l:true,lw:"Cambia la regla de concurrencia: qué pasa cuando dos escriben la misma fila.",
+c:"Tras un 409, ¿la persona puede guardar encima sin ver qué cambió? Como SAP no toca esos dos campos, el riesgo es bajo."},
+
+{n:"#38",s:"o",a:"web",f:"planificacion-citas/componentes/lista-viajes-nuevos.tsx:52",d:"4159906638",
+t:"El modal de carga suelta perdió los textos que explicaban por qué algo está apagado",
+q:"Se quitó el contador «N de M viajes»: «Añadir viaje» se apaga sin decir por qué, y también aparece apagado mientras cargan las opciones. Se quitó el aviso de que los viajes se suman a una autorización existente y heredan su cita. Las pruebas se reescribieron sin esas comprobaciones.",
+r:"Recuperar la línea «N de M viajes» y una nota breve cuando la autorización ya existe, no apagar el botón mientras cargan las opciones y devolver las comprobaciones a las pruebas.",
+p:"Un control apagado sin motivo no se puede entender ni corregir (WCAG 3.3.2). Avisar que los viajes heredan la cita existente evita el error en el único momento en que se puede evitar. `aria-describedby` solo ayuda a quien usa lector de pantalla.",
+b:"Exponer el motivo solo con `aria-describedby`.",
+k:["accesibilidad","fallar-cerrado"],l:false,lw:"Textos de ayuda en pantalla. Las reglas (máximo de viajes, herencia de la cita) no cambian."},
+
+{n:"#39",s:"o",a:"web",f:"src/apps/web/src/app/catalogo-de-pantallas.ts:51",d:"4159906878",
+t:"Ninguna prueba recorre la carga suelta de punta a punta",
+q:"La cadena catálogo → página → modal → hook → cuerpo enviado a la API solo se prueba con piezas falsas. Un campo renombrado en una de las dos funcionalidades rompería el envío real sin que falle nada.",
+r:"Una prueba de página con MSW que cargue la pantalla real desde el catálogo, abra «Iniciar», elija carga suelta, llene los datos y verifique el cuerpo del POST.",
+p:"Es la funcionalidad principal del PR, y las piezas falsas tapan justo la costura que importa. Una prueba de tipos ata los dos tipos, pero no prueba el flujo.",
+b:"Una prueba de tipos que falle si los dos tipos divergen.",
+k:["pruebas-costura"],l:false,lw:"Solo agrega una prueba."},
+
+{n:"S1",s:"o",a:"salida",f:"Descripción del PR",
+t:"Las pruebas contra la base real no las corrió nadie",
+q:"La descripción dice que el CI valida las pruebas contra la base real, pero el único workflow es el de gobernanza. Con 9 migraciones nuevas y SQL nuevo, nadie corrió `test:integracion`.",
+r:"Correr `npm run test:integracion` en local antes de fusionar y anotar el resultado en el PR.",
+p:"ADR-TMS-018 deja la puerta de calidad en local. Las migraciones de este PR son lo más riesgoso y solo esta prueba las ejecuta contra SQL Server.",
+k:["pruebas-costura","trazabilidad"],l:false,lw:"Correr pruebas y anotar el resultado."},
+
+{n:"S2",s:"o",a:"salida",f:"GAPS.md",
+t:"Los 11 pendientes que menciona el PR no están registrados",
+q:"La descripción dice «quedan 11 pendientes anotados», pero GAPS.md sigue con 53, igual que develop.",
+r:"Registrar los 11 en GAPS.md con su criterio de cierre (SD-07).",
+p:"Un pendiente que solo está en la descripción de un PR se pierde al fusionar. GAPS.md es la lista que sí se revisa.",
+k:["trazabilidad"],l:false,lw:"Documentación."},
+
+{n:"S3",s:"o",a:"salida",f:"Checklist y commits",
+t:"Checklist incompleto, commits sin formato y rama sin número de tarea",
+q:"Tres casillas sin marcar, 36 commits que no siguen Conventional Commits («up», «data maestra»…), rama `feature/maestras-sap` en vez de `feature/TMS-*` e issue sin número.",
+r:"Marcar el checklist, poner el número de issue y que el título del PR y el mensaje del squash sigan Conventional Commits.",
+p:"El squash convierte 192 commits en uno; basta con que ese uno sea correcto.",
+k:["nombres-claros"],l:false,lw:"Higiene del PR."},
+
+{n:"S4",s:"o",a:"salida",f:"Alcance del PR",
+t:"El PR mezcla cinco cambios independientes",
+q:"464 archivos, +35k/−8k líneas: maestras SAP, carga suelta, UNITRANS Android, infraestructura IIS/UAT y plan de pruebas (5,9 MB generados, incluido un .xlsx de 4,2 MB).",
+r:"Sacar la infraestructura IIS/UAT y el plan de pruebas a PRs propios.",
+p:"Ninguno de los dos depende del resto. Separados se revisan y se revierten solos; revertir todo por un problema de infraestructura se llevaría también las maestras.",
+b:"Dejarlo todo junto.",
+k:["srp","reversibilidad"],l:false,lw:"Organización del trabajo."},
+
+{n:"S5",s:"o",a:"salida",f:"docs/05-entrega/preparacion-de-la-entrega-tms.es.md",
+t:"El documento de preparación de la entrega no conoce las migraciones nuevas",
+q:"No lista las 9 migraciones nuevas ni dice cuáles se pueden revertir; su conteo de reversiones ya no vale.",
+r:"Agregar las 9 migraciones con su reversibilidad y volver a medir el conteo.",
+p:"Es el documento que se usa en la ventana de salida para saber qué se puede deshacer.",
+k:["reversibilidad","trazabilidad"],l:false,lw:"Documentación."},
+
+{n:"S6",s:"o",a:"salida",f:"Orden de salida · G-117",
+t:"Tras desplegar, nadie podrá dar de alta maestras",
+q:"La web ya no crea maestras y las rutas `/sap/` responden 403 hasta que UMS emita `user_category = ServiceAccount`. Sin eso no se pueden crear conductores, vehículos, naves ni viajes, ni siquiera en UAT.",
+r:"Confirmar G-117 con UMS antes de desplegar a UAT. Mientras tanto, cargar la data de prueba con el script de `datos-prueba/` (con el freno de #15) o usar `GUARD_MODO=auditoria` temporal y documentado.",
+p:"Desplegar un candado sin la llave deja la operación detenida. Confirmar la dependencia antes es el orden correcto; el modo auditoría sirve de puente si queda escrito y con fecha de retiro.",
+k:["contrato-explicito","fallar-cerrado"],l:true,lw:"Afecta qué funciones están disponibles después del despliegue.",
+c:"¿UMS ya emite `user_category`? Si no, ¿se despliega con `GUARD_MODO=auditoria` o se espera?"},
+
+{n:"S7",s:"o",a:"salida",f:"Contratos con terceros",
+t:"Hay que acordar la fecha de salida con SAP y con XMS",
+q:"El PR agrega rutas PUT/DELETE nuevas para SAP y el campo `idSolicitud` hacia XMS. Los dos equipos tienen que estar listos el mismo día.",
+r:"Acordar con ambos equipos la fecha y el orden de salida.",
+p:"Un contrato nuevo solo funciona si las dos puntas salen coordinadas.",
+k:["contrato-explicito"],l:true,lw:"Cambia la integración con dos sistemas externos.",
+c:"Fecha y orden de salida con SAP (XMS-MDM) y con el servicio de guías de XMS."},
+
+{n:"G1",s:"g",a:"planificacion",f:"planificacion/application/planificar-carga-suelta.caso-uso.ts:70",
+t:"Los avisos push a los conductores se mandan uno tras otro",
+q:"Hasta 20 viajes por autorización: cada push espera al anterior, dentro de la petición HTTP y sin tiempo límite propio.",
+r:"Enviarlos con `Promise.allSettled` y concurrencia acotada (5), manteniendo el relato por oferta.",
+p:"La respuesta al despachador no debería esperar 20 llamadas a FCM en fila. Con `allSettled`, un push fallido no tumba a los demás.",
+k:["aislar-efectos"],l:false,lw:"Los mismos avisos, en paralelo."},
+
+{n:"G2",s:"g",a:"planificacion",f:"planificacion/application/planificar-carga-suelta.caso-uso.ts:29",
+t:"Los casos de uso inyectan la clase concreta del avisador",
+q:"El PR crea el puerto `AVISADOR_DE_OFERTAS`, pero los casos de uso siguen pidiendo la clase concreta.",
+r:"Inyectar `@Inject(AVISADOR_DE_OFERTAS)` en `application/`.",
+p:"Si la regla de negocio depende de la clase, cambiar la clase obliga a tocar la regla. El puerto ya existe; solo falta usarlo.",
+k:["inversion-dependencias"],l:false,lw:"Refactor de inyección."},
+
+{n:"G3",s:"g",a:"planificacion",f:"planificacion/.../planificador-carga-suelta.typeorm.ts:231",
+t:"El mensaje habla de «cuenta UNITRANS» y la web de «cuenta UMS»",
+q:"`CONDUCTOR_SIN_CUENTA_UNITRANS` dice «cuenta de UNITRANS… vuelve a asignar», mientras la web y el PR hablan de cuenta UMS.",
+r:"Texto «cuenta de UMS», quitar «vuelve a asignar» y renombrar el tipo a `CONDUCTOR_SIN_CUENTA_UMS`.",
+p:"Un concepto, un solo nombre en toda la app. Si alguien lee el código del error, coordinar el renombre.",
+k:["nombres-claros"],l:false,lw:"Texto del error."},
+
+{n:"G4",s:"g",a:"planificacion",f:"planificacion/.../creador-servicios-transporte.typeorm.ts:152",
+t:"Las ofertas se registran como irreversibles antes del commit",
+q:"Con carga suelta al iniciar la RD, el relato anota las ofertas como efecto irreversible dentro de la transacción, antes de confirmarla.",
+r:"Mover `narrarOfertas` a `IniciarPlanificacionCasoUso`, después del ok del repositorio.",
+p:"Si la transacción se revierte, el relato no puede decir que algo irreversible ocurrió.",
+k:["trazabilidad"],l:false,lw:"Observabilidad."},
+
+{n:"G5",s:"g",a:"planificacion",f:"planificacion/domain/puertos/registrador-de-viajes.ts:60",
+t:"Un puerto mezcla dos responsabilidades",
+q:"`PlanificadorCargaSuelta` y `RegistradorProgramacion` juntan la operación independiente y la que se une a una transacción ajena.",
+r:"Dos puertos, uno por responsabilidad, y que el creador dependa solo del que se une a transacciones.",
+p:"Quien solo necesita una operación no debería depender de la otra.",
+k:["srp"],l:false,lw:"Refactor."},
+
+{n:"G6",s:"g",a:"planificacion",f:"planificacion/.../ingreso-al-deposito.typeorm.ts:99",
+t:"Ingreso al depósito y cierre de viaje repiten el mismo bloque",
+q:"Los dos leen el catálogo, recorren los hitos del depósito, insertan marcas y cierran con compare-and-set.",
+r:"Extraer `cerrarEnElDeposito(gestor, servicio, { fuente, usuario, clave })`.",
+p:"Si el cierre cambia, hoy hay que acordarse de dos sitios.",
+k:["dry"],l:false,lw:"Refactor."},
+
+{n:"G7",s:"g",a:"planificacion",f:"planificacion/api/dto/viaje-del-conductor.dto.ts:60",
+t:"La lista de tipos de descripción no tiene tamaño máximo",
+q:"`idsTipoDescripcion` no tiene tope y el SQL arma un parámetro por cada id.",
+r:"`@ArrayMaxSize(20)` (o el tope real del catálogo) y un error propio para la lista vacía.",
+p:"Validar en la entrada evita consultas gigantes y mensajes confusos.",
+k:["validar-frontera"],l:true,lw:"La API pasa a rechazar listas largas o vacías.",
+c:"¿Cuántos tipos de descripción puede elegir un conductor como máximo?"},
+
+{n:"G8",s:"g",a:"planificacion",f:"planificacion/domain/datos-de-carga-suelta.ts:29",
+t:"«Peso con hasta 3 decimales» está escrito dos veces con criterios distintos",
+q:"`pesoConDecimalesPermitidos` y `cabeEnLaEscalaDelPeso` validan lo mismo de dos formas diferentes.",
+r:"Una sola `pesoCabeEnLaColumna(peso)` en `shared/domain/limites-columnas.ts`.",
+p:"Con dos criterios, un peso puede pasar uno y fallar el otro según el camino.",
+k:["dry"],l:true,lw:"Al unificar, algún peso que hoy pasa podría dejar de pasar, o al revés.",
+c:"Elegir el criterio que queda. Lo natural es el que cabe en la columna DECIMAL."},
+
+{n:"G9",s:"g",a:"planificacion",f:"planificacion/domain/errores.ts:188",
+t:"Un `as` anula la comprobación de tipos en los mensajes de conflicto",
+q:"`comoConflicto` fuerza el tipo del mensaje con un cast, justo donde debería comprobarse.",
+r:"Un ayudante genérico con `Extract` o un `switch` exhaustivo corto.",
+p:"El compilador debe avisar si a un error le falta su mensaje.",
+k:["fallar-cerrado"],l:false,lw:"Tipos."},
+
+{n:"G10",s:"g",a:"planificacion",f:"planificacion/.../sentencias-carga-del-viaje.ts:187",
+t:"Un archivo de constantes SQL ahora consulta y arma objetos",
+q:"El PR agrega `leerCargaDeclarada`, que ejecuta dos consultas y arma el objeto de dominio, a un archivo que solo tenía SQL.",
+r:"Moverla a `lectura-de-la-carga.ts`.",
+p:"Cada archivo, una sola razón para existir.",
+k:["srp"],l:false,lw:"Mover código."},
+
+{n:"G11",s:"g",a:"planificacion",f:"planificacion/domain/recorrido-del-viaje.ts:48",
+t:"La máquina de estados del viaje está repartida en constantes sueltas",
+q:"`RECORRIDO_DE_IMPORTACION`, `HITOS_DEL_CONDUCTOR`, `DEDUCIDOS`, `EXIGEN_EVIDENCIA`, `LO_RECIBE_EL_DEPOSITO`…",
+r:"Una tabla de transiciones por checkpoint (patrón State): siguiente, si sigue en curso, quién lo marca y qué evidencia exige.",
+p:"Hoy un estado nuevo obliga a tocar cinco constantes; con la tabla es una fila.",
+k:["dry","nombres-claros"],l:false,lw:"Refactor grande, mismo comportamiento."},
+
+{n:"G12",s:"g",a:"planificacion",f:"planificacion/api/busqueda-de-cargas.ts:8",
+t:"Función nueva con lógica propia y sin prueba",
+q:"Valida `idRelacionDetallada` como UUID y mantiene el alias antiguo `suelta`, pero no tiene spec.",
+r:"`busqueda-de-cargas.spec.ts`: UUID válido, inválido → 400 y alias.",
+p:"Lo que tiene lógica propia tiene su prueba.",
+k:["pruebas-costura"],l:false,lw:"Solo agrega pruebas."},
+
+{n:"G13",s:"g",a:"maestras",f:"flota/api/flota.controller.ts:154",
+t:"La cuenta de servicio de SAP puede usar los PATCH de cuenta UMS y horas libres",
+q:"Esas dos rutas exigen el permiso manage, que la cuenta de SAP también tiene. El guard bloquea a personas en `/sap/`, pero no a SAP en las rutas de personas. Y el `If-Match` sigue opcional.",
+r:"Decorador `@SoloPersona()` en esas dos rutas e `If-Match` obligatorio (428) ahora que la web ya lo manda.",
+p:"Separación de funciones en los dos sentidos: SAP no edita lo de personas y las personas no editan lo de SAP. El 428 cierra el paso pendiente del ADR-TMS-015.",
+k:["minimo-privilegio","defensa-profundidad"],l:true,lw:"La API pasa a rechazar peticiones sin If-Match y las de la cuenta de servicio en esas rutas.",
+c:"Confirmar que ningún cliente (app, scripts) llama a esos PATCH sin `If-Match`."},
+
+{n:"G14",s:"g",a:"maestras",f:"flota/application/sincronizar-flota.caso-uso.ts:69",
+t:"Unos sincronizadores heredan y otros no",
+q:"Tres casos de uso heredan de `SincronizadorDeMaestra`; el de conductores y el de viajes de nave no.",
+r:"Composición en los siete: un sincronizador recibido por constructor.",
+p:"El mismo mecanismo para todos, sin jerarquías que obliguen a excepciones.",
+k:["dry","srp"],l:false,lw:"Refactor."},
+
+{n:"G15",s:"g",a:"maestras",f:"relacion-detallada/.../vinculador-de-relacion-detallada.module.ts:5",
+t:"Un módulo global solo para no declarar una importación",
+q:"El módulo del vinculador es `@Global()` únicamente para que Naves lo inyecte sin importarlo.",
+r:"Importarlo explícitamente desde `NavesModule`, sin `@Global()`.",
+p:"Las dependencias se declaran a la vista; un global las esconde.",
+k:["separacion-capas"],l:false,lw:"Configuración de módulos."},
+
+{n:"G16",s:"g",a:"maestras",f:"flota/api/dto/auditoria-de-maestra.dto.ts:4",
+t:"Los campos de auditoría se repiten en los DTO de naves",
+q:"`AuditoriaDeMaestra` es un DTO base nuevo en flota, pero los DTO de naves repiten sus cinco campos.",
+r:"Moverlo a `shared/maestras` y que los de naves también lo extiendan.",
+p:"Un solo lugar para la forma de la auditoría.",
+k:["dry"],l:false,lw:"Refactor."},
+
+{n:"G17",s:"g",a:"maestras",f:"shared/maestras/envio-cruzado.ts:23",
+t:"Un choque de RUC o placa duplicada sale como 409 genérico",
+q:"Si el INSERT choca con una clave duplicada que no es el código SAP, se relanza el error del driver.",
+r:"Documentar en el contrato §7 el 409 «chocó con otra operación» y el 504, marcarlos reintentables y responder 503 con `Retry-After` ante un interbloqueo.",
+p:"SAP necesita saber qué errores puede reintentar; sin eso reintenta a ciegas o abandona.",
+k:["contrato-explicito"],l:true,lw:"Cambia las respuestas HTTP que recibe SAP.",
+c:"Acordar con XMS-MDM qué códigos son reintentables."},
+
+{n:"G18",s:"g",a:"maestras",f:"naves/api/dto/sap-naves.dto.ts:43",
+t:"El DTO de horas libres vive con los DTO de SAP",
+q:"`HorasLibresDto` es el cuerpo de un PATCH que edita una persona, pero está en el archivo de lo que manda SAP.",
+r:"Moverlo a `horas-libres.dto.ts`.",
+p:"El archivo dice de quién es cada dato.",
+k:["nombres-claros"],l:false,lw:"Mover código."},
+
+{n:"G19",s:"g",a:"maestras",f:"flota/infrastructure/persistence/sql-de-flota.ts:6",
+t:"Quedan restos del CRUD que se retiró",
+q:"`loQueLlega`, `estadoQueSeEdita`, una rama para `usuarioUms` y `cambiarEstado` ya no se usan.",
+r:"Borrarlos y renombrar `cambiarEstado(false)` a `darDeBaja`.",
+p:"El código muerto confunde a quien lee y no protege nada.",
+k:["yagni-kiss"],l:false,lw:"Borrar código sin uso."},
+
+{n:"G20",s:"g",a:"maestras",f:"relacion-detallada/.../vinculador-de-relacion-detallada.typeorm.ts:14",
+t:"La regla «qué RD corresponde a este viaje» está escrita dos veces",
+q:"Está en el UPDATE del vinculador y en `ResolutorDeRecaladaTypeorm`.",
+r:"Una sola definición de la clave de recalada.",
+p:"Si cambia cómo se empareja una RD con su viaje, hoy hay que cambiarlo en dos sitios.",
+k:["dry"],l:false,lw:"Refactor, si las dos versiones son iguales."},
+
+{n:"G21",s:"g",a:"web",f:"consolidado-nave/componentes/modal-iniciar-planificacion.tsx:33",
+t:"El paso del asistente está partido entre dos estados",
+q:"Una parte vive en `cargando` (estado local) y otra en `camino` (hook).",
+r:"`paso: 'ELEGIR' | 'CARGAR'` en el hook.",
+p:"Con un solo estado, las combinaciones imposibles dejan de poder existir.",
+k:["yagni-kiss"],l:false,lw:"Refactor."},
+
+{n:"G22",s:"g",a:"web",f:"consolidado-nave/paginas/consolidado-nave.tsx:36",
+t:"La sección de carga suelta tiene un valor por defecto que esconde el cableado",
+q:"La prop trae por defecto `SinCargaSuelta`, así que las pruebas nunca usan la sección real.",
+r:"Prop obligatoria y secciones explícitas en las pruebas.",
+p:"Si es obligatoria, el compilador obliga a cablearla (ver #39).",
+k:["inversion-dependencias"],l:false,lw:"Refactor."},
+
+{n:"G23",s:"g",a:"web",f:"consolidado-nave/presentacion.tsx:73",
+t:"La tabla de estados del servicio está escrita dos veces",
+q:"`ESTADOS_DE_EJECUCION` y `ESTADOS` repiten etiqueta y color por estado; el PR editó las mismas filas en ambas.",
+r:"Una sola tabla en `compartido/`.",
+p:"Un estado con dos etiquetas distintas es cuestión de tiempo.",
+k:["dry"],l:false,lw:"Refactor."},
+
+{n:"G24",s:"g",a:"web",f:"planificacion-citas/aplicacion/use-carga-suelta-de-la-relacion.ts:19",
+t:"El hook empuja datos al padre con un efecto y JSON.stringify",
+q:"Calcula la carga en el render y la sube con `useEffect`, serializando para que el efecto no se dispare.",
+r:"Que el padre sea dueño del borrador y la sección reciba `{ borrador, onCambiar }`.",
+p:"Los datos bajan y los eventos suben: el patrón normal de React, sin efectos ni serializar.",
+k:["separacion-capas"],l:false,lw:"Refactor."},
+
+{n:"G25",s:"g",a:"web",f:"mantenimientos/aplicacion/tipos-descripcion-carga.consultas.ts:44",
+t:"Se reimplementa a mano lo que ya resuelve consultasDeMaestra",
+q:"Listado y escritura de tipos de descripción repiten lo que ya hace `consultasDeMaestra`.",
+r:"Generalizar `consultasDeMaestra` y agregarle `useEscritura<V>(escribir)`.",
+p:"Un solo mecanismo de consultas para todas las maestras.",
+k:["dry"],l:false,lw:"Refactor."},
+
+{n:"G26",s:"g",a:"web",f:"planificacion-citas/componentes/lista-viajes-nuevos.tsx:62",
+t:"Restos sin uso tras retirar pantallas",
+q:"`Cabecera`, las variantes `neutro` y `exito` de `Boton` y `FECHA_CON_OFFSET` en `naves.api.ts`.",
+r:"Borrarlos y mover `FECHA_CON_OFFSET` a `compartido/formato/`.",
+p:"Lo que nadie usa solo estorba.",
+k:["yagni-kiss"],l:false,lw:"Borrar código sin uso."},
+
+{n:"G27",s:"g",a:"web",f:"mantenimientos/paginas/naves.tsx:58",
+t:"Las pantallas de solo lectura siguen llamándose «Mantenimiento de…»",
+q:"Las cuatro pantallas que pasaron a consulta conservan el título viejo, también en la pestaña.",
+r:"«Naves», «Consulta de naves» o similar, y ajustar el README.",
+p:"El título dice lo que la pantalla permite hacer.",
+k:["nombres-claros"],l:false,lw:"Solo textos."},
+
+{n:"G28",s:"g",a:"web",f:"mantenimientos/mantenimientos.prueba.tsx:141",
+t:"Una prueba dice «solo lectura» para una pantalla que sí edita",
+q:"La prueba de solo lectura se aplica también a tipos de descripción, que se crean y activan desde la web.",
+r:"Sacarla de esa lista; ya la cubre su propia prueba.",
+p:"Una prueba que afirma algo falso confunde a quien la lee.",
+k:["pruebas-costura"],l:false,lw:"Pruebas."},
+
+{n:"G29",s:"g",a:"web",f:"mantenimientos/paginas/instalaciones-portuarias.tsx:63",
+t:"Todos los botones de fila tienen el mismo nombre accesible",
+q:"Cada fila tiene un botón «Horas libres» o «Vincular cuenta UMS» idéntico para el lector de pantalla.",
+r:"`etiquetaAccesible` por fila (código de la instalación; apellidos y nombre del conductor).",
+p:"Veinte botones iguales no dicen cuál es cuál.",
+k:["accesibilidad"],l:false,lw:"Accesibilidad."},
+
+{n:"G30",s:"g",a:"web",f:"consolidado-nave/componentes/cabecera-del-inicio.tsx:23",
+t:"Los avisos de error no se anuncian",
+q:"`AvisoDelInicio` y el aviso de `ModalMaestra` no llevan `role=\"alert\"`.",
+r:"Agregar `role=\"alert\"` a los dos.",
+p:"Quien usa lector de pantalla se entera del error en el momento.",
+k:["accesibilidad"],l:false,lw:"Accesibilidad."},
+
+{n:"G31",s:"g",a:"web",f:"mantenimientos/aplicacion/use-tipos-descripcion-carga.ts:19",
+t:"El botón de fila no se apaga mientras el cambio está en curso",
+q:"`alternar` ignora el clic si hay un cambio en vuelo, pero el botón se ve activo.",
+r:"Apagar el botón de la fila mientras `isPending`.",
+p:"Un clic ignorado en silencio parece un fallo; uno apagado se entiende.",
+k:["fallar-cerrado"],l:false,lw:"Estado visual del botón."},
+
+{n:"G32",s:"g",a:"web",f:"mantenimientos/paginas/conductores.tsx:117",
+t:"Vaciar el correo desvincula la cuenta UMS sin aviso",
+q:"Dejar el correo en blanco y guardar desvincula la cuenta y da de baja los aparatos del conductor, sin confirmación.",
+r:"Una línea de aviso en el modal cuando se va a vaciar una cuenta que existía.",
+p:"Una acción con efecto fuerte se anuncia antes de hacerla.",
+k:["fallar-cerrado"],l:false,lw:"Solo agrega un aviso; la regla (vacío = desvincular) no cambia."},
+
+{n:"G33",s:"g",a:"web",f:"planificacion-citas/infraestructura/planificacion-citas.transporte.ts:143",
+t:"Parámetros de la URL sin codificar",
+q:"`buscarCargas` agrega `idRelacionDetallada` y `operacion` sin `encodeURIComponent`.",
+r:"`URLSearchParams` para toda la consulta.",
+p:"Un valor con & o # rompería la consulta o colaría otro parámetro.",
+k:["validar-frontera"],l:false,lw:"Forma de armar la URL."},
+
+{n:"G34",s:"g",a:"web",f:"src/apps/web/src/app/catalogo-de-pantallas.ts:146",
+t:"Conversiones `as` sin justificar",
+q:"`RUTA_DE_LA_PANTALLA`, `segunLaFila` y las opciones de operación fuerzan tipos sin explicar por qué.",
+r:"Tipo guardia o `satisfies`, o una línea con el porqué.",
+p:"Cada `as` apaga al compilador en ese punto.",
+k:["fallar-cerrado"],l:false,lw:"Tipos."},
+
+{n:"G35",s:"g",a:"web",f:"prototipo-web/src/pages/tms/ModalIniciarRD.tsx:115",
+t:"El prototipo copia 766 líneas de la web real",
+q:"Se sumó un modal que reimplementa el pegado de fechas, la grilla y la carga suelta.",
+r:"No ampliar el prototipo; si hay que mostrar el flujo, enlazar a la web real.",
+p:"Dos versiones del mismo flujo terminan contándose cosas distintas.",
+k:["yagni-kiss","dry"],l:false,lw:"Prototipo, fuera de la app."},
+
+{n:"G36",s:"g",a:"android",f:"apps/unitrans-android/app/src/uat/res/xml/configuracion_red.xml:5",
+t:"La confianza en la CA de UAT está atada a la IP",
+q:"La app confía en el certificado de UAT por la IP `10.1.20.30`; los documentos de entornos dicen «siempre por nombre».",
+r:"Nombre DNS en `domain-config` y en las URL del build `uat`.",
+p:"Si la IP cambia, hay que reinstalar el APK en todos los teléfonos.",
+k:["contrato-explicito"],l:false,lw:"Configuración de red."},
+
+{n:"G37",s:"g",a:"android",f:"apps/unitrans-android/app/build.gradle.kts:22",
+t:"Falta un espacio después del igual",
+q:"`val inquilinoUms =(project…`",
+r:"`= (project…`",
+p:"Formato.",
+k:["nombres-claros"],l:false,lw:"Formato."},
+
+{n:"G38",s:"g",a:"android",f:"…/ui/estado/ModeloViaje.kt:51",
+t:"Se repite el mapa de gestos y se perdió el porqué de recargar",
+q:"`GestosDeDeclaracion` reimplementa el mapa que ya tiene `gestosPendientes`, y se quitó la explicación de por qué cada gesto recarga el detalle.",
+r:"Reutilizar `gestosPendientes` y devolver en una línea el porqué de «recargar o retocar».",
+p:"Un solo mapa, y la razón no evidente junto al código que protege.",
+k:["dry","nombres-claros"],l:false,lw:"Refactor."},
+
+{n:"G39",s:"g",a:"docs",f:"docs/05-entrega/inventario-srvtms-uat.md:62",
+t:"El repositorio publica la IP y los DNS internos del servidor",
+q:"El inventario incluye IP fija, DNS internos, controlador de dominio, puertos y versiones.",
+r:"Llevar el inventario a la wiki u operaciones y dejar aquí solo la estructura.",
+p:"Un repositorio se copia y se comparte; el mapa de la red no debe viajar con el código.",
+k:["minimo-privilegio"],l:false,lw:"Documentación."},
+
+{n:"G40",s:"g",a:"infra",f:"src/infra/iis/base-datos/crear-base-uat.sql:1",
+t:"Banderines decorativos y estados con fecha que ya no son ciertos",
+q:"Los scripts nuevos llevan separadores decorativos y frases como «YA EXISTE» o «28 tablas, 32 migraciones», hoy falsas.",
+r:"Quitar banderines y separadores y mover el estado del servidor al inventario.",
+p:"Un comentario con fecha envejece y termina mintiendo.",
+k:["nombres-claros"],l:false,lw:"Comentarios."},
+
+{n:"G41",s:"g",a:"infra",f:"src/apps/api/.env.example:11",
+t:"El ejemplo de desarrollo escucha en 0.0.0.0 con usuario sa",
+q:"`API_DIRECCION=0.0.0.0` y `DB_USUARIO=sa` en un archivo que se copia tal cual.",
+r:"`127.0.0.1` en el ejemplo y, si se quiere, que `main.ts` exija el valor explícito en producción.",
+p:"Un ejemplo tiene que ser seguro por defecto.",
+k:["minimo-privilegio"],l:false,lw:"Configuración de ejemplo."},
+
+{n:"G42",s:"g",a:"infra",f:"src/infra/iis/aprovisionar-uat.ps1:96",
+t:"Dice ser repetible, pero la segunda ejecución falla",
+q:"`AddSslCertificate` falla si el enlace ya tiene certificado y el guion se detiene.",
+r:"Revisar el enlace SSL y ponerlo solo si el certificado cambió; probar ejecutándolo dos veces.",
+p:"Un guion de aprovisionamiento tiene que poder correrse otra vez sin romper.",
+k:["idempotencia"],l:false,lw:"Guion de aprovisionamiento."},
+
+{n:"G43",s:"g",a:"infra",f:"src/infra/iis/base-datos/instalar-sqlserver-uat.ps1:125",
+t:"Termina en verde aunque la API no responda",
+q:"Espera 8 segundos fijos y, si la API no contesta, solo imprime en rojo y sale con 0. La clave queda en memoria.",
+r:"Reutilizar el bucle de reintento de `publicar-uat-5443.ps1`, lanzar error si no hay `success: true` y liberar la clave en un `finally`.",
+p:"Un guion que falla tiene que decirlo con su código de salida.",
+k:["fallar-cerrado"],l:false,lw:"Guion de instalación."},
+
+{n:"G44",s:"g",a:"infra",f:"src/infra/iis/servicio/instalar-servicio-nssm.ps1:24",
+t:"nssm.exe se toma de la carpeta de otra aplicación",
+q:"Vive en `C:\\apps\\tablero-sdlc\\herramientas`, que se republica con `/MIR`.",
+r:"Copiarlo a `C:\\apps\\tms-api\\herramientas\\` o a una ruta común neutra.",
+p:"Si el Tablero se republica sin nssm, el servicio del TMS deja de poder administrarse.",
+k:["separacion-capas"],l:false,lw:"Guion de instalación."},
+
+{n:"G45",s:"g",a:"migraciones",f:"migraciones/1793404800000-PublicarCodigoSunatDelConductor.ts:37",
+t:"Cuatro de las ocho migraciones nuevas son pasos intermedios",
+q:"`v_conductor_para_planificar` se crea tres veces y el `DEFAULT 'TRACTO'` nace y muere en dos migraciones nuevas.",
+r:"Si ninguna base compartida las corrió, fusionarlas en una con el estado final. Si UAT ya las aplicó, dejarlas.",
+p:"Menos pasos intermedios, menos puntos de fallo en la ventana. Pero lo ya aplicado no se reescribe (#2).",
+k:["yagni-kiss","historial-inmutable"],l:false,lw:"El esquema final es el mismo."},
+
+{n:"G46",s:"g",a:"migraciones",f:"migraciones/1793318400000-CompletadoEInicioDeViaje.ts:45",
+t:"Los viajes movidos a INICIO_VIAJE no tienen su marca en la línea de tiempo",
+q:"La migración cambia el estado, pero no inserta la fila en `planificacion_servicio_viaje_checkpoint`: estado y línea de tiempo no coinciden hasta el siguiente hito.",
+r:"Insertar una fila `INICIO_VIAJE` por cada viaje movido (`marca_inferida = 1`, `usuario_creador = 'sistema'`) en la misma migración.",
+p:"El estado y su historia tienen que coincidir; si no, el seguimiento muestra un viaje iniciado sin el hito.",
+k:["trazabilidad"],l:true,lw:"Escribe datos nuevos en la línea de tiempo.",
+c:"Confirmar que una marca inferida por el sistema es aceptable en la línea de tiempo (para eso existe `marca_inferida`)."}
+];
+
+const enlace = o => o.d ? PR + "#discussion_r" + o.d : (o.n.startsWith("G") ? PR + "#issuecomment-5939547951" : PR + "#pullrequestreview-5384780208");
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+const fmt = s => esc(s).replace(/`([^`]+)`/g, "<code>$1</code>");
+
+const almacen = {
+  leer(clave, defecto){ try { const v = localStorage.getItem(clave); return v ? JSON.parse(v) : defecto; } catch(e){ return defecto; } },
+  escribir(clave, valor){ try { localStorage.setItem(clave, JSON.stringify(valor)); } catch(e){} }
+};
+const vistos = new Set(almacen.leer("pr125-vistos", []));
+const estado = Object.assign({ impacto:"todas", sev:["r","o","g"], area:"", principio:"", texto:"", ocultar:false }, almacen.leer("pr125-filtros", {}));
+
+const total = OBS.length;
+const nSi = OBS.filter(o => o.l).length;
+const nNo = total - nSi;
+const pct = n => Math.round(n * 1000 / total) / 10;
+document.getElementById("pct-si").textContent = pct(nSi).toLocaleString("es-PE") + " %";
+document.getElementById("pct-no").textContent = pct(nNo).toLocaleString("es-PE") + " %";
+document.getElementById("n-si").textContent = nSi;
+document.getElementById("n-no").textContent = nNo;
+document.getElementById("barra-si").style.width = (nSi / total * 100) + "%";
+document.getElementById("barra-no").style.width = (nNo / total * 100) + "%";
+document.getElementById("leyenda-total").textContent = total + " observaciones: " + nSi + " impactan lógica y " + nNo + " no.";
+document.querySelectorAll("[data-cuenta]").forEach(el => { el.textContent = OBS.filter(o => o.s === el.dataset.cuenta).length; });
+
+const selArea = document.getElementById("f-area");
+selArea.innerHTML = '<option value="">Todas las áreas</option>' + Object.entries(AREAS).map(([k,v]) => `<option value="${k}">${esc(v)} (${OBS.filter(o=>o.a===k).length})</option>`).join("");
+const usoPrincipio = k => OBS.filter(o => o.k.includes(k)).length;
+const selPrin = document.getElementById("f-principio");
+selPrin.innerHTML = '<option value="">Todos los principios</option>' + Object.entries(PRINCIPIOS).sort((a,b)=>usoPrincipio(b[0])-usoPrincipio(a[0])).map(([k,v]) => `<option value="${k}">${esc(v[0])} (${usoPrincipio(k)})</option>`).join("");
+
+document.getElementById("glosario").innerHTML = Object.entries(PRINCIPIOS).sort((a,b)=>usoPrincipio(b[0])-usoPrincipio(a[0])).map(([k,v]) =>
+  `<div><strong>${esc(v[0])} <span>${usoPrincipio(k)} puntos</span></strong><p>${esc(v[1])}</p></div>`).join("");
+
+function tarjeta(o){
+  const sev = `<span class="pill p-${o.s}">${SEV[o.s]}</span>`;
+  const imp = o.l ? '<span class="pill p-si">Impacta lógica</span>' : '<span class="pill p-no">No impacta</span>';
+  const prin = o.k.map(k => `<span class="principio">${esc(PRINCIPIOS[k][0])}</span>`).join("");
+  return `<details class="obs${vistos.has(o.n) ? " vista" : ""}" data-n="${o.n}">
+  <summary><span class="num">${o.n}</span><span class="cuerpo-sum"><span class="titulo">${fmt(o.t)}</span>
+    <span class="etiquetas">${sev}${imp}<span class="pill p-g">${esc(AREAS[o.a])}</span></span>
+    <span class="archivo">${esc(o.f)}</span></span></summary>
+  <div class="detalle">
+    <div class="seccion"><h4>Qué pasa</h4><p>${fmt(o.q)}</p></div>
+    <div class="seccion solucion"><h4>Solución elegida</h4><p>${fmt(o.r)}</p></div>
+    <div class="seccion"><h4>Por qué es la mejor</h4><p>${fmt(o.p)}</p></div>
+    ${o.b ? `<div class="seccion alternativa"><h4>Alternativa descartada</h4><p>${fmt(o.b)}</p></div>` : ""}
+    <div class="seccion"><h4>Principios</h4><div class="principios">${prin}</div></div>
+    <div class="veredicto ${o.l ? "si" : "no"}"><strong>${o.l ? "Impacta lógica" : "No impacta lógica"}</strong>${fmt(o.lw)}</div>
+    ${o.c ? `<div class="seccion conversar"><h4>Qué hay que conversar</h4><p>${fmt(o.c)}</p></div>` : ""}
+    <div class="acciones">
+      <label class="casilla"><input type="checkbox" data-visto="${o.n}" ${vistos.has(o.n) ? "checked" : ""}> Ya lo leí</label>
+      <a href="${enlace(o)}" target="_blank" rel="noopener">Ver en GitHub</a>
+      <button class="boton" type="button" data-siguiente="${o.n}">Siguiente</button>
+    </div>
+  </div></details>`;
+}
+
+function filtradas(){
+  const t = estado.texto.trim().toLowerCase();
+  return OBS.filter(o =>
+    (estado.impacto === "todas" || (estado.impacto === "si") === o.l) &&
+    estado.sev.includes(o.s) &&
+    (!estado.area || o.a === estado.area) &&
+    (!estado.principio || o.k.includes(estado.principio)) &&
+    (!estado.ocultar || !vistos.has(o.n)) &&
+    (!t || [o.n,o.t,o.f,o.q,o.r,o.p,o.b||"",o.c||""].join(" ").toLowerCase().includes(t))
+  );
+}
+
+function pintar(){
+  document.getElementById("btn-si").setAttribute("aria-pressed", estado.impacto === "si");
+  document.getElementById("btn-no").setAttribute("aria-pressed", estado.impacto === "no");
+  document.querySelectorAll(".chip[data-sev]").forEach(c => c.setAttribute("aria-pressed", estado.sev.includes(c.dataset.sev)));
+  selArea.value = estado.area; selPrin.value = estado.principio;
+  document.getElementById("f-texto").value = estado.texto;
+  document.getElementById("f-ocultar").checked = estado.ocultar;
+  const lista = filtradas();
+  const etiqueta = estado.impacto === "si" ? " que impactan lógica" : estado.impacto === "no" ? " que no impactan lógica" : "";
+  document.getElementById("estado").textContent = "Mostrando " + lista.length + " de " + total + etiqueta + ".";
+  document.getElementById("progreso").textContent = "Leídas: " + vistos.size + " de " + total;
+  document.getElementById("lista").innerHTML = lista.length ? lista.map(tarjeta).join("") :
+    '<div class="vacio">Ninguna observación coincide con estos filtros. Prueba con «Ver todas».</div>';
+  almacen.escribir("pr125-filtros", estado);
+}
+
+document.getElementById("btn-si").addEventListener("click", () => { estado.impacto = estado.impacto === "si" ? "todas" : "si"; pintar(); });
+document.getElementById("btn-no").addEventListener("click", () => { estado.impacto = estado.impacto === "no" ? "todas" : "no"; pintar(); });
+document.getElementById("btn-todas").addEventListener("click", () => { Object.assign(estado, { impacto:"todas", sev:["r","o","g"], area:"", principio:"", texto:"", ocultar:false }); pintar(); });
+document.querySelectorAll(".chip[data-sev]").forEach(c => c.addEventListener("click", () => {
+  const s = c.dataset.sev;
+  estado.sev = estado.sev.includes(s) ? estado.sev.filter(x => x !== s) : estado.sev.concat(s);
+  pintar();
+}));
+selArea.addEventListener("change", e => { estado.area = e.target.value; pintar(); });
+selPrin.addEventListener("change", e => { estado.principio = e.target.value; pintar(); });
+let espera;
+document.getElementById("f-texto").addEventListener("input", e => { clearTimeout(espera); espera = setTimeout(() => { estado.texto = e.target.value; pintar(); document.getElementById("f-texto").focus(); }, 200); });
+document.getElementById("f-ocultar").addEventListener("change", e => { estado.ocultar = e.target.checked; pintar(); });
+
+document.getElementById("lista").addEventListener("change", e => {
+  const n = e.target.dataset.visto; if (!n) return;
+  e.target.checked ? vistos.add(n) : vistos.delete(n);
+  almacen.escribir("pr125-vistos", [...vistos]);
+  e.target.closest("details").classList.toggle("vista", e.target.checked);
+  document.getElementById("progreso").textContent = "Leídas: " + vistos.size + " de " + total;
+});
+document.getElementById("lista").addEventListener("click", e => {
+  const n = e.target.dataset.siguiente; if (!n) return;
+  const actual = e.target.closest("details");
+  if (!vistos.has(n)) { vistos.add(n); almacen.escribir("pr125-vistos", [...vistos]); actual.classList.add("vista"); const c = actual.querySelector("[data-visto]"); if (c) c.checked = true; document.getElementById("progreso").textContent = "Leídas: " + vistos.size + " de " + total; }
+  const siguiente = actual.nextElementSibling;
+  actual.open = false;
+  if (siguiente && siguiente.tagName === "DETAILS") {
+    siguiente.open = true;
+    const quieto = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    siguiente.scrollIntoView({ behavior: quieto ? "auto" : "smooth", block: "start" });
+    siguiente.querySelector("summary").focus({ preventScroll: true });
+  }
+});
+
+pintar();
+</script>
+
+</body></html>
