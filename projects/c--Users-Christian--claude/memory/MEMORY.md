@@ -1,0 +1,1 @@
+- [PR siempre contra main](pr-siempre-contra-main.md) — en ~/.claude todo se mergea y abre PR contra main
