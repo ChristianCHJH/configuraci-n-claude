@@ -1,0 +1,666 @@
+<title>Crítica UX de Planificación</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,400..700;1,400&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root {
+  --fondo: #f1f4f6;
+  --papel: #ffffff;
+  --hundido: #e6ebef;
+  --tinta: #13202b;
+  --tinta-suave: #475766;
+  --tinta-tenue: #596875;
+  --linea: #d3dbe2;
+  --acento: #0c5672;
+  --acento-suave: #dbeaf1;
+  --marcador: #e0145a;
+  --marcador-borde: #ffffff;
+  --bloqueante: #b21f14;
+  --bloqueante-fondo: #fde7e4;
+  --alta: #bf3f0b;
+  --alta-fondo: #fdeadb;
+  --media: #8f5b00;
+  --media-fondo: #faefd2;
+  --baja: #475b6b;
+  --baja-fondo: #e4eaef;
+  --bien: #146c46;
+  --bien-fondo: #daf0e4;
+  --sombra: 0 1px 2px rgb(19 32 43 / 0.06), 0 4px 16px rgb(19 32 43 / 0.06);
+  --letra-titular: "Archivo", "Arial Narrow", system-ui, sans-serif;
+  --letra-texto: "Public Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --letra-dato: "IBM Plex Mono", ui-monospace, "Cascadia Mono", Consolas, monospace;
+  --radio: 6px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fondo: #0e151b;
+    --papel: #152029;
+    --hundido: #1b2832;
+    --tinta: #e4ecf2;
+    --tinta-suave: #a6b6c3;
+    --tinta-tenue: #84959f;
+    --linea: #263541;
+    --acento: #6cb8d6;
+    --acento-suave: #173444;
+    --marcador: #ff3d7f;
+    --marcador-borde: #0e151b;
+    --bloqueante: #ff8a7e;
+    --bloqueante-fondo: #3a1714;
+    --alta: #ffa36b;
+    --alta-fondo: #3a2114;
+    --media: #e9c15f;
+    --media-fondo: #33290f;
+    --baja: #a9bccb;
+    --baja-fondo: #22303b;
+    --bien: #6fd3a2;
+    --bien-fondo: #133326;
+    --sombra: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 20px rgb(0 0 0 / 0.25);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fondo: #0e151b;
+  --papel: #152029;
+  --hundido: #1b2832;
+  --tinta: #e4ecf2;
+  --tinta-suave: #a6b6c3;
+  --tinta-tenue: #84959f;
+  --linea: #263541;
+  --acento: #6cb8d6;
+  --acento-suave: #173444;
+  --marcador: #ff3d7f;
+  --marcador-borde: #0e151b;
+  --bloqueante: #ff8a7e;
+  --bloqueante-fondo: #3a1714;
+  --alta: #ffa36b;
+  --alta-fondo: #3a2114;
+  --media: #e9c15f;
+  --media-fondo: #33290f;
+  --baja: #a9bccb;
+  --baja-fondo: #22303b;
+  --bien: #6fd3a2;
+  --bien-fondo: #133326;
+  --sombra: 0 1px 2px rgb(0 0 0 / 0.3), 0 6px 20px rgb(0 0 0 / 0.25);
+  color-scheme: dark;
+}
+
+* { box-sizing: border-box; }
+body {
+  background: var(--fondo);
+  color: var(--tinta);
+  font: 15px/1.55 var(--letra-texto);
+  padding-inline: clamp(16px, 4vw, 44px);
+  padding-block: 28px 80px;
+}
+.hoja { max-width: 1280px; margin-inline: auto; display: grid; gap: 40px; }
+h1, h2, h3 { font-family: var(--letra-titular); text-wrap: balance; margin: 0; color: var(--tinta); }
+h1 { font-size: clamp(28px, 4.2vw, 44px); font-weight: 750; font-stretch: 88%; line-height: 1.05; letter-spacing: -0.01em; }
+h2 { font-size: 22px; font-weight: 700; font-stretch: 92%; line-height: 1.2; }
+h3 { font-size: 17px; font-weight: 650; line-height: 1.3; }
+p { margin: 0; }
+.ceja { font: 600 12px/1.2 var(--letra-texto); text-transform: uppercase; letter-spacing: 0.08em; color: var(--tinta-tenue); }
+.dato { font-family: var(--letra-dato); font-size: 12.5px; font-variant-numeric: tabular-nums; }
+.suave { color: var(--tinta-suave); }
+button { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--acento); outline-offset: 2px; }
+
+.portada { display: grid; gap: 14px; padding-bottom: 28px; border-bottom: 1px solid var(--linea); }
+.portada .meta { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--tinta-suave); }
+.sello { display: inline-flex; align-items: center; gap: 8px; width: fit-content; padding: 4px 10px; border: 1px dashed var(--tinta-tenue); border-radius: 999px; font-size: 13px; color: var(--tinta-suave); }
+
+.veredicto { display: grid; grid-template-columns: minmax(0, 340px) minmax(0, 1fr); gap: 20px; }
+.nota { background: var(--papel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 22px; display: grid; gap: 14px; align-content: start; }
+.nota .cifra { display: flex; align-items: baseline; gap: 6px; font-family: var(--letra-titular); font-variant-numeric: tabular-nums; }
+.nota .cifra strong { font-size: 76px; line-height: 0.9; font-weight: 800; font-stretch: 80%; }
+.nota .cifra span { font-size: 20px; color: var(--tinta-tenue); }
+.banda { font: 700 15px/1.2 var(--letra-titular); text-transform: uppercase; letter-spacing: 0.06em; }
+.escala { position: relative; display: grid; grid-template-columns: 60fr 10fr 10fr 10fr 10fr; gap: 2px; height: 10px; }
+.escala i { display: block; border-radius: 2px; background: var(--hundido); }
+.escala i.activa { background: currentColor; }
+.escala .aguja { position: absolute; top: -5px; width: 3px; height: 20px; background: var(--tinta); border-radius: 2px; transform: translateX(-50%); }
+.escala-rotulos { display: grid; grid-template-columns: 60fr 10fr 10fr 10fr 10fr; gap: 2px; font: 12px/1.2 var(--letra-dato); color: var(--tinta-tenue); font-variant-numeric: tabular-nums; }
+.tope { font-size: 13px; padding: 8px 10px; border-radius: 4px; background: var(--bloqueante-fondo); color: var(--bloqueante); }
+.resumen { background: var(--papel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 22px; display: grid; gap: 18px; align-content: start; min-width: 0; }
+.resumen .texto { font-size: 17px; line-height: 1.55; max-width: 68ch; }
+.conteos { display: flex; flex-wrap: wrap; gap: 8px; }
+.urgente { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.urgente li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 10px; align-items: start; }
+.urgente a { color: var(--tinta); text-decoration-color: var(--linea); text-underline-offset: 3px; }
+.urgente a:hover { text-decoration-color: currentColor; }
+
+.pildora { display: inline-flex; align-items: center; gap: 6px; padding: 3px 9px; border-radius: 999px; font: 700 12px/1.3 var(--letra-texto); letter-spacing: 0.02em; white-space: nowrap; }
+.pildora[data-sev="bloqueante"] { background: var(--bloqueante-fondo); color: var(--bloqueante); }
+.pildora[data-sev="alta"] { background: var(--alta-fondo); color: var(--alta); }
+.pildora[data-sev="media"] { background: var(--media-fondo); color: var(--media); }
+.pildora[data-sev="baja"] { background: var(--baja-fondo); color: var(--baja); }
+.pildora[data-sev="bien"] { background: var(--bien-fondo); color: var(--bien); }
+
+.bloque { display: grid; gap: 16px; }
+.bloque > header { display: grid; gap: 6px; }
+.dimensiones { background: var(--papel); border: 1px solid var(--linea); border-radius: var(--radio); }
+.dimension { display: grid; grid-template-columns: minmax(0, 220px) 120px 104px minmax(0, 1fr); gap: 16px; align-items: center; padding: 14px 18px; border-top: 1px solid var(--linea); }
+.dimension:first-child { border-top: 0; }
+.dimension .nombre { font-weight: 700; }
+.dimension .peso { color: var(--tinta-tenue); white-space: nowrap; }
+.puntos { display: grid; grid-template-columns: repeat(4, 1fr); gap: 3px; }
+.puntos i { height: 8px; border-radius: 2px; background: var(--hundido); }
+.puntos i.lleno { background: var(--acento); }
+.dimension.sin-evidencia .puntos i { background: repeating-linear-gradient(135deg, var(--hundido) 0 3px, transparent 3px 6px); }
+.dimension .motivo { color: var(--tinta-suave); font-size: 14px; min-width: 0; }
+
+.filtros { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; display: flex; flex-wrap: wrap; align-items: center; gap: 8px; padding: 10px 0; background: var(--fondo); border-bottom: 1px solid var(--linea); }
+.filtros .ceja { margin-right: 4px; }
+.filtro { display: inline-flex; align-items: center; gap: 8px; min-height: 32px; padding: 4px 12px; border: 1px solid var(--linea); border-radius: 999px; background: var(--papel); cursor: pointer; font-size: 13px; }
+.filtro[aria-pressed="false"] { opacity: 0.5; text-decoration: line-through; }
+.filtro .punto { width: 8px; height: 8px; border-radius: 50%; }
+
+.pantalla { display: grid; gap: 16px; }
+.pantalla > header { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 6px 16px; }
+.pantalla-cuerpo { display: grid; grid-template-columns: minmax(0, 1.35fr) minmax(0, 1fr); gap: 20px; align-items: start; }
+.lado-captura { position: sticky; top: 64px; display: grid; gap: 10px; min-width: 0; }
+.pestanas { display: flex; flex-wrap: wrap; gap: 6px; }
+.pestana { min-height: 32px; padding: 4px 12px; border: 1px solid var(--linea); border-radius: 4px; background: var(--papel); cursor: pointer; font-family: var(--letra-dato); font-size: 12.5px; }
+.pestana[aria-selected="true"] { background: var(--tinta); color: var(--papel); border-color: var(--tinta); }
+.lamina { position: relative; width: 100%; max-width: calc((100vh - 140px) * var(--proporcion, 1.6)); border: 1px solid var(--linea); border-radius: 4px; background: var(--hundido); overflow: hidden; box-shadow: var(--sombra); }
+.lamina img { display: block; width: 100%; height: auto; cursor: zoom-in; }
+.lamina .vacia { aspect-ratio: 16 / 10; display: grid; place-items: center; padding: 24px; text-align: center; color: var(--tinta-tenue); font-size: 14px; }
+.marca { position: absolute; border: 2px solid var(--marcador); border-radius: 3px; background: transparent; padding: 0; cursor: pointer; box-shadow: 0 0 0 1px var(--marcador-borde); transition: background-color 0.15s ease; }
+.marca.punto { width: 0; height: 0; border: 0; box-shadow: none; }
+.marca .numero { position: absolute; left: -11px; top: -11px; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 11px; background: var(--marcador); color: #fff; font: 700 12px/22px var(--letra-texto); text-align: center; box-shadow: 0 0 0 2px var(--marcador-borde), 0 2px 6px rgb(0 0 0 / 0.35); }
+.marca:hover, .marca.encendida { background: color-mix(in srgb, var(--marcador) 16%, transparent); }
+.marca.encendida .numero { transform: scale(1.15); }
+.pie-captura { font-size: 13px; color: var(--tinta-tenue); }
+
+.lista-hallazgos { display: grid; gap: 12px; min-width: 0; }
+.hallazgo { background: var(--papel); border: 1px solid var(--linea); border-left: 4px solid var(--baja); border-radius: var(--radio); padding: 16px 18px; display: grid; gap: 10px; scroll-margin-top: 72px; transition: box-shadow 0.2s ease; }
+.hallazgo[data-sev="bloqueante"] { border-left-color: var(--bloqueante); }
+.hallazgo[data-sev="alta"] { border-left-color: var(--alta); }
+.hallazgo[data-sev="media"] { border-left-color: var(--media); }
+.hallazgo.destello { box-shadow: 0 0 0 3px var(--marcador); }
+.hallazgo > header { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 4px 10px; align-items: start; }
+.hallazgo .num { grid-row: span 2; min-width: 26px; height: 26px; padding: 0 6px; border-radius: 13px; background: var(--marcador); color: #fff; font: 700 13px/26px var(--letra-texto); text-align: center; }
+.hallazgo .linea-pildoras { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.principio { font-size: 13px; color: var(--acento); font-weight: 700; }
+.hallazgo dl { margin: 0; display: grid; gap: 8px; }
+.hallazgo dt { font: 700 12px/1.2 var(--letra-texto); text-transform: uppercase; letter-spacing: 0.07em; color: var(--tinta-tenue); }
+.hallazgo dd { margin: 2px 0 0; max-width: 70ch; }
+.hallazgo dd.sugerencia { padding: 10px 12px; border-radius: 4px; background: var(--acento-suave); }
+.hallazgo footer { display: flex; flex-wrap: wrap; gap: 6px 14px; padding-top: 10px; border-top: 1px dashed var(--linea); font-size: 12.5px; color: var(--tinta-suave); }
+.hallazgo footer .evidencia { flex-basis: 100%; overflow-wrap: anywhere; }
+.ir-a-captura { padding: 0; border: 0; background: none; color: var(--acento); text-decoration: underline; text-underline-offset: 2px; cursor: pointer; font-size: 12.5px; }
+
+.dos-columnas { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.tarjeta { background: var(--papel); border: 1px solid var(--linea); border-radius: var(--radio); padding: 18px 20px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.tarjeta ul { margin: 0; padding-left: 18px; display: grid; gap: 8px; }
+.funciona { display: grid; gap: 12px; margin: 0; padding: 0; list-style: none; }
+.funciona li { display: grid; gap: 2px; padding-left: 14px; border-left: 3px solid var(--bien); }
+.metodo { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+.tabla-escala { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+.tabla-escala td { padding: 6px 0; border-top: 1px solid var(--linea); vertical-align: top; }
+.tabla-escala td:first-child { padding-right: 12px; white-space: nowrap; }
+
+dialog.visor { width: min(96vw, 1600px); max-height: 94vh; padding: 0; border: 1px solid var(--linea); border-radius: var(--radio); background: var(--papel); color: var(--tinta); }
+dialog.visor::backdrop { background: rgb(5 10 14 / 0.72); }
+.visor-barra { position: sticky; top: 0; z-index: 2; display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 10px 14px; background: var(--papel); border-bottom: 1px solid var(--linea); }
+.visor-barra button { min-height: 32px; padding: 4px 14px; border: 1px solid var(--linea); border-radius: 4px; background: var(--hundido); cursor: pointer; }
+.visor-cuerpo { padding: 14px; }
+.visor-cuerpo .lamina { max-width: none; }
+.visor-cuerpo .lamina img { cursor: default; }
+
+@media (max-width: 1080px) {
+  .pantalla-cuerpo { grid-template-columns: minmax(0, 1fr); }
+  .lado-captura { position: static; }
+  .lamina { max-width: 100%; }
+  .metodo { grid-template-columns: minmax(0, 1fr); }
+}
+@media (max-width: 820px) {
+  .veredicto, .dos-columnas { grid-template-columns: minmax(0, 1fr); }
+  .dimension { grid-template-columns: minmax(0, 1fr) auto; gap: 6px 14px; }
+  .dimension .puntos { grid-column: 1 / -1; order: 3; }
+  .dimension .motivo { grid-column: 1 / -1; order: 4; }
+}
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; scroll-behavior: auto !important; }
+}
+</style>
+
+<div class="hoja" id="informe"></div>
+
+<dialog class="visor" id="visor" aria-label="Captura ampliada">
+  <div class="visor-barra"><span id="visor-titulo" class="dato"></span><button type="button" id="visor-cerrar">Cerrar</button></div>
+  <div class="visor-cuerpo" id="visor-cuerpo"></div>
+</dialog>
+
+<script type="application/json" id="datos-informe">
+{
+  "esEjemplo": true,
+  "producto": "Sistema de ejemplo · web",
+  "titulo": "Bandeja de planificación",
+  "fecha": "2026-10-01",
+  "evaluador": "spiderman-experto-ux",
+  "perfil": "operativa",
+  "contexto": {
+    "usuarios": "Despachadores de transporte, 8 horas al día, expertos en el dominio",
+    "tareaPrincipal": "Asignar conductor y vehículo a los servicios del día sin dejar ninguno fuera de plazo",
+    "dispositivo": "Escritorio 1366 × 768 y 1920 × 1080"
+  },
+  "nota": {
+    "veredicto": "La bandeja deja trabajar, pero obliga a leer fila por fila para saber qué está atrasado: el estado del plazo existe en los datos y no se ve de un vistazo. Eso, más acciones repetidas en cada fila, hace que la tarea principal cueste más clics de los necesarios.",
+    "confianza": "media",
+    "pasadas": 2
+  },
+  "dimensiones": [
+    { "clave": "eficiencia", "nombre": "Eficiencia de la tarea principal", "peso": 20, "motivo": "Asignar un viaje toma 6 clics; no hay acción por lote." },
+    { "clave": "estado", "nombre": "Estado y respuesta del sistema", "peso": 15, "motivo": "El plazo vencido solo se sabe leyendo la fecha." },
+    { "clave": "errores", "nombre": "Prevención y recuperación de errores", "peso": 15, "motivo": "Confirma antes de quitar un viaje; los conflictos se explican." },
+    { "clave": "jerarquia", "nombre": "Jerarquía y lectura rápida", "peso": 15, "motivo": "La acción principal compite con cuatro botones del mismo peso." },
+    { "clave": "carga", "nombre": "Carga mental y reconocimiento", "peso": 10, "motivo": "Los filtros activos se ven sin abrir el panel." },
+    { "clave": "consistencia", "nombre": "Consistencia y convenciones", "peso": 10, "motivo": "Botones y filtros siguen el mismo patrón que el resto del sistema." },
+    { "clave": "lenguaje", "nombre": "Lenguaje del usuario", "peso": 5, "motivo": "Habla como el área, salvo un código interno que se filtra." },
+    { "clave": "confianza", "nombre": "Confianza y transparencia", "peso": 0, "evaluada": false, "motivo": "Fuera del perfil operativo: herramienta interna sin precios ni datos personales de clientes." },
+    { "clave": "accesibilidad", "nombre": "Accesibilidad verificable", "peso": 10, "motivo": "Contraste y tamaños dentro de WCAG 2.2 AA en lo medido." },
+    { "clave": "adaptacion", "nombre": "Adaptación al dispositivo", "peso": 0, "evaluada": false, "motivo": "Fuera del alcance: la bandeja se usa solo en escritorio." }
+  ],
+  "pantallas": [
+    {
+      "id": "bandeja",
+      "nombre": "Bandeja de planificación",
+      "ruta": "/planificacion",
+      "capturas": [
+        { "id": "bandeja-1366", "archivo": null, "ventana": "1366 × 768", "descripcion": "Primera vista al entrar, con datos de prueba" },
+        { "id": "bandeja-1920", "archivo": null, "ventana": "1920 × 1080", "descripcion": "Misma vista en monitor ancho" }
+      ]
+    }
+  ],
+  "hallazgos": [
+    {
+      "id": 1,
+      "severidad": "alta",
+      "titulo": "El plazo vencido no se ve sin leer la fecha",
+      "dimension": "estado",
+      "principio": "Nielsen H1 · Visibilidad del estado",
+      "pantalla": "bandeja",
+      "marcas": [{ "captura": "bandeja-1366", "x": 62, "y": 34, "ancho": 12, "alto": 48 }],
+      "queSeVe": "La columna «Fecha límite» muestra la fecha en el mismo gris para todas las filas; las tres vencidas solo se distinguen comparando con el reloj.",
+      "porQueImporta": "El despachador revisa la bandeja decenas de veces al día para encontrar lo urgente. Si tiene que leer y calcular, se le escapa un servicio vencido.",
+      "sugerencia": "Marcar el estado del plazo con forma y texto, no solo color: una etiqueta «Vencido» o «Vence en 2 h» al lado de la fecha, y ordenar por urgencia de inicio.",
+      "evidencia": "Captura 1366 × 768, filas 2, 5 y 9.",
+      "certeza": "confirmado",
+      "esfuerzo": "bajo"
+    },
+    {
+      "id": 2,
+      "severidad": "media",
+      "titulo": "Cinco botones con el mismo peso en la barra",
+      "dimension": "jerarquia",
+      "principio": "Ley de Hick · Jerarquía visual",
+      "pantalla": "bandeja",
+      "marcas": [{ "captura": "bandeja-1366", "x": 58, "y": 9, "ancho": 40, "alto": 6 }],
+      "queSeVe": "«Asignar», «Editar», «Exportar», «Filtros» y «Recargar» son botones azules rellenos del mismo tamaño.",
+      "porQueImporta": "Cuando todo resalta, nada resalta: el ojo no encuentra la acción que se repite cien veces al día.",
+      "sugerencia": "Dejar un solo botón relleno para la acción principal y bajar el resto a botones de borde o de texto.",
+      "evidencia": "sonda: botonesDeColor #1d4ed8 × 5 en la ventana.",
+      "certeza": "confirmado",
+      "esfuerzo": "bajo"
+    },
+    {
+      "id": 3,
+      "severidad": "baja",
+      "titulo": "Un código interno aparece como texto",
+      "dimension": "lenguaje",
+      "principio": "Nielsen H2 · Lenguaje del usuario",
+      "pantalla": "bandeja",
+      "marcas": [{ "captura": "bandeja-1920", "x": 40, "y": 52, "ancho": 9, "alto": 3 }],
+      "queSeVe": "Una fila muestra «SERVICIO_YA_CAMBIO» en la columna de estado.",
+      "porQueImporta": "Rompe la confianza y obliga a adivinar qué pasó.",
+      "sugerencia": "Mostrar el texto que corresponde en español: «Otra persona cambió este servicio».",
+      "evidencia": "sonda: fugas → código de enum.",
+      "certeza": "confirmado",
+      "esfuerzo": "bajo"
+    }
+  ],
+  "loQueFunciona": [
+    { "titulo": "Filtros que se recuerdan", "detalle": "Al volver a la bandeja se conservan los filtros del turno: no hay que rehacerlos." },
+    { "titulo": "Confirmación al quitar un viaje", "detalle": "Nombra el servicio y el conductor afectados antes de aceptar." }
+  ],
+  "noProbado": [
+    "Estado de error del servidor: no se forzó una caída para verlo.",
+    "Bandeja con más de 200 servicios: los datos de prueba tienen 34."
+  ],
+  "preguntas": [
+    "¿Qué decide el despachador primero al abrir la bandeja: lo vencido o lo de su sede?",
+    "¿Cuántos servicios asigna seguidos en un turno típico? Si son decenas, la acción por lote cambia la prioridad del hallazgo 2."
+  ],
+  "metodo": {
+    "marcos": ["10 heurísticas de Nielsen", "Laws of UX (Hick, Fitts, Jakob, Doherty)", "WCAG 2.2 AA verificable en pantalla", "Guías de tablas y formularios para software operativo"],
+    "ventanas": ["1366 × 768", "1920 × 1080"],
+    "herramientas": "Playwright: capturas, sonda de medición (contraste, tamaño de objetivos, campos sin etiqueta, fugas de texto) y recorrido con Tab.",
+    "limites": "Es una evaluación experta sin usuarios reales: encuentra problemas probables, no mide cuánto tardan ni cuánto fallan. Lo marcado como «hipótesis» se confirma observando a un despachador."
+  }
+}
+</script>
+
+<script>
+(() => {
+  const SEVERIDADES = [
+    { clave: 'bloqueante', nombre: 'Bloqueante', peso: 4 },
+    { clave: 'alta', nombre: 'Alta', peso: 3 },
+    { clave: 'media', nombre: 'Media', peso: 2 },
+    { clave: 'baja', nombre: 'Baja', peso: 1 },
+  ];
+  const BANDAS = [
+    { desde: 90, nombre: 'Excelente', color: 'var(--bien)' },
+    { desde: 80, nombre: 'Buena', color: 'var(--acento)' },
+    { desde: 70, nombre: 'Aceptable', color: 'var(--media)' },
+    { desde: 60, nombre: 'Deficiente', color: 'var(--alta)' },
+    { desde: 0, nombre: 'Crítica', color: 'var(--bloqueante)' },
+  ];
+  const DESCUENTO_POR_SEVERIDAD = { bloqueante: 1, alta: 0.4, media: 0.15, baja: 0.05 };
+  const TOPES = [
+    { cumple: (conteo) => conteo.bloqueante > 0, valor: 59, motivo: 'hay al menos un hallazgo bloqueante' },
+    { cumple: (conteo) => conteo.alta >= 3, valor: 64, motivo: 'hay tres o más hallazgos de severidad alta' },
+    { cumple: (conteo) => conteo.alta === 2, valor: 74, motivo: 'hay dos hallazgos de severidad alta' },
+    { cumple: (conteo) => conteo.alta === 1, valor: 84, motivo: 'hay un hallazgo de severidad alta' },
+  ];
+  const CERTEZAS = { confirmado: 'Confirmado en pantalla', probable: 'Probable', hipotesis: 'Hipótesis: validar con usuarios' };
+  const ESFUERZOS = { bajo: 'Esfuerzo bajo', medio: 'Esfuerzo medio', alto: 'Esfuerzo alto' };
+
+  const datos = JSON.parse(document.getElementById('datos-informe').textContent);
+  const raiz = document.getElementById('informe');
+  const filtrosActivos = new Set(SEVERIDADES.map((s) => s.clave));
+  const capturaActiva = {};
+
+  const crear = (etiqueta, atributos = {}, ...hijos) => {
+    const el = document.createElement(etiqueta);
+    for (const [clave, valor] of Object.entries(atributos)) {
+      if (valor === null || valor === undefined || valor === false) continue;
+      if (clave === 'clase') el.className = valor;
+      else if (clave === 'texto') el.textContent = valor;
+      else if (clave === 'estilo') el.setAttribute('style', valor);
+      else if (/^al[A-Z]/.test(clave)) el.addEventListener(clave.slice(2).toLowerCase(), valor);
+      else el.setAttribute(clave, valor === true ? '' : valor);
+    }
+    for (const hijo of hijos.flat()) if (hijo !== null && hijo !== undefined && hijo !== false) el.append(hijo);
+    return el;
+  };
+
+  const severidadDe = (clave) => SEVERIDADES.find((s) => s.clave === clave) || SEVERIDADES[3];
+  const pildora = (clave, texto) => crear('span', { clase: 'pildora', 'data-sev': clave, texto: texto || severidadDe(clave).nombre });
+  const ordenarHallazgos = (lista) => [...lista].sort((a, b) => severidadDe(b.severidad).peso - severidadDe(a.severidad).peso || a.id - b.id);
+  const hallazgos = ordenarHallazgos(datos.hallazgos || []);
+  const capturas = Object.fromEntries((datos.pantallas || []).flatMap((p) => p.capturas.map((c) => [c.id, { ...c, pantalla: p }])));
+
+  const conteoPorSeveridad = Object.fromEntries(SEVERIDADES.map((s) => [s.clave, hallazgos.filter((h) => h.severidad === s.clave).length]));
+  const estaEvaluada = (d) => d.evaluada !== false && d.peso > 0;
+  const fraccionDe = (d) => {
+    const descuento = hallazgos.filter((h) => h.dimension === d.clave).reduce((t, h) => t + (DESCUENTO_POR_SEVERIDAD[h.severidad] || 0), 0);
+    return Math.max(0, 1 - descuento);
+  };
+  const puntajeDe = (d) => Math.round(fraccionDe(d) * 8) / 2;
+  const calcularNota = () => {
+    const evaluadas = (datos.dimensiones || []).filter(estaEvaluada);
+    const pesoTotal = evaluadas.reduce((t, d) => t + d.peso, 0);
+    if (!pesoTotal) return { valor: null, tope: null };
+    const bruta = Math.round(evaluadas.reduce((t, d) => t + d.peso * fraccionDe(d), 0) / pesoTotal * 20) * 5;
+    const tope = TOPES.filter((t) => t.cumple(conteoPorSeveridad) && t.valor < bruta).sort((a, b) => a.valor - b.valor)[0] || null;
+    return { valor: tope ? tope.valor : bruta, bruta, tope };
+  };
+  const bandaDe = (valor) => BANDAS.find((b) => valor >= b.desde) || BANDAS[BANDAS.length - 1];
+
+  const portada = () => crear('header', { clase: 'portada' },
+    crear('span', { clase: 'ceja', texto: `${datos.producto || ''} · crítica de experiencia de uso` }),
+    crear('h1', { texto: datos.titulo }),
+    crear('div', { clase: 'meta' },
+      crear('span', { texto: datos.fecha }),
+      datos.contexto?.usuarios ? crear('span', { texto: `Para: ${datos.contexto.usuarios}` }) : null,
+      datos.contexto?.dispositivo ? crear('span', { texto: datos.contexto.dispositivo }) : null,
+    ),
+    datos.contexto?.tareaPrincipal ? crear('p', { clase: 'suave' }, crear('strong', { texto: 'Tarea que se evaluó: ' }), datos.contexto.tareaPrincipal) : null,
+    crear('span', { clase: 'sello', texto: datos.esEjemplo ? 'Datos de ejemplo · reemplazar al usar la plantilla' : 'Solo crítica: no se cambió nada del sistema' }),
+  );
+
+  const veredicto = () => {
+    const nota = calcularNota();
+    const banda = nota.valor === null ? null : bandaDe(nota.valor);
+    const conteo = conteoPorSeveridad;
+    const tramos = [...BANDAS].reverse();
+    const bloqueNota = crear('div', { clase: 'nota', estilo: banda ? `color:${banda.color}` : '' },
+      crear('span', { clase: 'ceja', texto: 'Nota de UX' }),
+      crear('div', { clase: 'cifra', estilo: 'color:var(--tinta)' }, crear('strong', { texto: nota.valor ?? '—' }), crear('span', { texto: '/ 100' })),
+      banda ? crear('span', { clase: 'banda', texto: banda.nombre }) : null,
+      crear('div', { clase: 'escala', 'aria-hidden': 'true' },
+        tramos.map((t) => crear('i', { clase: banda && t.nombre === banda.nombre ? 'activa' : '' })),
+        nota.valor !== null ? crear('span', { clase: 'aguja', estilo: `left:${nota.valor}%` }) : null,
+      ),
+      crear('div', { clase: 'escala-rotulos', 'aria-hidden': 'true' }, tramos.map((t) => crear('span', { texto: String(t.desde) }))),
+      nota.tope ? crear('p', { clase: 'tope', texto: `Tope aplicado: ${nota.tope.motivo}. Sin el tope serían ${nota.bruta}.` }) : null,
+      datos.anterior ? crear('p', { clase: 'dato', estilo: 'color:var(--tinta-suave)', texto: `Revisión anterior ${datos.anterior.fecha}: ${datos.anterior.nota} → hoy ${nota.valor ?? '—'}` }) : null,
+      crear('p', { clase: 'suave', estilo: 'font-size:13px', texto: `Perfil «${datos.perfil || 'operativa'}» · confianza ${datos.nota?.confianza || 'media'} · ${datos.nota?.pasadas === 1 ? 'una sola pasada de evaluación' : `${datos.nota?.pasadas || 2} evaluaciones independientes`}, sin usuarios reales.` }),
+    );
+    const top = hallazgos.filter((h) => ['bloqueante', 'alta'].includes(h.severidad)).slice(0, 3);
+    const urgentes = top.length ? top : hallazgos.slice(0, 3);
+    const bloqueResumen = crear('div', { clase: 'resumen' },
+      crear('p', { clase: 'texto', texto: datos.nota?.veredicto || '' }),
+      crear('div', { clase: 'conteos' }, SEVERIDADES.map((s) => pildora(s.clave, `${conteo[s.clave]} ${s.nombre.toLowerCase()}`))),
+      urgentes.length ? crear('div', {},
+        crear('span', { clase: 'ceja', texto: 'Lo más urgente' }),
+        crear('ol', { clase: 'urgente', estilo: 'margin-top:10px' }, urgentes.map((h) => crear('li', {}, pildora(h.severidad), crear('a', { href: `#h-${h.id}`, texto: `${h.id}. ${h.titulo}`, alClick: (e) => { e.preventDefault(); irAHallazgo(h.id); } })))),
+      ) : null,
+    );
+    return crear('section', { clase: 'veredicto', 'aria-label': 'Veredicto' }, bloqueNota, bloqueResumen);
+  };
+
+  const dimensiones = () => crear('section', { clase: 'bloque', 'aria-labelledby': 't-dim' },
+    crear('header', {}, crear('h2', { id: 't-dim', texto: 'Calificación por dimensión' }), crear('p', { clase: 'suave', texto: 'Cada dimensión parte de 4 y pierde por sus hallazgos: bloqueante todo, alta 40 %, media 15 %, baja 5 %. La nota pondera las dimensiones evaluadas, se redondea a 5 y tiene techo según lo más grave: una alta, 84; dos, 74; tres o más, 64; un bloqueante, 59.' })),
+    crear('div', { clase: 'dimensiones' }, (datos.dimensiones || []).map((d) => {
+      const evaluada = estaEvaluada(d);
+      const puntaje = evaluada ? puntajeDe(d) : null;
+      const cantidad = hallazgos.filter((h) => h.dimension === d.clave).length;
+      return crear('div', { clase: `dimension${evaluada ? '' : ' sin-evidencia'}` },
+        crear('span', { clase: 'nombre', texto: d.nombre }),
+        crear('div', { clase: 'puntos', role: 'img', 'aria-label': evaluada ? `${puntaje} de 4` : 'Sin evaluar' }, [1, 2, 3, 4].map((n) => crear('i', { clase: evaluada && puntaje >= n - 0.5 ? 'lleno' : '' }))),
+        crear('span', { clase: 'dato peso', texto: evaluada ? `${puntaje}/4 · ${d.peso}%` : 'fuera' }),
+        crear('span', { clase: 'motivo', texto: `${d.motivo}${evaluada && cantidad ? ` (${cantidad} ${cantidad === 1 ? 'hallazgo' : 'hallazgos'})` : ''}` }),
+      );
+    })),
+  );
+
+  const filtros = () => crear('nav', { clase: 'filtros', 'aria-label': 'Filtrar por severidad' },
+    crear('span', { clase: 'ceja', texto: 'Mostrar' }),
+    SEVERIDADES.map((s) => crear('button', {
+      type: 'button', clase: 'filtro', 'aria-pressed': 'true', 'data-filtro': s.clave,
+      alClick: (e) => {
+        const boton = e.currentTarget;
+        if (filtrosActivos.has(s.clave)) filtrosActivos.delete(s.clave); else filtrosActivos.add(s.clave);
+        boton.setAttribute('aria-pressed', String(filtrosActivos.has(s.clave)));
+        aplicarFiltros();
+      },
+    }, crear('span', { clase: 'punto', estilo: `background:var(--${s.clave})` }), `${s.nombre} (${hallazgos.filter((h) => h.severidad === s.clave).length})`)),
+  );
+
+  const lamina = (captura, marcasDeCaptura, ampliada) => {
+    const contenedor = crear('div', { clase: 'lamina' });
+    if (captura.archivo) {
+      const imagen = crear('img', { src: captura.archivo, alt: `Captura de ${captura.pantalla.nombre} en ${captura.ventana}`, loading: 'lazy' });
+      imagen.addEventListener('load', () => contenedor.style.setProperty('--proporcion', String(imagen.naturalWidth / imagen.naturalHeight)));
+      if (!ampliada) imagen.addEventListener('click', () => abrirVisor(captura.id));
+      contenedor.append(imagen);
+    } else {
+      contenedor.append(crear('div', { clase: 'vacia', texto: `Captura ${captura.ventana}: aquí va la imagen de la pantalla` }));
+    }
+    for (const { hallazgo, marca } of marcasDeCaptura) {
+      const esPunto = !marca.ancho || !marca.alto;
+      contenedor.append(crear('button', {
+        type: 'button',
+        clase: `marca${esPunto ? ' punto' : ''}`,
+        'data-hallazgo': hallazgo.id,
+        'data-sev': hallazgo.severidad,
+        'aria-label': `Hallazgo ${hallazgo.id}: ${hallazgo.titulo}`,
+        estilo: `left:${marca.x}%;top:${marca.y}%;${esPunto ? '' : `width:${marca.ancho}%;height:${marca.alto}%;`}`,
+        alClick: () => { if (ampliada) document.getElementById('visor').close(); irAHallazgo(hallazgo.id); },
+        alMouseenter: () => encender(hallazgo.id, true),
+        alMouseleave: () => encender(hallazgo.id, false),
+      }, crear('span', { clase: 'numero', texto: hallazgo.id })));
+    }
+    return contenedor;
+  };
+
+  const marcasDe = (idCaptura) => hallazgos.flatMap((h) => (h.marcas || []).filter((m) => m.captura === idCaptura).map((marca) => ({ hallazgo: h, marca })));
+
+  const tarjetaHallazgo = (h) => {
+    const otrasCapturas = (h.marcas || []).map((m) => m.captura).filter((id, i, todas) => capturas[id] && todas.indexOf(id) === i);
+    return crear('article', { clase: 'hallazgo', id: `h-${h.id}`, 'data-sev': h.severidad, 'data-hallazgo': h.id, tabindex: '-1',
+      alMouseenter: () => encender(h.id, true), alMouseleave: () => encender(h.id, false) },
+      crear('header', {},
+        crear('span', { clase: 'num', texto: h.id }),
+        crear('div', { clase: 'linea-pildoras' }, pildora(h.severidad), h.principio ? crear('span', { clase: 'principio', texto: h.principio }) : null),
+        crear('h3', { texto: h.titulo }),
+      ),
+      crear('dl', {},
+        crear('div', {}, crear('dt', { texto: 'Qué se ve' }), crear('dd', { texto: h.queSeVe })),
+        crear('div', {}, crear('dt', { texto: 'Por qué importa' }), crear('dd', { texto: h.porQueImporta })),
+        crear('div', {}, crear('dt', { texto: 'Sugerencia (no aplicada)' }), crear('dd', { clase: 'sugerencia', texto: h.sugerencia })),
+      ),
+      crear('footer', {},
+        crear('span', { texto: CERTEZAS[h.certeza] || h.certeza }),
+        h.esfuerzo ? crear('span', { texto: ESFUERZOS[h.esfuerzo] || h.esfuerzo }) : null,
+        otrasCapturas.map((id) => crear('button', { type: 'button', clase: 'ir-a-captura', texto: `ver en ${capturas[id].ventana}`, alClick: () => mostrarCaptura(capturas[id].pantalla.id, id, h.id) })),
+        h.evidencia ? crear('span', { clase: 'evidencia dato', texto: h.evidencia }) : null,
+      ),
+    );
+  };
+
+  const pantalla = (p) => {
+    const propios = hallazgos.filter((h) => h.pantalla === p.id);
+    capturaActiva[p.id] = p.capturas[0]?.id;
+    const ladoCaptura = crear('div', { clase: 'lado-captura' },
+      p.capturas.length > 1 ? crear('div', { clase: 'pestanas', role: 'tablist', 'aria-label': `Capturas de ${p.nombre}` }, p.capturas.map((c, i) => crear('button', {
+        type: 'button', role: 'tab', clase: 'pestana', 'aria-selected': String(i === 0), 'data-captura': c.id, texto: c.ventana,
+        alClick: () => mostrarCaptura(p.id, c.id),
+      }))) : null,
+      crear('div', { 'data-lamina': p.id }),
+      crear('p', { clase: 'pie-captura', 'data-pie': p.id }),
+    );
+    const seccion = crear('section', { clase: 'pantalla', id: `p-${p.id}`, 'aria-labelledby': `t-${p.id}` },
+      crear('header', {}, crear('h2', { id: `t-${p.id}`, texto: p.nombre }), crear('span', { clase: 'dato suave', texto: p.ruta || '' })),
+      crear('div', { clase: 'pantalla-cuerpo' }, ladoCaptura, crear('div', { clase: 'lista-hallazgos' }, propios.length ? propios.map(tarjetaHallazgo) : crear('p', { clase: 'suave', texto: 'Sin hallazgos en esta pantalla.' }))),
+    );
+    return seccion;
+  };
+
+  const generales = () => {
+    const sueltos = hallazgos.filter((h) => !h.pantalla || !(datos.pantallas || []).some((p) => p.id === h.pantalla));
+    if (!sueltos.length) return null;
+    return crear('section', { clase: 'bloque', 'aria-labelledby': 't-generales' },
+      crear('header', {}, crear('h2', { id: 't-generales', texto: 'Hallazgos de todo el sistema' }), crear('p', { clase: 'suave', texto: 'Se repiten en varias pantallas o no dependen de una sola.' })),
+      crear('div', { clase: 'lista-hallazgos' }, sueltos.map(tarjetaHallazgo)),
+    );
+  };
+
+  const cierre = () => crear('div', { clase: 'dos-columnas' },
+    crear('section', { clase: 'tarjeta', 'aria-labelledby': 't-funciona' },
+      crear('h2', { id: 't-funciona', texto: 'Lo que funciona y hay que cuidar' }),
+      crear('ul', { clase: 'funciona' }, (datos.loQueFunciona || []).map((f) => crear('li', {}, crear('strong', { texto: f.titulo }), crear('span', { clase: 'suave', texto: f.detalle })))),
+    ),
+    crear('section', { clase: 'tarjeta', 'aria-labelledby': 't-pendiente' },
+      crear('h2', { id: 't-pendiente', texto: 'Lo que no se pudo probar' }),
+      crear('ul', {}, (datos.noProbado || []).map((t) => crear('li', { texto: t }))),
+      (datos.preguntas || []).length ? crear('span', { clase: 'ceja', texto: 'Preguntas para el equipo' }) : null,
+      (datos.preguntas || []).length ? crear('ul', {}, datos.preguntas.map((t) => crear('li', { texto: t }))) : null,
+    ),
+  );
+
+  const metodo = () => crear('section', { clase: 'bloque', 'aria-labelledby': 't-metodo' },
+    crear('header', {}, crear('h2', { id: 't-metodo', texto: 'Cómo se evaluó' })),
+    crear('div', { clase: 'metodo' },
+      crear('div', { clase: 'tarjeta' },
+        crear('span', { clase: 'ceja', texto: 'Marcos' }),
+        crear('ul', {}, (datos.metodo?.marcos || []).map((m) => crear('li', { texto: m }))),
+        crear('span', { clase: 'ceja', texto: 'Ventanas' }),
+        crear('p', { clase: 'dato', texto: (datos.metodo?.ventanas || []).join(' · ') }),
+      ),
+      crear('div', { clase: 'tarjeta' },
+        crear('span', { clase: 'ceja', texto: 'Severidad' }),
+        crear('table', { clase: 'tabla-escala' }, crear('tbody', {},
+          crear('tr', {}, crear('td', {}, pildora('bloqueante')), crear('td', { texto: 'Impide terminar la tarea o provoca un error costoso sin aviso.' })),
+          crear('tr', {}, crear('td', {}, pildora('alta')), crear('td', { texto: 'La tarea se termina con esfuerzo, demora o riesgo; afecta a muchos o pasa seguido.' })),
+          crear('tr', {}, crear('td', {}, pildora('media')), crear('td', { texto: 'Molesta o confunde, pero hay salida evidente.' })),
+          crear('tr', {}, crear('td', {}, pildora('baja')), crear('td', { texto: 'Detalle de pulido; no cambia el resultado de la tarea.' })),
+        )),
+      ),
+      crear('div', { clase: 'tarjeta' },
+        crear('span', { clase: 'ceja', texto: 'Herramientas y límites' }),
+        crear('p', { texto: datos.metodo?.herramientas || '' }),
+        crear('p', { clase: 'suave', texto: datos.metodo?.limites || '' }),
+      ),
+    ),
+  );
+
+  const mostrarCaptura = (idPantalla, idCaptura, idHallazgo) => {
+    const p = (datos.pantallas || []).find((x) => x.id === idPantalla);
+    const c = capturas[idCaptura];
+    if (!p || !c) return;
+    capturaActiva[idPantalla] = idCaptura;
+    const destino = raiz.querySelector(`[data-lamina="${idPantalla}"]`);
+    destino.replaceChildren(lamina(c, marcasDe(idCaptura), false));
+    raiz.querySelector(`[data-pie="${idPantalla}"]`).textContent = [c.ventana, c.descripcion].filter(Boolean).join(' · ');
+    raiz.querySelectorAll(`#p-${idPantalla} .pestana`).forEach((b) => b.setAttribute('aria-selected', String(b.dataset.captura === idCaptura)));
+    aplicarFiltros();
+    if (idHallazgo) {
+      destino.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      encender(idHallazgo, true);
+      setTimeout(() => encender(idHallazgo, false), 1400);
+    }
+  };
+
+  const encender = (id, encendida) => {
+    raiz.querySelectorAll(`.marca[data-hallazgo="${id}"]`).forEach((m) => m.classList.toggle('encendida', encendida));
+  };
+
+  const irAHallazgo = (id) => {
+    const tarjeta = document.getElementById(`h-${id}`);
+    if (!tarjeta) return;
+    const h = hallazgos.find((x) => x.id === id);
+    if (h && !filtrosActivos.has(h.severidad)) {
+      filtrosActivos.add(h.severidad);
+      raiz.querySelector(`[data-filtro="${h.severidad}"]`)?.setAttribute('aria-pressed', 'true');
+      aplicarFiltros();
+    }
+    const marca = h?.marcas?.[0];
+    if (marca && capturas[marca.captura] && capturaActiva[h.pantalla] !== marca.captura) mostrarCaptura(h.pantalla, marca.captura);
+    tarjeta.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    tarjeta.focus({ preventScroll: true });
+    tarjeta.classList.add('destello');
+    encender(id, true);
+    setTimeout(() => { tarjeta.classList.remove('destello'); encender(id, false); }, 1600);
+  };
+
+  const aplicarFiltros = () => {
+    raiz.querySelectorAll('.hallazgo, .marca').forEach((el) => { el.hidden = !filtrosActivos.has(el.dataset.sev); });
+  };
+
+  const abrirVisor = (idCaptura) => {
+    const c = capturas[idCaptura];
+    document.getElementById('visor-titulo').textContent = `${c.pantalla.nombre} · ${c.ventana}`;
+    document.getElementById('visor-cuerpo').replaceChildren(lamina(c, marcasDe(idCaptura), true));
+    document.getElementById('visor').showModal();
+    aplicarFiltros();
+    document.querySelectorAll('#visor .marca').forEach((el) => { el.hidden = !filtrosActivos.has(el.dataset.sev); });
+  };
+  document.getElementById('visor-cerrar').addEventListener('click', () => document.getElementById('visor').close());
+
+  raiz.append(
+    portada(),
+    veredicto(),
+    dimensiones(),
+    filtros(),
+    ...(datos.pantallas || []).map(pantalla),
+    ...[generales()].filter(Boolean),
+    cierre(),
+    metodo(),
+  );
+  (datos.pantallas || []).forEach((p) => p.capturas[0] && mostrarCaptura(p.id, p.capturas[0].id));
+})();
+</script>

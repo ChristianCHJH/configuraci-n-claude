@@ -8,4 +8,4 @@
 - [Commits en unimar_tms](commits-unimar-tms.md) — máximo 5 palabras, sin firma, uno por tema
 - [Explicar por pantalla](explicar-por-pantalla.md) — el hallazgo se cuenta desde la pantalla y el gesto, no desde el símbolo
 - [Remediar auditorías](remediar-auditorias.md) — lo que mueve lógica queda 🔒 sin tocar; la limpieza se corrige y pasa a «Resueltos» al final
-- [Candado SAP en maestras](candado-sap-maestras.md) — solo SAP crea/edita maestras; web solo usuario_ums y horas libres; data actual es de prueba
+- [Candado SAP en maestras](candado-sap-maestras.md) — solo SAP crea/edita maestras; web solo usuario_ums; horas libres fijas en 48; data actual es de prueba

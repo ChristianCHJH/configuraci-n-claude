@@ -28,6 +28,8 @@ instrucción de atribución del harness.
 6. **Solo lo tocado en esta conversación.** `git status` puede traer cambios
    de sesiones anteriores que quedaron sin commitear. Esos no se tocan: ni se
    agregan, ni se mencionan en los commits, ni se cuentan como bloque.
+7. **Nunca commitear en `develop`, `main` ni `master`.** Siempre en una rama
+   propia: `tipo/descripcion-corta` (ej. `feat/fecha-creacion-listados`).
 
 ## Pasos
 
@@ -41,7 +43,9 @@ instrucción de atribución del harness.
    `git commit -m "tipo(ámbito): descripción"`. Nunca `git add -A` para
    todo junto.
 5. Respetar hooks: nunca `--no-verify`. Si un hook falla, arreglar la causa.
-6. Si la rama es `main`/`master`, crear rama antes de commitear.
+6. Si la rama actual es `develop`, `main` o `master`, crear y pasarse a una
+   rama nueva (`git switch -c tipo/descripcion-corta`) **antes** del primer
+   commit. Los cambios sin commitear viajan con el switch.
 7. Al final, `git log --oneline -n <cantidad>` y mostrar la lista de commits
    hechos, nada más.
 
@@ -50,5 +54,6 @@ instrucción de atribución del harness.
 - Un solo commit con todo mezclado cuando hay bloques distintos.
 - Mensajes de más de 5 palabras en la descripción.
 - Cualquier firma o trailer de Claude.
+- Commitear en `develop`, `main` o `master`.
 - `push` sin que Christian lo pida.
 - Commitear o mencionar archivos que no se tocaron en esta conversación.

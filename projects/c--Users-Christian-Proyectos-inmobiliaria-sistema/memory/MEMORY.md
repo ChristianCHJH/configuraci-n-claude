@@ -2,3 +2,6 @@
 - [Código sin comentarios](codigo-sin-comentarios.md) — cero comentarios en el código, en todos los proyectos; solo directivas de herramienta.
 - [Prefiere prosa, no selector](prefiere-prosa-no-selector.md) — responder en prosa con una recomendación; interrumpe el selector de opciones.
 - [Respuestas de cinco líneas](respuestas-de-cinco-lineas.md) — máximo 5 líneas por respuesta; solo se extiende si lo pide insistentemente.
+- [Cada etapa es un proyecto](cada-etapa-es-un-proyecto.md) — etapas y ampliaciones se cargan como proyectos independientes con su plano; manzanas sin guion
+- [Producción tras la carga histórica](produccion-y-local-al-27-09.md) — qué tiene producción desde el 28/09, cómo se entra por SSH y cómo se ensaya en local
+- [Anticipo se descuenta completo](anticipo-se-descuenta-completo.md) — en la boleta final cada anticipo se descuenta por su monto exacto; sin uso parcial
