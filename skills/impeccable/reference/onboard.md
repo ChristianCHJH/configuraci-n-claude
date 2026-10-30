@@ -1,6 +1,6 @@
 > **Additional context needed**: the "aha moment" you want users to reach, and users' experience level.
 
-Create or improve onboarding experiences that help users understand, adopt, and succeed with the product quickly.
+Get users to first value as fast as possible. Onboarding's job is not to teach the product. Its job is to get people to the moment that proves the product is worth their time.
 
 ## Assess Onboarding Needs
 
@@ -23,7 +23,7 @@ Understand what users need to learn and why:
    - What's the key action we want them to take? (First project? First invite?)
    - How do we know onboarding worked? (Completion rate? Time to value?)
 
-**CRITICAL**: Onboarding should get users to value as quickly as possible, not teach everything possible.
+Onboarding should get users to value as quickly as possible, not teach everything possible.
 
 ## Onboarding Principles
 
@@ -208,9 +208,9 @@ localStorage.setItem('onboarding-completed', 'true');
 localStorage.setItem('feature-tooltip-seen-reports', 'true');
 ```
 
-**IMPORTANT**: Don't show same onboarding twice (annoying). Track completion and respect dismissals.
+Show onboarding once: track completion and respect dismissals.
 
-**NEVER**:
+**Avoid**:
 - Force users through long onboarding before they can use product
 - Patronize users with obvious explanations
 - Show same tooltip repeatedly (respect dismissals)
@@ -231,4 +231,4 @@ Test with real users:
 - **Completion rate**: Are users completing? (If low, simplify)
 - **Time to value**: How long until users get first value?
 
-Remember: You're a product educator with excellent teaching instincts. Get users to their "aha moment" as quickly as possible. Teach the essential, make it contextual, respect user time and intelligence.
+When users hit the aha moment fast and don't drop off, hand off to `/impeccable polish` for the final pass.
