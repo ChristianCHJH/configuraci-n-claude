@@ -8,4 +8,17 @@
 - [Commits en unimar_tms](commits-unimar-tms.md) — máximo 5 palabras, sin firma, uno por tema
 - [Explicar por pantalla](explicar-por-pantalla.md) — el hallazgo se cuenta desde la pantalla y el gesto, no desde el símbolo
 - [Remediar auditorías](remediar-auditorias.md) — lo que mueve lógica queda 🔒 sin tocar; la limpieza se corrige y pasa a «Resueltos» al final
+- [TMS sin datos reales](tms-sin-datos-reales.md) — todo es prueba, BD se blanquea antes de QA/prod; migraciones sin mover datos
+- [Respuestas cortas y simples](respuestas-cortas-simples.md) — máximo 150 palabras, lenguaje fácil
 - [Candado SAP en maestras](candado-sap-maestras.md) — solo SAP crea/edita maestras; web solo usuario_ums; horas libres fijas en 48; data actual es de prueba
+- [Quitar corregidos del artefacto](artefacto-auditoria-quitar-corregidos.md) — al terminar cada hallazgo de una auditoría en artefacto, sacarlo y republicar sin preguntar
+- [TMS en SQL Server 2016](tms-sql-server-2016.md) — prod y UAT son 2016: nada de T-SQL 2017+; prueba en 2016 nativo en Windows
+- [XMS sin datos reales](xms-sin-datos-reales.md) — xms-db de sap-mdm es solo prueba; esquema se cambia sin mover datos
+- [Carga de usuarios a UMS](carga-usuarios-ums.md) — padrón TMS Callao cargado en producción; el cargador necesita el parche CSRF/cookies que hizo el servidor
+- [Push de workflows en TMS](push-workflows-tms.md) — PAT local sin scope workflow; empujar con la credencial de gh; repos renombrados
+- [Intent 0003 correo de soporte](intent-0003-correos-soporte.md) — reducido a texto fijo desarrolladores@unimar.com.pe; en develop (PR #170); SISTEMA.md en PR #171
+- [Clave sa del 2016 local](sql2016-local-clave-sa.md) — localhost,14330, sa / Tms2016Local!2243; se restablece con -E
+- [Config ~/.claude: push a main](config-claude-push-main.md) — en el repo de configuración global, commit + push a main y resolver conflictos sin preguntar
+- [Intent 0004 balanza vincula contenedor](intent-0004-balanza-vincula-contenedor.md) — en develop 2026-10-29 (TMS #176, XMS #95); falta desplegar, XMS primero
+- [Guía: código SAP del tipo de documento](guia-tipo-documento-sap.md) — guía manda codigo SAP (DNI=3), no SUNAT; hotfix PRs #167/#168
+- [Intent 0005 carga no homogénea](intent-0005-carga-no-homogenea.md) — varios equipos del mismo BL por viaje; rama subida 2026-10-29, falta PR a develop

@@ -7,3 +7,12 @@
 - [Existe un tarifario de precios](existe-tarifario-de-precios.md) — PRECIO LOTES.xlsx tiene 20 tarifas, y calzan con precio_base + ajuste_ubicacion; no reabrir el modelo de precios.
 - [El DNI se ata por OCR, no por carpeta](dni-se-ata-por-ocr-no-por-carpeta.md) — un escaneo va al cliente cuyo número se leyó; lo ilegible va a revisión manual.
 - [La carga inicial no se rellena](carga-inicial-no-se-rellena.md) — sin fecha de nacimiento del DNI, sin asesor, teléfono vacío aceptado; se regulariza después.
+- [Recuperar con Python y verificar](recuperar-con-python-y-verificar.md) — scripts Python; verificar documento↔cliente tras recuperar; BD solo lectura.
+- [Corte 25 oct 2026](corte-25-oct-2026.md) — faltan 254 boletas del Drive; 6 contratos en el registro equivocado; Excel con las cifras.
+- [MiFact por entorno](mifact-por-entorno.md) — tester usa el demo con RUC 20100100100 a propósito; producción sin clave ni token.
+- [Escrituras a producción las corre Christian](escrituras-a-produccion-las-corre-christian.md) — el modo automático las bloquea; usar cmd /c sin comillas simples desde PowerShell.
+- [Respuestas de máximo 200 palabras](respuestas-maximo-200-palabras.md) — el cierre de un trabajo, corto y con lo esencial.
+- [Convención de colindancias](convencion-de-colindancias.md) — derecha mirando desde la calle; esquina: frente = lado más corto a la calle.
+- [Logotipo de empresa solo SVG](logotipo-de-empresa-solo-svg.md) — SVG oficial versionado por RUC, sin subida manual; sin logo, el comprobante sale sin logo.
+- [Comprobante: titular y receptor](comprobante-siempre-de-un-cliente-registrado.md) — titular registrado siempre; receptor con otro RUC se escribe al emitir; depósito = tabla pago.
+- [gh: cuenta personal para inmobiliaria](gh-cuenta-personal-para-inmobiliaria.md) — la activa es Unimar; usar GH_TOKEN de ChristianCHJH.

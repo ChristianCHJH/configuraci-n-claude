@@ -3,5 +3,8 @@
 - [Prefiere prosa, no selector](prefiere-prosa-no-selector.md) — responder en prosa con una recomendación; interrumpe el selector de opciones.
 - [Respuestas de cinco líneas](respuestas-de-cinco-lineas.md) — máximo 5 líneas por respuesta; solo se extiende si lo pide insistentemente.
 - [Cada etapa es un proyecto](cada-etapa-es-un-proyecto.md) — etapas y ampliaciones se cargan como proyectos independientes con su plano; manzanas sin guion
-- [Producción tras la carga histórica](produccion-y-local-al-27-09.md) — qué tiene producción desde el 28/09, cómo se entra por SSH y cómo se ensaya en local
+- [Producción tras la carga histórica](produccion-y-local-al-27-09.md) — qué tiene producción (carga 28/09 + 790 vouchers del 29/10), SSH y ensayo en local
 - [Anticipo se descuenta completo](anticipo-se-descuenta-completo.md) — en la boleta final cada anticipo se descuenta por su monto exacto; sin uso parcial
+- [Carga visual mínima](carga-visual-minima.md) — en UI quitar todo lo que no sirva a la tarea; iconos con tooltip, color solo en lo pendiente
+- [Rama de asesores SCRUM-273](rama-asesores-scrum-273.md) — worktree aparte, alcance acordado y pendientes de la revisión del 28/10
+- [Todo entra por PR a develop](todo-entra-por-pr-a-develop.md) — nunca push directo a develop; «push a develop» = rama + PR contra develop

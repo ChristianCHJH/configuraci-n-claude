@@ -1,0 +1,2 @@
+- [Rediseño cinemático](rediseno-cinematico.md) — estado y decisiones del rediseño fotográfico en redesign/impeccable
+- [Prototipos visuales](feedback-prototipos-visuales.md) — mostrar prototipos navegables con material real antes de construir

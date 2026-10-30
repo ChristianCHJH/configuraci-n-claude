@@ -1,6 +1,6 @@
 ---
 name: landing-es-produccion
-description: La landing Yanapay está en producción con clientes reales; nunca dejar placeholders ni datos inventados
+description: La landing Abiel (ex Yanapay) está en producción con clientes reales; nunca dejar placeholders ni datos inventados
 metadata: 
   node_type: memory
   type: feedback
@@ -8,7 +8,7 @@ metadata:
   modified: 2026-09-19T06:27:05.346Z
 ---
 
-La landing Yanapay (repo landing-page-personal) está en producción y la ven clientes. Nunca dejar textos tipo "falta completar", "[Nombre del negocio]", "próximamente", testimonios o cifras inventadas, ni correos o dominios que no funcionan.
+La landing Abiel (antes Yanapay; repo landing-page-personal) está en producción y la ven clientes. Nunca dejar textos tipo "falta completar", "[Nombre del negocio]", "próximamente", testimonios o cifras inventadas, ni correos o dominios que no funcionan.
 
 **Why:** Christian lo pidió explícitamente el 2026-09-19. Cualquier relleno o dato falso destruye la confianza del cliente.
 

@@ -1,0 +1,1 @@
+- [Respuestas cortas en español](respuestas-cortas-espanol.md) — español y mínimo de palabras

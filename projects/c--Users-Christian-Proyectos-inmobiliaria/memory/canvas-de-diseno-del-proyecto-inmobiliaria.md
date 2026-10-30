@@ -29,3 +29,7 @@ Generador en el repo: `6-prototipo/design-cobranza/generar.mjs <carpeta>`; escri
 El generador de plantillas quedó fuera del repo, en el scratchpad de esa sesión (`generar-plantillas-v2.mjs`, reusa
 `6-prototipo/design-venta/piezas.mjs`). Para publicar desde el scratchpad, usar la ruta larga
 `C:/Users/Christian/AppData/...`: la ruta corta `CHRIST~1` la bloquea una regla de lectura.
+
+Canvas «Inicio por perfil» (propuesta híbrida del inicio: Gerencia/Admin, Back office, asesor en celular, estados),
+creado el 2026-10-25: https://claude.ai/artifact/55633UJzVgFBnPLBdFmPuV
+Fuentes escritas a mano en el scratchpad de esa sesión (no están en el repo).

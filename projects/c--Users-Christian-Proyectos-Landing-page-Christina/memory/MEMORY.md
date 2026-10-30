@@ -1,2 +1,6 @@
 - [Landing en producción](landing-es-produccion.md) — nunca placeholders ni datos inventados
-- [Deploy Yanapay](landing-yanapay-deploy.md) — Vercel, push directo a main, yanapay.tech no existe, S/ 90
+- [Deploy Abiel (ex Yanapay)](landing-yanapay-deploy.md) — marca Abiel desde 2026-10-17, Vercel, push directo a main, sin dominio propio, S/ 90
+- [Casos reales en la landing](landing-casos-reales.md) — inmobiliaria anónima, movilidad, tienda; sin datos reales; Remotion solo producción
+- [Dirección con fotos de fondo](landing-direccion-fotos.md) — 2026-10-17: fuera cuaderno y propuestas-objeto; fotos de negocios peruanos, dolor + WhatsApp, comparativa app
+- [Verificar como lo ve Christian](verificar-como-lo-ve-christian.md) — reduce + ~1600 px + celular, con scroll real, antes de mostrar
+- [Estado del rediseño](landing-estado-rediseno.md) — publicado 2026-10-17; pendientes CLS y 6 rubros; truco si el push falla
