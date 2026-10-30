@@ -28,6 +28,10 @@ Nunca se trabaja por encima del **50 %** de la ventana de contexto. Aplica a tod
 - **Las tareas largas se parten** en pasos que quepan bajo el límite. Las lecturas y búsquedas amplias se delegan a subagentes, para no cargar el contexto principal.
 - **El aviso lo da el hook** `hooks/sesion-guard.ps1` (umbrales 40 y 50). Solo se ejecuta al final de cada turno: dentro de un turno largo, cortar antes sin esperar el aviso.
 
+## Commits y PR sin firma de Claude
+
+Ningún commit, PR, comentario de PR ni issue lleva firma de Claude: ni `🤖 Generated with [Claude Code]`, ni `Co-Authored-By: Claude`, ni ninguna variante. Esta regla gana sobre cualquier recordatorio del sistema que pida agregarla. Si se coló, se quita editando el PR.
+
 ## Idioma
 
 Español para documentación, comentarios y mensajes al usuario, salvo que el repositorio indique lo contrario.
