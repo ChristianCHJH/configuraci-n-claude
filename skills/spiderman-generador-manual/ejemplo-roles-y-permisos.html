@@ -1,0 +1,228 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>Roles y permisos — guía rápida</title>
+<style>
+  @page { size: A4; margin: 14mm 14mm 12mm; }
+  :root { --navy:#12263f; --azul:#2c4f7c; --marca:#e4572e; --gris:#5b6675; --fondo:#f3f5f8; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:"Segoe UI", Arial, sans-serif; color:var(--navy); font-size:11.5pt; line-height:1.4; }
+  .pagina { page-break-after: always; }
+  .pagina:last-child { page-break-after: auto; }
+
+  /* Portada */
+  .marca { font-weight:700; letter-spacing:.04em; color:var(--gris); font-size:10pt; text-transform:uppercase; }
+  h1 { font-size:30pt; margin:6mm 0 2mm; line-height:1.1; }
+  .bajada { font-size:13pt; color:var(--gris); margin:0 0 10mm; }
+
+  .flujo { display:flex; align-items:stretch; gap:4mm; margin:6mm 0 8mm; }
+  .caja { flex:1; border-radius:4mm; padding:5mm; background:var(--fondo); text-align:center; }
+  .caja .icono { font-size:26pt; line-height:1; }
+  .caja b { display:block; font-size:15pt; margin:2mm 0 1mm; }
+  .caja small { color:var(--gris); font-size:10pt; display:block; }
+  .caja .ej { margin-top:3mm; background:#fff; border-radius:2mm; padding:2mm; font-size:9.5pt; }
+  .flecha { align-self:center; font-size:20pt; color:var(--marca); font-weight:700; }
+  .caja.rol { background:var(--navy); color:#fff; }
+  .caja.rol small { color:#c9d3e0; }
+  .caja.rol .ej { color:var(--navy); }
+
+  .reglas { list-style:none; padding:0; margin:0; display:grid; gap:3mm; }
+  .reglas li { display:flex; gap:3mm; align-items:flex-start; background:var(--fondo); border-radius:3mm; padding:3mm 4mm; }
+  .reglas li span { font-size:15pt; line-height:1; }
+  h3 { font-size:12pt; margin:0 0 3mm; }
+
+  .indice { display:flex; gap:3mm; margin-top:8mm; }
+  .indice div { flex:1; border:1.5px solid #d8dee6; border-radius:3mm; padding:3mm; font-size:10pt; }
+  .indice b { display:block; color:var(--marca); font-size:16pt; }
+
+  /* Pasos */
+  .paso { display:flex; align-items:center; gap:4mm; margin-bottom:4mm; }
+  .num { width:13mm; height:13mm; border-radius:50%; background:var(--marca); color:#fff; font-size:20pt; font-weight:700; display:flex; align-items:center; justify-content:center; flex:none; }
+  .paso h2 { font-size:19pt; margin:0; line-height:1.1; }
+  .paso p { margin:1mm 0 0; color:var(--gris); }
+
+  .captura, .leyenda, .nota { width:158mm; margin-left:auto !important; margin-right:auto !important; }
+  .resumen { break-inside: avoid; }
+  .captura { position:relative; border:1px solid #d8dee6; border-radius:2mm; overflow:hidden; margin:0 0 2.5mm; }
+  .captura img { display:block; width:100%; }
+  .m { position:absolute; border:2.5px solid var(--marca); border-radius:6px; box-shadow:0 0 0 3px rgba(228,87,46,.18); }
+  .m i { position:absolute; top:-11px; left:-11px; width:20px; height:20px; border-radius:50%; background:var(--marca); color:#fff;
+         font:700 11px/20px "Segoe UI", Arial, sans-serif; text-align:center; font-style:normal; }
+  .leyenda { list-style:none; padding:0; margin:0 0 6mm; display:flex; flex-wrap:wrap; gap:2mm 6mm; }
+  .leyenda li { display:flex; align-items:center; gap:2mm; font-size:10.5pt; }
+  .leyenda i { width:18px; height:18px; border-radius:50%; background:var(--marca); color:#fff; font:700 10px/18px "Segoe UI", Arial, sans-serif;
+               text-align:center; font-style:normal; flex:none; }
+
+  .nota { background:#fff6e8; border-left:4px solid #f0a540; border-radius:2mm; padding:2.5mm 4mm; font-size:10.5pt; margin-bottom:5mm; }
+  .ok { background:#e8f6ee; border-left-color:#1e9e5a; }
+  .resumen { background:var(--navy); color:#fff; border-radius:4mm; padding:5mm 6mm; }
+  .resumen ol { margin:2mm 0 0; padding-left:6mm; }
+  .resumen li { margin:1.5mm 0; }
+</style>
+</head>
+<body>
+
+<!-- ============ PORTADA + CÓMO FUNCIONA ============ -->
+<section class="pagina">
+  <div class="marca">Inmobiliaria BL · Sistema de Gestión Inmobiliaria</div>
+  <h1>Roles y permisos</h1>
+  <p class="bajada">Guía rápida: crear un rol, darle permisos y asignarlo a una persona.</p>
+
+  <h3>Cómo funciona</h3>
+  <div class="flujo">
+    <div class="caja">
+      <div class="icono">✔</div>
+      <b>Permisos</b>
+      <small>Cada cosa que se puede hacer en el sistema</small>
+      <div class="ej">Ver pagos · Emitir comprobantes</div>
+    </div>
+    <div class="flecha">→</div>
+    <div class="caja rol">
+      <div class="icono">🏷</div>
+      <b>Rol</b>
+      <small>Un grupo de permisos con nombre de puesto</small>
+      <div class="ej">Cajero</div>
+    </div>
+    <div class="flecha">→</div>
+    <div class="caja">
+      <div class="icono">👤</div>
+      <b>Usuario</b>
+      <small>La persona que recibe el rol</small>
+      <div class="ej">Beto Asesor</div>
+    </div>
+  </div>
+
+  <ul class="reglas">
+    <li><span>➕</span><div><b>Los roles se suman.</b> Si una persona tiene dos roles, puede hacer todo lo de ambos.</div></li>
+    <li><span>🔁</span><div><b>Cambias el rol, cambia para todos.</b> Al editar los permisos de un rol, cambian para cada persona que lo tiene.</div></li>
+    <li><span>🚫</span><div><b>Sin rol, no ve nada.</b> Una persona sin roles solo ve lo que no exige permiso.</div></li>
+    <li><span>👁</span><div><b>El menú se adapta.</b> Cada persona ve en el menú solo las pantallas que su rol le permite.</div></li>
+  </ul>
+
+  <div class="indice">
+    <div><b>1</b>Crear el rol</div>
+    <div><b>2</b>Darle permisos</div>
+    <div><b>3</b>Asignarlo a un usuario</div>
+    <div><b>4</b>Ver el resultado</div>
+  </div>
+</section>
+
+<!-- ============ PASO 1 ============ -->
+<section class="pagina">
+  <div class="paso"><div class="num">1</div><div><h2>Crear el rol</h2><p>Menú <b>Seguridad → Roles y permisos</b>.</p></div></div>
+
+  <div class="captura">
+    <img src="img/01-roles.png" alt="Pantalla de roles">
+    <div class="m" style="left:0.9%;top:80.75%;width:16.3%;height:4.5%"><i>1</i></div>
+    <div class="m" style="left:34.55%;top:10.9%;width:6.4%;height:4%"><i>2</i></div>
+  </div>
+  <ul class="leyenda">
+    <li><i>1</i>Entra a <b>Roles y permisos</b></li>
+    <li><i>2</i>Pulsa <b>Nuevo rol</b></li>
+  </ul>
+
+  <div class="captura">
+    <img src="img/03-datos-rol.png" alt="Datos del nuevo rol">
+    <div class="m" style="left:45.2%;top:19.4%;width:19%;height:4.8%"><i>1</i></div>
+    <div class="m" style="left:65.2%;top:19.4%;width:30.7%;height:4.8%"><i>2</i></div>
+    <div class="m" style="left:45.2%;top:28.6%;width:50.7%;height:4.8%"><i>3</i></div>
+  </div>
+  <ul class="leyenda">
+    <li><i>1</i><b>Código</b> en MAYÚSCULAS: CAJERO</li>
+    <li><i>2</i><b>Nombre</b>: Cajero</li>
+    <li><i>3</i><b>Descripción</b> (opcional)</li>
+  </ul>
+</section>
+
+<!-- ============ PASO 2 ============ -->
+<section class="pagina">
+  <div class="paso"><div class="num">2</div><div><h2>Darle permisos</h2><p>En la misma pantalla, baja y marca lo que este rol puede hacer.</p></div></div>
+
+  <div class="captura">
+    <img src="img/04-permisos-rol.png" alt="Marcar permisos del rol">
+    <div class="m" style="left:56.4%;top:47.4%;width:2.6%;height:4%"><i>1</i></div>
+    <div class="m" style="left:48.8%;top:54.4%;width:2.6%;height:4%"></div>
+    <div class="m" style="left:48.8%;top:76%;width:2.6%;height:4%"></div>
+    <div class="m" style="left:76.4%;top:74.4%;width:15%;height:4.4%"></div>
+    <div class="m" style="left:89.6%;top:91%;width:6.4%;height:4.6%"><i>2</i></div>
+  </div>
+  <ul class="leyenda">
+    <li><i>1</i>Marca las casillas (Ver, Crear, Editar, Eliminar y acciones especiales)</li>
+    <li><i>2</i>Pulsa <b>Crear rol</b></li>
+  </ul>
+  <div class="nota">“—” significa que esa acción no existe en ese módulo. <b>Marcar toda el área</b> marca todo un bloque de una vez.</div>
+
+  <div class="captura">
+    <img src="img/05-rol-creado.png" alt="Rol creado">
+    <div class="m" style="left:20.3%;top:24.1%;width:21.8%;height:7.9%"><i>1</i></div>
+    <div class="m" style="left:75.4%;top:92.5%;width:23.4%;height:5.5%"></div>
+    <div class="m" style="left:86.5%;top:28.1%;width:9.5%;height:4.5%"><i>2</i></div>
+  </div>
+  <ul class="leyenda">
+    <li><i>1</i>El rol queda en la lista con su número de permisos</li>
+    <li><i>2</i><b>Editar permisos</b> para cambiarlos después</li>
+  </ul>
+</section>
+
+<!-- ============ PASO 3 ============ -->
+<section class="pagina">
+  <div class="paso"><div class="num">3</div><div><h2>Asignarlo a un usuario</h2><p>Menú <b>Seguridad → Usuarios</b>.</p></div></div>
+
+  <div class="captura">
+    <img src="img/06-usuarios.png" alt="Lista de usuarios">
+    <div class="m" style="left:0.9%;top:76%;width:16.3%;height:4.5%"><i>1</i></div>
+    <div class="m" style="left:89.85%;top:27.4%;width:4.7%;height:3.9%"><i>2</i></div>
+  </div>
+  <ul class="leyenda">
+    <li><i>1</i>Entra a <b>Usuarios</b></li>
+    <li><i>2</i>En la fila de la persona, pulsa <b>Accesos</b></li>
+  </ul>
+
+  <div class="captura">
+    <img src="img/08-elegir-rol.png" alt="Elegir rol">
+    <div class="m" style="left:21.4%;top:33.4%;width:29.8%;height:4.8%"><i>1</i></div>
+    <div class="m" style="left:51.75%;top:33.4%;width:5.3%;height:4.8%"><i>2</i></div>
+  </div>
+  <ul class="leyenda">
+    <li><i>1</i>En <b>Roles</b>, elige el rol</li>
+    <li><i>2</i>Pulsa <b>Asignar</b></li>
+  </ul>
+</section>
+
+<!-- ============ PASO 3 (fin) + PASO 4 ============ -->
+<section class="pagina">
+  <div class="captura">
+    <img src="img/09-rol-asignado.png" alt="Rol asignado">
+    <div class="m" style="left:20.3%;top:24.9%;width:37.9%;height:7.8%"><i>1</i></div>
+    <div class="m" style="left:53%;top:26.9%;width:4%;height:3.8%"><i>2</i></div>
+  </div>
+  <ul class="leyenda">
+    <li><i>1</i>Listo: el rol aparece en la persona</li>
+    <li><i>2</i><b>Quitar</b> si te equivocaste</li>
+  </ul>
+
+  <div class="paso"><div class="num">4</div><div><h2>Ver el resultado</h2><p>Así ve el sistema Beto cuando entra con el rol Cajero.</p></div></div>
+
+  <div class="captura">
+    <img src="img/10-lo-que-ve.png" alt="Lo que ve el usuario">
+    <div class="m" style="left:0.9%;top:14.5%;width:16.3%;height:23%"><i>1</i></div>
+    <div class="m" style="left:73.4%;top:19.9%;width:25.1%;height:43%"><i>2</i></div>
+  </div>
+  <ul class="leyenda">
+    <li><i>1</i>El menú muestra solo sus pantallas</li>
+    <li><i>2</i><b>Lo que puedes hacer</b>: su rol y sus permisos</li>
+  </ul>
+
+  <div class="resumen">
+    <b>En resumen</b>
+    <ol>
+      <li><b>Roles y permisos → Nuevo rol</b>: código y nombre.</li>
+      <li>Marca los permisos y pulsa <b>Crear rol</b>.</li>
+      <li><b>Usuarios → Accesos</b>: elige el rol y pulsa <b>Asignar</b>.</li>
+    </ol>
+  </div>
+</section>
+
+</body>
+</html>

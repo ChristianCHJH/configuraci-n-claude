@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>{{TEMA}} — guía rápida</title>
+<!--
+  PLANTILLA DEL SPIDER-MAN GENERADOR DE MANUAL. No cambiar el CSS: es el formato aprobado.
+  Se copia junto a la carpeta img/ y se reemplaza todo lo que está entre {{ }}.
+  Marcas sobre capturas: left/top/width/height en % de 1366×800 (x/1366, y/800).
+  Ejemplo completo y aprobado: ejemplo-roles-y-permisos.html
+-->
+<style>
+  @page { size: A4; margin: 14mm 14mm 12mm; }
+  :root { --navy:#12263f; --azul:#2c4f7c; --marca:#e4572e; --gris:#5b6675; --fondo:#f3f5f8; }
+  * { box-sizing: border-box; }
+  body { margin:0; font-family:"Segoe UI", Arial, sans-serif; color:var(--navy); font-size:11.5pt; line-height:1.4; }
+  .pagina { page-break-after: always; }
+  .pagina:last-child { page-break-after: auto; }
+
+  /* Portada */
+  .marca { font-weight:700; letter-spacing:.04em; color:var(--gris); font-size:10pt; text-transform:uppercase; }
+  h1 { font-size:30pt; margin:6mm 0 2mm; line-height:1.1; }
+  .bajada { font-size:13pt; color:var(--gris); margin:0 0 10mm; }
+
+  .flujo { display:flex; align-items:stretch; gap:4mm; margin:6mm 0 8mm; }
+  .caja { flex:1; border-radius:4mm; padding:5mm; background:var(--fondo); text-align:center; }
+  .caja .icono { font-size:26pt; line-height:1; }
+  .caja b { display:block; font-size:15pt; margin:2mm 0 1mm; }
+  .caja small { color:var(--gris); font-size:10pt; display:block; }
+  .caja .ej { margin-top:3mm; background:#fff; border-radius:2mm; padding:2mm; font-size:9.5pt; }
+  .flecha { align-self:center; font-size:20pt; color:var(--marca); font-weight:700; }
+  .caja.rol { background:var(--navy); color:#fff; }
+  .caja.rol small { color:#c9d3e0; }
+  .caja.rol .ej { color:var(--navy); }
+
+  .reglas { list-style:none; padding:0; margin:0; display:grid; gap:3mm; }
+  .reglas li { display:flex; gap:3mm; align-items:flex-start; background:var(--fondo); border-radius:3mm; padding:3mm 4mm; }
+  .reglas li span { font-size:15pt; line-height:1; }
+  h3 { font-size:12pt; margin:0 0 3mm; }
+
+  .indice { display:flex; gap:3mm; margin-top:8mm; }
+  .indice div { flex:1; border:1.5px solid #d8dee6; border-radius:3mm; padding:3mm; font-size:10pt; }
+  .indice b { display:block; color:var(--marca); font-size:16pt; }
+
+  /* Pasos */
+  .paso { display:flex; align-items:center; gap:4mm; margin-bottom:4mm; }
+  .num { width:13mm; height:13mm; border-radius:50%; background:var(--marca); color:#fff; font-size:20pt; font-weight:700; display:flex; align-items:center; justify-content:center; flex:none; }
+  .paso h2 { font-size:19pt; margin:0; line-height:1.1; }
+  .paso p { margin:1mm 0 0; color:var(--gris); }
+
+  .captura, .leyenda, .nota { width:158mm; margin-left:auto !important; margin-right:auto !important; }
+  .resumen { break-inside: avoid; }
+  .captura { position:relative; border:1px solid #d8dee6; border-radius:2mm; overflow:hidden; margin:0 0 2.5mm; }
+  .captura img { display:block; width:100%; }
+  .m { position:absolute; border:2.5px solid var(--marca); border-radius:6px; box-shadow:0 0 0 3px rgba(228,87,46,.18); }
+  .m i { position:absolute; top:-11px; left:-11px; width:20px; height:20px; border-radius:50%; background:var(--marca); color:#fff;
+         font:700 11px/20px "Segoe UI", Arial, sans-serif; text-align:center; font-style:normal; }
+  .leyenda { list-style:none; padding:0; margin:0 0 6mm; display:flex; flex-wrap:wrap; gap:2mm 6mm; }
+  .leyenda li { display:flex; align-items:center; gap:2mm; font-size:10.5pt; }
+  .leyenda i { width:18px; height:18px; border-radius:50%; background:var(--marca); color:#fff; font:700 10px/18px "Segoe UI", Arial, sans-serif;
+               text-align:center; font-style:normal; flex:none; }
+
+  .nota { background:#fff6e8; border-left:4px solid #f0a540; border-radius:2mm; padding:2.5mm 4mm; font-size:10.5pt; margin-bottom:5mm; }
+  .ok { background:#e8f6ee; border-left-color:#1e9e5a; }
+  .resumen { background:var(--navy); color:#fff; border-radius:4mm; padding:5mm 6mm; }
+  .resumen ol { margin:2mm 0 0; padding-left:6mm; }
+  .resumen li { margin:1.5mm 0; }
+</style>
+</head>
+<body>
+
+<!-- ============ PORTADA + CÓMO FUNCIONA ============ -->
+<section class="pagina">
+  <div class="marca">{{EMPRESA}} · {{SISTEMA}}</div>
+  <h1>{{TEMA}}</h1>
+  <p class="bajada">Guía rápida: {{QUÉ SE APRENDE, UNA FRASE}}.</p>
+
+  <h3>Cómo funciona</h3>
+  <!-- Tres cajas: las piezas del concepto y cómo se encadenan. La del centro lleva class="caja rol" (oscura).
+       Cada caja: ícono, nombre, qué es (una línea) y un ejemplo real del recorrido. -->
+  <div class="flujo">
+    <div class="caja">
+      <div class="icono">{{ÍCONO}}</div>
+      <b>{{PIEZA 1}}</b>
+      <small>{{QUÉ ES, UNA LÍNEA}}</small>
+      <div class="ej">{{EJEMPLO}}</div>
+    </div>
+    <div class="flecha">→</div>
+    <div class="caja rol">
+      <div class="icono">{{ÍCONO}}</div>
+      <b>{{PIEZA 2}}</b>
+      <small>{{QUÉ ES, UNA LÍNEA}}</small>
+      <div class="ej">{{EJEMPLO}}</div>
+    </div>
+    <div class="flecha">→</div>
+    <div class="caja">
+      <div class="icono">{{ÍCONO}}</div>
+      <b>{{PIEZA 3}}</b>
+      <small>{{QUÉ ES, UNA LÍNEA}}</small>
+      <div class="ej">{{EJEMPLO}}</div>
+    </div>
+  </div>
+
+  <!-- Hasta 4 reglas. Cada una: ícono + frase en negrita + una oración. Solo reglas verificadas. -->
+  <ul class="reglas">
+    <li><span>{{ÍCONO}}</span><div><b>{{REGLA CORTA}}.</b> {{UNA ORACIÓN}}</div></li>
+  </ul>
+
+  <!-- Un bloque por paso del manual (3 a 5). -->
+  <div class="indice">
+    <div><b>1</b>{{PASO 1}}</div>
+  </div>
+</section>
+
+<!-- ============ UN PASO (repetir por paso; máximo 2 capturas por página) ============ -->
+<section class="pagina">
+  <div class="paso"><div class="num">1</div><div><h2>{{VERBO + QUÉ}}</h2><p>Menú <b>{{SECCIÓN → PANTALLA}}</b>.</p></div></div>
+
+  <div class="captura">
+    <img src="img/01-{{nombre}}.png" alt="{{descripción}}">
+    <!-- Una marca por elemento que el usuario debe tocar o mirar. Sin <i> = marca extra del mismo número. -->
+    <div class="m" style="left:{{x/1366}}%;top:{{y/800}}%;width:{{w/1366}}%;height:{{h/800}}%"><i>1</i></div>
+  </div>
+  <ul class="leyenda">
+    <li><i>1</i>{{Verbo}} <b>{{Botón o campo}}</b></li>
+  </ul>
+
+  <!-- Opcional, una por página como máximo -->
+  <div class="nota">{{ACLARACIÓN BREVE}}</div>
+</section>
+
+<!-- ============ ÚLTIMA PÁGINA: RESULTADO + RESUMEN ============ -->
+<section class="pagina">
+  <div class="paso"><div class="num">{{N}}</div><div><h2>Ver el resultado</h2><p>{{QUÉ SE VE AL TERMINAR, UNA FRASE}}</p></div></div>
+
+  <div class="captura">
+    <img src="img/{{NN}}-resultado.png" alt="Resultado">
+    <div class="m" style="left:0%;top:0%;width:10%;height:10%"><i>1</i></div>
+  </div>
+  <ul class="leyenda">
+    <li><i>1</i>{{QUÉ DEMUESTRA}}</li>
+  </ul>
+
+  <div class="resumen">
+    <b>En resumen</b>
+    <ol>
+      <li><b>{{PANTALLA → BOTÓN}}</b>: {{qué se hace}}.</li>
+    </ol>
+  </div>
+</section>
+
+</body>
+</html>
